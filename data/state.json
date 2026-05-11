@@ -1,14 +1,21 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 1,
-  "last_run_at": "2026-05-11T01:58:47.636Z",
-  "verification_cursor": 1,
+  "cycle": 2,
+  "last_run_at": "2026-05-11T14:32:00.000Z",
+  "verification_cursor": 2,
   "verification_log": [
     {
       "cycle": 1,
       "at": "2026-05-11T01:58:47.636Z",
       "ministry": "Interior",
       "minister": "Carlos Negro",
+      "result": "ok"
+    },
+    {
+      "cycle": 2,
+      "at": "2026-05-11T14:32:00.000Z",
+      "ministry": "Relaciones Exteriores",
+      "minister": "Mario Lubetkin",
       "result": "ok"
     }
   ],
@@ -22,6 +29,18 @@
     },
     {
       "at": "2026-05-11T01:58:47.636Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://www.montevideo.com.uy/Noticias/Politica",
+      "status": "fetch_failed"
+    },
+    {
+      "at": "2026-05-11T14:32:00.000Z",
+      "source": "El Observador / política",
+      "url": "https://www.elobservador.com.uy/seccion/politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-11T14:32:00.000Z",
       "source": "Montevideo Portal / política",
       "url": "https://www.montevideo.com.uy/Noticias/Politica",
       "status": "fetch_failed"
