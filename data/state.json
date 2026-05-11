@@ -1,11 +1,32 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 0,
-  "last_run_at": null,
-  "verification_cursor": 0,
-  "verification_log": [],
+  "cycle": 1,
+  "last_run_at": "2026-05-11T01:58:47.636Z",
+  "verification_cursor": 1,
+  "verification_log": [
+    {
+      "cycle": 1,
+      "at": "2026-05-11T01:58:47.636Z",
+      "ministry": "Interior",
+      "minister": "Carlos Negro",
+      "result": "ok"
+    }
+  ],
   "drift_log": [],
-  "failed_sources_log": [],
+  "failed_sources_log": [
+    {
+      "at": "2026-05-11T01:58:47.636Z",
+      "source": "El Observador / política",
+      "url": "https://www.elobservador.com.uy/seccion/politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-11T01:58:47.636Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://www.montevideo.com.uy/Noticias/Politica",
+      "status": "fetch_failed"
+    }
+  ],
   "bias_log": [],
   "_url_quarantine": [],
   "improvement_queue": []
