@@ -24,7 +24,16 @@ Cuando un issue te asigne un ciclo, ejecutá los prompts en orden:
 3. Leé [`data/prompts/03-curate.md`](../data/prompts/03-curate.md) → decidí qué destacar.
 4. Leé [`data/prompts/04-render-day.md`](../data/prompts/04-render-day.md) → generá `_posts/YYYY-MM-DD-cycle-N.md` (Jekyll lo renderiza como post).
 5. Actualizá [`data/state.json`](../data/state.json) → cycle++, last_run, cursor verificación.
-6. Abrí PR con título `[ciclo N] DD mon — viz del día` y label `auto-merge-candidate` si solo tocaste `_posts/` y `data/state.json`.
+6. Abrí PR con título `[ciclo N] DD mon — viz del día`. **Si solo tocaste `_posts/` y `data/state.json`, ejecutá los 2 pasos finales abajo — son CRÍTICOS para que el loop autónomo funcione.**
+
+### Finalización del PR (CRÍTICO — sin esto no auto-mergea)
+
+El workflow `copilot-auto-merge.yml` solo actúa sobre PRs que cumplen **dos condiciones simultáneamente**:
+
+7. **Marcar el PR como ready** (sacarlo de DRAFT). Vía CLI: `gh pr ready <PR_NUM>`. Vía MCP/API: `PATCH /repos/.../pulls/{number}` con `{"draft": false}`. **Si el PR queda en DRAFT, el auto-merge no actúa.**
+8. **Agregar label `auto-merge-candidate`**. Vía CLI: `gh pr edit <PR_NUM> --add-label "auto-merge-candidate"`. Vía MCP/API: `POST /repos/.../issues/{number}/labels` con `{"labels":["auto-merge-candidate"]}`. **Si el label no está, el workflow lo flagea como `needs-review` y queda esperando intervención humana.**
+
+Hacé estos 2 pasos **vos mismo, antes de terminar la sesión**. No esperés a que un humano los haga — esa es la diferencia entre un loop autónomo y uno semi-manual. Si tu PR cambia archivos fuera de `_posts/` y `data/state.json` (ej. modificás un prompt o una fuente), no agregues el label — esos PRs requieren review humano por design.
 
 ## Reglas duras (no negociables)
 
