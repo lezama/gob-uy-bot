@@ -63,18 +63,6 @@ Ver [`CONTRIBUTING.md`](CONTRIBUTING.md) para detalle.
 
 Cada ~7 días el bot abre un PR de meta-reflexión: revisa sus reportes pasados, mide qué fuentes fallaron, qué stories pasó por alto, y propone cambios a sus propios prompts. Esos PRs requieren review humano (los reportes diarios no).
 
-## Comparado con [`uy-gov-inbox`](https://github.com/lezama/uy-gov-inbox)
-
-| | `gob-uy-bot` (este) | `uy-gov-inbox` |
-|---|---|---|
-| Stack | GitHub nativo (Copilot + Actions + Pages) | WordPress Playground + Data Machine + agents-api + Anthropic |
-| Output | Visualización HTML scannable + forward-looking | Reporte markdown narrativo retrospectivo |
-| Programación | Prompts en `.md`, editables via PR | Bundle JSON + PHP handlers |
-| Costo | Copilot Pro ($10/mes) | Anthropic API key (~$5-15/mes) |
-| Infra | Cero | WordPress Playground en CI |
-
-Son **dos enfoques al mismo problema**, vivos en paralelo para comparar.
-
 ## Licencia
 
 MIT. Datos públicos de [gub.uy](https://www.gub.uy) y [parlamento.gub.uy](https://parlamento.gub.uy).
