@@ -1,0 +1,53 @@
+name: Pages — build + deploy
+
+# Reemplaza el "Deploy from branch" legacy mode con un workflow explícito que
+# controlamos desde el repo. El legacy mode usaba un workflow interno de GitHub
+# que dejó de dispararse cuando restringimos Allowed actions a `actions/*` +
+# `github/*` — el internal runner usaba actions fuera de ese patrón.
+#
+# Este workflow usa solo `actions/*` que ya están en nuestra allowlist.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permite una sola deployment en curso a la vez, cancelando builds intermedios.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
