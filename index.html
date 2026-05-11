@@ -7,7 +7,7 @@ title: Hoy en el gobierno uruguayo
   <h1 class="hero__title">¿Qué hizo hoy el gobierno?</h1>
   <p class="hero__sub">
     Una visualización diaria de la actividad del gobierno, parlamento y políticos uruguayos.
-    Generada cada 6 horas, abierta a colaboración.
+    Generada cada 6 horas por un bot autónomo. Para ciudadanos, no para insiders.
   </p>
   <p class="hero__nav">
     <a href="{{ '/como-funciona/' | relative_url }}">¿Cómo funciona el gobierno UY?</a> ·
@@ -27,8 +27,28 @@ title: Hoy en el gobierno uruguayo
 {% assign latest = site.posts | first %}
 
 <section class="latest">
-  <p class="latest__label">Último reporte · <time>{{ latest.date | date: "%-d de %B, %Y" }}</time></p>
-  {% include_relative {{ latest.path }} nothing %}
+  <p class="latest__label">Último reporte</p>
+  <article class="latest__card">
+    <h2 class="latest__title">
+      <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
+    </h2>
+    <p class="latest__meta">
+      <time>{{ latest.date | date: "%-d de %B, %Y · %H:%M" }}</time>
+      {% if latest.cycle %} · ciclo #{{ latest.cycle }}{% endif %}
+    </p>
+    {% if latest.top_stories and latest.top_stories.size > 0 %}
+    <p class="latest__teaser">
+      <strong>{{ latest.top_stories.size }} top stories hoy</strong>
+      {% if latest.upcoming and latest.upcoming.next_24h %} · {{ latest.upcoming.next_24h.size }} eventos próximos{% endif %}
+    </p>
+    <ul class="latest__topics">
+      {% for s in latest.top_stories limit: 3 %}
+      <li>{{ s.title | truncate: 90 }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <p><a class="latest__cta" href="{{ latest.url | relative_url }}">Ver reporte completo →</a></p>
+  </article>
 </section>
 
 {% if site.posts.size > 1 %}
