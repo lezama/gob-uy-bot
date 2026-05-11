@@ -66,6 +66,18 @@ jobs:
           PASS=true
           REASONS=()
 
+          # 0. El PR debe tener AL MENOS un archivo _posts/*.md.
+          # Sin este check, un PR del agent que solo tiene el commit inicial
+          # "Initial plan" (sin archivos) pasa todos los demás guardrails y
+          # mergea vacío. Bug encontrado empíricamente con PR #23.
+          # Si el agent aún no escribió nada, el finisher debe esperar al
+          # próximo synchronize event cuando el agent commitea contenido real.
+          POST_COUNT=$(echo "$FILES" | grep -c '^_posts/.*\.md$' || echo 0)
+          if [ "$POST_COUNT" -lt 1 ]; then
+            PASS=false
+            REASONS+=("PR sin archivos en _posts/*.md (probable PR vacío — el agent aún no escribió contenido)")
+          fi
+
           # 1. Solo paths permitidos
           while IFS= read -r f; do
             [ -z "$f" ] && continue
