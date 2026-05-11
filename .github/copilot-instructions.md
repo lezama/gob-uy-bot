@@ -24,7 +24,9 @@ Cuando un issue te asigne un ciclo, ejecutá los prompts en orden:
 3. Leé [`data/prompts/03-curate.md`](../data/prompts/03-curate.md) → decidí qué destacar.
 4. Leé [`data/prompts/04-render-day.md`](../data/prompts/04-render-day.md) → generá `_posts/YYYY-MM-DD-cycle-N.md` (Jekyll lo renderiza como post).
 5. Actualizá [`data/state.json`](../data/state.json) → cycle++, last_run, cursor verificación.
-6. Abrí PR con título `[ciclo N] DD mon — viz del día`. **Si solo tocaste `_posts/` y `data/state.json`, ejecutá los 2 pasos finales abajo — son CRÍTICOS para que el loop autónomo funcione.**
+6. Abrí PR con título `[ciclo N] DD mon — viz del día`. **En el body del PR incluí `Closes #<N>`** donde `<N>` es el número del issue que te asignó este ciclo (lo ves en la URL del issue y arriba de su título). Eso le dice a GitHub que cierre el issue automáticamente cuando se mergee el PR — sin esto el issue queda abierto para siempre.
+
+   **Si solo tocaste `_posts/` y `data/state.json`, ejecutá los 2 pasos finales abajo — son CRÍTICOS para que el loop autónomo funcione.**
 
 ### Finalización del PR (CRÍTICO — sin esto no auto-mergea)
 
@@ -34,6 +36,14 @@ El workflow `copilot-auto-merge.yml` solo actúa sobre PRs que cumplen **dos con
 8. **Agregar label `auto-merge-candidate`**. Vía CLI: `gh pr edit <PR_NUM> --add-label "auto-merge-candidate"`. Vía MCP/API: `POST /repos/.../issues/{number}/labels` con `{"labels":["auto-merge-candidate"]}`. **Si el label no está, el workflow lo flagea como `needs-review` y queda esperando intervención humana.**
 
 Hacé estos 2 pasos **vos mismo, antes de terminar la sesión**. No esperés a que un humano los haga — esa es la diferencia entre un loop autónomo y uno semi-manual. Si tu PR cambia archivos fuera de `_posts/` y `data/state.json` (ej. modificás un prompt o una fuente), no agregues el label — esos PRs requieren review humano por design.
+
+### Checklist final antes de cerrar la sesión
+
+- [ ] PR title: `[ciclo N] DD mon — viz del día`
+- [ ] PR body incluye `Closes #<numero-del-issue-asignado>` para cierre automático
+- [ ] PR is **ready** (no draft) — paso 7
+- [ ] Label `auto-merge-candidate` presente — paso 8
+- [ ] (si no aplica auto-merge) Label `needs-review` o `human`, body explica por qué
 
 ## Reglas duras (no negociables)
 
