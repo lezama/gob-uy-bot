@@ -64,6 +64,16 @@ jobs:
           REASONS=()
           PASS=true
 
+          # 0. PR debe tener AL MENOS un archivo modificado en _posts/*.md.
+          # Sin esto, un PR vacío (solo commit "Initial plan" del Copilot agent)
+          # pasa todos los guardrails default-true y mergea sin contenido.
+          # Validado empíricamente con PR #23 (mergeó vacío).
+          POST_COUNT=$(grep -c '^_posts/.*\.md$' /tmp/files.txt 2>/dev/null || echo 0)
+          if [ "$POST_COUNT" -lt 1 ]; then
+            PASS=false
+            REASONS+=("PR no tiene archivos en _posts/*.md (probable PR vacío del agent inicializando)")
+          fi
+
           # 1a. Reject explícito de paths sensibles (defense in depth — el
           # default-deny de 1b también los rechaza, pero el mensaje específico
           # ayuda al agent a entender qué hizo mal).
