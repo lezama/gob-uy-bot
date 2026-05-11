@@ -1,0 +1,195 @@
+name: PR finisher — completa lo que el agent dejó a medias
+
+# Copilot Cloud Agent abre PRs en DRAFT por design y a veces no agrega los
+# labels esperados. Este workflow termina por él los 3 steps finales si el
+# PR cumple criterios objetivos:
+#
+#   1. Marcar el PR como ready (sacar de DRAFT)
+#   2. Agregar label `auto-merge-candidate`
+#   3. Agregar `Closes #<issue>` al body si linkea a un issue del agent
+#
+# Triggea cuando un PR del Copilot bot llega a estado "ready de hecho" — i.e.
+# cuando el agent agregó su último commit. Solo actúa si el PR cumple las
+# mismas condiciones que el guardrail de auto-merge: paths permitidos, LOC,
+# frontmatter válido. Si NO cumple, deja el PR como está para review humano.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Número de PR a procesar manualmente'
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    # Solo PRs del Copilot bot (su login es 'Copilot' o 'app/copilot-swe-agent')
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      contains(fromJson('["Copilot","copilot-swe-agent[bot]","app/copilot-swe-agent"]'), github.event.pull_request.user.login)
+    steps:
+      - name: Resolver PR number
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_PAT }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "num=${{ inputs.pr_number }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "num=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ steps.pr.outputs.num }}/head
+
+      - name: Evaluar si cumple criterios de finisher
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.pr.outputs.num }}
+        run: |
+          # Obtener stats del PR
+          FILES=$(gh pr view "$PR" --repo "$REPO" --json files --jq '.files[].path')
+          TOTAL=$(gh pr view "$PR" --repo "$REPO" --json additions,deletions --jq '.additions + .deletions')
+
+          PASS=true
+          REASONS=()
+
+          # 1. Solo paths permitidos
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              _posts/*) ;;
+              data/state.json) ;;
+              _data/*) ;;
+              *) PASS=false; REASONS+=("path no permitido: $f") ;;
+            esac
+          done <<< "$FILES"
+
+          # 2. LOC ≤ 800
+          if [ "$TOTAL" -gt 800 ]; then
+            PASS=false
+            REASONS+=("LOC excede 800: $TOTAL")
+          fi
+
+          # 3. Frontmatter YAML válido en cada .md de _posts/
+          for f in $(echo "$FILES" | grep '^_posts/.*\.md$' || true); do
+            if [ -f "$f" ]; then
+              awk '/^---$/{c++; next} c==1' "$f" > /tmp/fm.yml
+              if ! python3 -c "import yaml,sys; yaml.safe_load(open('/tmp/fm.yml'))" 2>/dev/null; then
+                PASS=false
+                REASONS+=("frontmatter inválido: $f")
+              fi
+            fi
+          done
+
+          if [ "$PASS" = "true" ]; then
+            echo "pass=true" >> "$GITHUB_OUTPUT"
+            echo "✅ Criterios OK — finisher va a actuar"
+          else
+            echo "pass=false" >> "$GITHUB_OUTPUT"
+            { echo "reasons<<EOF"; printf '  - %s\n' "${REASONS[@]}"; echo "EOF"; } >> "$GITHUB_OUTPUT"
+            echo "🟡 No cumple — finisher se abstiene, deja para review humano"
+          fi
+
+      - name: Buscar issue origen para 'Closes #N'
+        id: issue
+        if: steps.gate.outputs.pass == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.pr.outputs.num }}
+        run: |
+          BODY=$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body')
+          HEAD_BRANCH=$(gh pr view "$PR" --repo "$REPO" --json headRefName --jq '.headRefName')
+
+          # ¿Ya tiene Closes/Fixes/Resolves en el body?
+          if echo "$BODY" | grep -iE '^(closes|fixes|resolves) #[0-9]+' > /dev/null; then
+            echo "already_linked=true" >> "$GITHUB_OUTPUT"
+            echo "  ✓ body ya tiene keyword Closes/Fixes/Resolves"
+            exit 0
+          fi
+          echo "already_linked=false" >> "$GITHUB_OUTPUT"
+
+          # Buscar el día-cycle issue más reciente abierto que asignó Copilot.
+          # Heuristic: branch del agent es 'copilot/ciclo-N-...' o similar; el
+          # issue origen tiene label 'day-cycle' y assignee Copilot.
+          ISSUE_NUM=$(gh issue list --repo "$REPO" --state open --label day-cycle \
+            --assignee Copilot --json number --jq '.[0].number')
+
+          if [ -n "$ISSUE_NUM" ]; then
+            echo "issue_num=$ISSUE_NUM" >> "$GITHUB_OUTPUT"
+            echo "  → encontrado issue origen: #$ISSUE_NUM"
+          else
+            echo "issue_num=" >> "$GITHUB_OUTPUT"
+            echo "  ⚠️ no se encontró issue origen del day-cycle"
+          fi
+
+      - name: Marcar PR como ready
+        if: steps.gate.outputs.pass == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_PAT }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.pr.outputs.num }}
+        run: |
+          IS_DRAFT=$(gh pr view "$PR" --repo "$REPO" --json isDraft --jq '.isDraft')
+          if [ "$IS_DRAFT" = "true" ]; then
+            gh pr ready "$PR" --repo "$REPO"
+            echo "  ✓ PR marcado como ready"
+          else
+            echo "  - PR ya estaba ready"
+          fi
+
+      - name: Agregar label auto-merge-candidate
+        if: steps.gate.outputs.pass == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_PAT }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.pr.outputs.num }}
+        run: |
+          gh pr edit "$PR" --repo "$REPO" \
+            --add-label "auto-merge-candidate" \
+            --remove-label "needs-review" || true
+          echo "  ✓ label auto-merge-candidate agregado"
+
+      - name: Agregar 'Closes #N' al body si falta
+        if: steps.gate.outputs.pass == 'true' && steps.issue.outputs.already_linked == 'false' && steps.issue.outputs.issue_num != ''
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_PAT }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.pr.outputs.num }}
+          ISSUE: ${{ steps.issue.outputs.issue_num }}
+        run: |
+          CURRENT_BODY=$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body')
+          NEW_BODY="Closes #${ISSUE}
+
+          ${CURRENT_BODY}"
+          echo "$NEW_BODY" > /tmp/new-body.md
+          gh pr edit "$PR" --repo "$REPO" --body-file /tmp/new-body.md
+          echo "  ✓ 'Closes #${ISSUE}' agregado al body"
+
+      - name: Comment de finisher action
+        if: steps.gate.outputs.pass == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.pr.outputs.num }}
+          ISSUE: ${{ steps.issue.outputs.issue_num }}
+        run: |
+          gh pr comment "$PR" --repo "$REPO" --body "🤖 \`copilot-pr-finisher\` completó los 3 steps que el agent no hizo:
+          - ✅ PR marcado como ready
+          - ✅ Label \`auto-merge-candidate\` agregado
+          - ✅ \`Closes #${ISSUE}\` agregado al body (si faltaba)
+
+          El \`copilot-auto-merge\` workflow debería disparar a continuación."
