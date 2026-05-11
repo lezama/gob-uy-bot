@@ -1,0 +1,141 @@
+name: Auto-merge Copilot PRs (con guardrails)
+
+# Mergea automáticamente PRs que cumplen TODOS estos criterios:
+#  - Autor: copilot bot
+#  - Label: auto-merge-candidate
+#  - Solo modifica archivos bajo: _posts/ , data/state.json , _data/
+#  - <= 800 líneas modificadas en total
+#  - Frontmatter del .md modificado parsea como YAML válido (best-effort)
+#
+# Si NO cumple, agrega label needs-review y comenta lo que faltó.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    if: |
+      contains(fromJson('["app/copilot-swe-agent","Copilot","github-actions[bot]","copilot-pull-request-reviewer[bot]"]'), github.event.pull_request.user.login)
+      || contains(github.event.pull_request.labels.*.name, 'auto-merge-candidate')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Gather PR diff stats
+        id: stats
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Lista de archivos modificados
+          FILES=$(gh pr view "$PR" --repo "$REPO" --json files --jq '.files[].path')
+          echo "$FILES" > /tmp/files.txt
+
+          # Total lines changed (additions + deletions)
+          TOTAL=$(gh pr view "$PR" --repo "$REPO" --json additions,deletions --jq '.additions + .deletions')
+
+          # Check labels
+          LABELS=$(gh pr view "$PR" --repo "$REPO" --json labels --jq '.labels[].name')
+          echo "$LABELS" > /tmp/labels.txt
+
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$FILES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
+
+      - name: Evaluate guardrails
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          TOTAL: ${{ steps.stats.outputs.total }}
+        run: |
+          REASONS=()
+          PASS=true
+
+          # 1. Allowed paths
+          while IFS= read -r f; do
+            if [ -z "$f" ]; then continue; fi
+            case "$f" in
+              _posts/*) ;;
+              data/state.json) ;;
+              _data/*) ;;
+              *)
+                PASS=false
+                REASONS+=("modifies disallowed path: $f")
+                ;;
+            esac
+          done < /tmp/files.txt
+
+          # 2. Total lines
+          if [ "$TOTAL" -gt 800 ]; then
+            PASS=false
+            REASONS+=("excede 800 líneas modificadas (actual: $TOTAL)")
+          fi
+
+          # 3. Required label
+          if ! grep -q '^auto-merge-candidate$' /tmp/labels.txt; then
+            PASS=false
+            REASONS+=("falta label 'auto-merge-candidate'")
+          fi
+
+          # 4. YAML frontmatter validation (best effort) for any .md in _posts/
+          for f in $(grep '^_posts/.*\.md$' /tmp/files.txt 2>/dev/null || true); do
+            if [ -f "$f" ]; then
+              # Extract frontmatter between --- markers
+              awk '/^---$/{c++; next} c==1' "$f" > /tmp/fm.yml
+              if ! python3 -c "import yaml,sys; yaml.safe_load(open('/tmp/fm.yml'))" 2>/dev/null; then
+                PASS=false
+                REASONS+=("frontmatter inválido en $f")
+              fi
+            fi
+          done
+
+          if [ "$PASS" = "true" ]; then
+            echo "pass=true" >> "$GITHUB_OUTPUT"
+            echo "✅ All guardrails passed"
+          else
+            echo "pass=false" >> "$GITHUB_OUTPUT"
+            { echo "reasons<<EOF"; printf '  - %s\n' "${REASONS[@]}"; echo "EOF"; } >> "$GITHUB_OUTPUT"
+            echo "❌ Failed guardrails:"
+            printf '  - %s\n' "${REASONS[@]}"
+          fi
+
+      - name: Auto-merge (if passed)
+        if: steps.gate.outputs.pass == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh pr merge "$PR" --repo "$REPO" --squash --delete-branch
+          gh pr comment "$PR" --repo "$REPO" --body "✅ Auto-mergeado por workflow \`copilot-auto-merge\` — todas las guardrails pasaron."
+
+      - name: Mark as needs-review (if failed)
+        if: steps.gate.outputs.pass == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          REASONS: ${{ steps.gate.outputs.reasons }}
+        run: |
+          gh pr edit "$PR" --repo "$REPO" --add-label "needs-review" --remove-label "auto-merge-candidate" || true
+          gh pr comment "$PR" --repo "$REPO" --body "$(cat <<EOF
+          🟡 No cumple criterios para auto-merge:
+
+          ${REASONS}
+
+          Ver \`.github/workflows/copilot-auto-merge.yml\` para los criterios completos. Esperando review humano.
+          EOF
+          )"

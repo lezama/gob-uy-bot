@@ -1,0 +1,186 @@
+---
+layout: default
+---
+
+<article class="report">
+  <header class="report__header">
+    <p class="report__cycle">Ciclo #{{ page.cycle | default: "?" }}</p>
+    <h1 class="report__title">{{ page.title }}</h1>
+    <p class="report__window">
+      Ventana: <time>{{ page.window.from }}</time> →
+      <time>{{ page.window.to }}</time>
+    </p>
+  </header>
+
+  {% if page.top_stories and page.top_stories.size > 0 %}
+  <section class="section section--top">
+    <h2 class="section__title">🔥 Hoy</h2>
+    <div class="cards">
+      {% for s in page.top_stories %}
+      <article class="card card--top">
+        {% if s.source_label %}<p class="card__source">{{ s.source_label }}{% if s.when %} · <time>{{ s.when }}</time>{% endif %}</p>{% endif %}
+        <h3 class="card__title">
+          {% if s.url %}<a href="{{ s.url }}" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}
+        </h3>
+        {% if s.summary %}<p class="card__summary">{{ s.summary }}</p>{% endif %}
+        {% if s.quote %}<blockquote class="card__quote">{{ s.quote }}</blockquote>{% endif %}
+        {% if s.people and s.people.size > 0 %}
+        <ul class="card__people">
+          {% for p in s.people %}
+          <li><strong>{{ p.name }}</strong>{% if p.role %} <span class="card__role">— {{ p.role }}</span>{% endif %}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% if s.why_it_matters %}<p class="card__why"><strong>Por qué importa:</strong> {{ s.why_it_matters }}</p>{% endif %}
+        {% if s.context_glossary and s.context_glossary.size > 0 %}
+        <details class="card__glossary">
+          <summary>📖 Glosario</summary>
+          <dl>
+            {% for g in s.context_glossary %}
+            <dt>{{ g.term }}</dt>
+            <dd>{{ g.explain }}</dd>
+            {% endfor %}
+          </dl>
+        </details>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if page.upcoming %}
+  <section class="section section--upcoming">
+    <h2 class="section__title">📅 Qué viene</h2>
+
+    {% if page.upcoming.next_24h and page.upcoming.next_24h.size > 0 %}
+    <h3 class="section__sub">En las próximas 24 horas</h3>
+    <ul class="timeline">
+      {% for e in page.upcoming.next_24h %}
+      <li class="timeline__item">
+        <time class="timeline__when">{{ e.when }}</time>
+        <span class="timeline__title">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</span>
+        {% if e.where %}<span class="timeline__where">@ {{ e.where }}</span>{% endif %}
+        {% if e.who %}<span class="timeline__who">— {{ e.who | join: ', ' }}</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if page.upcoming.next_7d and page.upcoming.next_7d.size > 0 %}
+    <h3 class="section__sub">En la próxima semana</h3>
+    <ul class="timeline">
+      {% for e in page.upcoming.next_7d %}
+      <li class="timeline__item">
+        <time class="timeline__when">{{ e.when }}</time>
+        <span class="timeline__title">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</span>
+        {% if e.where %}<span class="timeline__where">@ {{ e.where }}</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if page.upcoming.next_14d and page.upcoming.next_14d.size > 0 %}
+    <h3 class="section__sub">En las próximas dos semanas</h3>
+    <ul class="timeline">
+      {% for e in page.upcoming.next_14d %}
+      <li class="timeline__item">
+        <time class="timeline__when">{{ e.when }}</time>
+        <span class="timeline__title">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if page.ministry_feed and page.ministry_feed.size > 0 %}
+  <section class="section section--ministries">
+    <h2 class="section__title">🏛️ Por ministerio</h2>
+    {% for m in page.ministry_feed %}
+    <details class="ministry">
+      <summary class="ministry__head">
+        <strong>{{ m.ministry }}</strong>
+        {% if m.minister %}<span class="ministry__minister">— {{ m.minister }}</span>{% endif %}
+        <span class="ministry__count">({{ m.items.size }})</span>
+      </summary>
+      <ul class="ministry__items">
+        {% for it in m.items %}
+        <li>
+          <time>{{ it.time }}</time>
+          {% if it.url %}<a href="{{ it.url }}" rel="noopener">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}
+          {% if it.summary %}<p class="ministry__summary">{{ it.summary }}</p>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </details>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if page.parlamento %}
+  <section class="section section--parlamento">
+    <h2 class="section__title">📜 Parlamento</h2>
+
+    {% if page.parlamento.sesiones and page.parlamento.sesiones.size > 0 %}
+    <h3 class="section__sub">Sesiones de esta ventana</h3>
+    <ul>
+      {% for s in page.parlamento.sesiones %}
+      <li><time>{{ s.fecha }}</time> Sesión {{ s.sesion }} · {{ s.tipo }} · {% if s.pdf %}<a href="{{ s.pdf }}">PDF</a>{% endif %}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if page.parlamento.asuntos_entrados and page.parlamento.asuntos_entrados.size > 0 %}
+    <h3 class="section__sub">Proyectos entrados ({{ page.parlamento.asuntos_entrados.size }})</h3>
+    <ul>
+      {% for a in page.parlamento.asuntos_entrados %}
+      <li><code>{{ a.codigo }}</code> · <time>{{ a.fecha }}</time> · {% if a.url %}<a href="{{ a.url }}">{{ a.titulo }}</a>{% else %}{{ a.titulo }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if page.parlamento.leyes_promulgadas and page.parlamento.leyes_promulgadas.size > 0 %}
+    <h3 class="section__sub">Leyes promulgadas en la ventana</h3>
+    <ul>
+      {% for l in page.parlamento.leyes_promulgadas %}
+      <li>Ley <strong>{{ l.numero }}</strong> · <time>{{ l.fecha }}</time> · {% if l.url %}<a href="{{ l.url }}">{{ l.titulo }}</a>{% else %}{{ l.titulo }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if page.verification_subject %}
+  <section class="section section--meta">
+    <h3 class="section__sub">Verificación de este ciclo</h3>
+    <p class="meta__verification">
+      <strong>{{ page.verification_subject.minister }}</strong> ({{ page.verification_subject.ministry }}) —
+      <span class="meta__result meta__result--{{ page.verification_subject.result }}">{{ page.verification_subject.result }}</span>
+    </p>
+  </section>
+  {% endif %}
+
+  {% if page.quiet and page.quiet.size > 0 %}
+  <section class="section section--quiet">
+    <h3 class="section__sub">⚪ Sin novedades</h3>
+    <p>{{ page.quiet | join: ', ' }}.</p>
+  </section>
+  {% endif %}
+
+  {% if page.sources_off and page.sources_off.size > 0 %}
+  <section class="section section--off">
+    <h3 class="section__sub">⚠️ Fuentes con problemas</h3>
+    <ul>
+      {% for s in page.sources_off %}
+      <li><code>{{ s.source }}</code> — {{ s.reason }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <footer class="report__footer">
+    <p>Reporte generado por <a href="https://github.com/lezama/gob-uy-bot/blob/main/.github/copilot-instructions.md">gob-uy-bot</a> · ciclo #{{ page.cycle }} · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time></p>
+    <p>¿Detectaste un error o sesgo? <a href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Abrí un issue</a> o <a href="https://github.com/lezama/gob-uy-bot/edit/main/_posts/{{ page.path | split: '/' | last }}">editá este reporte directamente</a>.</p>
+  </footer>
+</article>

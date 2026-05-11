@@ -1,0 +1,12 @@
+{
+  "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
+  "cycle": 0,
+  "last_run_at": null,
+  "verification_cursor": 0,
+  "verification_log": [],
+  "drift_log": [],
+  "failed_sources_log": [],
+  "bias_log": [],
+  "_url_quarantine": [],
+  "improvement_queue": []
+}

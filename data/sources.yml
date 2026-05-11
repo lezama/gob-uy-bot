@@ -1,0 +1,348 @@
+# Fuentes oficiales y de prensa que el bot consulta cada ciclo.
+# Editable vía PR: agregar / corregir / cuarentenar fuentes.
+#
+# Convenciones:
+#   enabled: true|false   — si false, el bot la skipea sin necesidad de borrarla
+#   status:  ok|404|paywall|missing|quarantine
+#   _note:   contexto humano sobre la fuente
+
+_meta:
+  last_human_edit: "2026-05-11"
+  description: "Fuentes oficiales del gobierno uruguayo + prensa nacional política."
+
+# ---- Presidencia ----
+presidencia:
+  noticias:
+    url: "https://www.gub.uy/presidencia/comunicacion/noticias"
+    enabled: true
+    status: ok
+  agenda:
+    url: "https://www.gub.uy/presidencia/comunicacion/calendario-actividades"
+    enabled: true
+    status: ok
+    _note: "Eventos próximos del Presidente — clave para sección 'qué viene'"
+
+# ---- Ministerios ----
+ministries:
+  - slug: interior
+    name: "Interior"
+    minister: "Carlos Negro"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-interior/"
+    news_url: "https://www.gub.uy/ministerio-interior/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Maneja seguridad pública, policía, migraciones, tránsito."
+
+  - slug: relaciones-exteriores
+    name: "Relaciones Exteriores"
+    short: "Cancillería"
+    minister: "Mario Lubetkin"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-relaciones-exteriores/"
+    news_url: "https://www.gub.uy/ministerio-relaciones-exteriores/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Política exterior — relaciones con otros países, Mercosur, ONU, etc."
+
+  - slug: economia-finanzas
+    name: "Economía y Finanzas"
+    short: "MEF"
+    minister: "Gabriel Oddone"
+    party: "FA · independiente"
+    landing: "https://www.gub.uy/ministerio-economia-finanzas/"
+    news_url: "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Maneja el presupuesto del Estado, política tributaria, deuda pública."
+
+  - slug: defensa
+    name: "Defensa Nacional"
+    short: "MDN"
+    minister: "Sandra Lazo"
+    party: "FA · PS"
+    landing: "https://www.gub.uy/ministerio-defensa-nacional/"
+    news_url: "https://www.gub.uy/ministerio-defensa-nacional/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Conduce las Fuerzas Armadas (Ejército, Armada, Fuerza Aérea)."
+
+  - slug: educacion-cultura
+    name: "Educación y Cultura"
+    short: "MEC"
+    minister: "José Carlos Mahía"
+    party: "FA · Asamblea Uruguay"
+    landing: "https://www.gub.uy/ministerio-educacion-cultura/"
+    news_url: "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Educación pública (excepto primaria/media que es ANEP), patrimonio, cultura."
+
+  - slug: transporte
+    name: "Transporte y Obras Públicas"
+    short: "MTOP"
+    minister: "Lucía Etcheverry"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-transporte-obras-publicas/"
+    news_url: "https://www.gub.uy/ministerio-transporte-obras-publicas/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Rutas, puentes, puertos, transporte público nacional."
+
+  - slug: industria
+    name: "Industria, Energía y Minería"
+    short: "MIEM"
+    minister: "Fernanda Cardona"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-industria-energia-mineria/"
+    news_url: "https://www.gub.uy/ministerio-industria-energia-mineria/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Política industrial, energía (UTE, ANCAP), minería."
+
+  - slug: trabajo
+    name: "Trabajo y Seguridad Social"
+    short: "MTSS"
+    minister: "Juan Castillo"
+    party: "FA · PCU"
+    landing: "https://www.gub.uy/ministerio-trabajo-seguridad-social/"
+    news_url: "https://www.gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Empleo, salarios mínimos, BPS, conflictos laborales."
+
+  - slug: salud
+    name: "Salud Pública"
+    short: "MSP"
+    minister: "Cristina Lustemberg"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-salud-publica/"
+    news_url: "https://www.gub.uy/ministerio-salud-publica/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Política sanitaria nacional. Regula ASSE (red pública) y mutualistas."
+
+  - slug: ganaderia
+    name: "Ganadería, Agricultura y Pesca"
+    short: "MGAP"
+    minister: "Alfredo Fratti"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/"
+    news_url: "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Producción rural — el sector más importante para exportaciones del país."
+
+  - slug: vivienda
+    name: "Vivienda y Ordenamiento Territorial"
+    short: "MVOT"
+    minister: "Tamara Paseyro"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-vivienda-ordenamiento-territorial/"
+    news_url: "https://www.gub.uy/ministerio-vivienda-ordenamiento-territorial/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Política de vivienda, planes habitacionales, regulación urbana."
+
+  - slug: desarrollo-social
+    name: "Desarrollo Social"
+    short: "MIDES"
+    minister: "Gonzalo Civila"
+    party: "FA · PS"
+    landing: "https://www.gub.uy/ministerio-desarrollo-social/"
+    news_url: "https://www.gub.uy/ministerio-desarrollo-social/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Programas sociales, asistencia, género, juventud."
+
+  - slug: ambiente
+    name: "Ambiente"
+    minister: "Edgardo Ortuño"
+    party: "FA · PS"
+    landing: "https://www.gub.uy/ministerio-ambiente/"
+    news_url: "https://www.gub.uy/ministerio-ambiente/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Política ambiental, áreas protegidas, calidad del agua."
+
+  - slug: turismo
+    name: "Turismo"
+    minister: "Pablo Menoni"
+    party: "FA"
+    landing: "https://www.gub.uy/ministerio-turismo/"
+    news_url: "https://www.gub.uy/ministerio-turismo/comunicacion/noticias"
+    enabled: true
+    status: ok
+    explain: "Promoción turística nacional e internacional."
+
+# ---- Parlamento ----
+parlamento:
+  asuntos_entrados_senado:
+    url_template: "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde={from}&Fechahasta={to}&_format=json"
+    enabled: true
+    status: ok
+    explain: "JSON de todos los proyectos entrados al Parlamento (Senado + Diputados)."
+
+  asuntos_entrados_diputados:
+    url_template: "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde={from}&Fechahasta={to}&_format=json"
+    enabled: true
+    status: ok
+
+  diario_sesiones:
+    url: "https://documentos.diputados.gub.uy/docs/DAdiarioSesiones.json"
+    enabled: true
+    status: ok
+    explain: "Cada item es un PDF de la sesión completa con votaciones nominales."
+
+  leyes_promulgadas:
+    url: "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas"
+    enabled: true
+    status: ok
+    explain: "HTML scrape — sin endpoint JSON. Listado de leyes ya firmadas por el Presidente."
+
+  noticias_senado:
+    url: "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias"
+    enabled: true
+    status: ok
+
+  noticias_diputados:
+    url: "https://parlamento.gub.uy/camarasycomisiones/representantes/noticias"
+    enabled: true
+    status: ok
+
+# ---- Prensa nacional ----
+press:
+  ladiaria:
+    name: "La Diaria"
+    url: "https://ladiaria.com.uy/politica/"
+    enabled: true
+    status: ok
+    paywall: true
+    _note: "Paywall pero los titulares y dechecks son visibles sin suscripción."
+
+  busqueda:
+    name: "Búsqueda"
+    url: "https://www.busqueda.com.uy/politica"
+    enabled: true
+    status: ok
+    paywall: true
+
+  subrayado:
+    name: "Subrayado"
+    url: "https://www.subrayado.com.uy/politica"
+    enabled: true
+    status: ok
+    paywall: false
+    _note: "Sin fechas individuales por artículo — frágil para windowing."
+
+  elobservador:
+    name: "El Observador"
+    url: "https://www.elobservador.com.uy/seccion/politica"
+    enabled: false
+    status: 404
+    _note: "URL antigua dio 404; investigar URL correcta y reabrir vía PR."
+
+  montevideo_portal:
+    name: "Montevideo Portal"
+    url: "https://www.montevideo.com.uy/Noticias/Politica"
+    enabled: false
+    status: 404
+
+# ---- Personas — watchlist ----
+# El bot las cruza con las menciones encontradas en news/agendas para tagear cards.
+# Editable vía PR — agregar/quitar personas relevantes.
+people:
+  # Presidencia
+  - name: "Yamandú Orsi"
+    role: "Presidente de la República"
+    party: "FA · MPP"
+    tier: presidencia
+    keywords: ["Orsi", "presidente"]
+
+  - name: "Carolina Cosse"
+    role: "Vicepresidenta · Presidenta del Senado"
+    party: "FA · FLS"
+    tier: presidencia
+    keywords: ["Cosse", "vicepresidenta"]
+
+  - name: "Alejandro Sánchez"
+    role: "Secretario de la Presidencia"
+    party: "FA · MPP"
+    tier: presidencia
+    keywords: ["Alejandro Sánchez", "secretario presidencia"]
+
+  # Líderes parlamentarios / oposición destacada
+  - name: "Andrés Ojeda"
+    role: "Senador · líder Partido Colorado"
+    party: "Partido Colorado"
+    tier: senador
+    keywords: ["Andrés Ojeda"]
+
+  - name: "Guido Manini Ríos"
+    role: "Senador · líder Cabildo Abierto"
+    party: "Cabildo Abierto"
+    tier: senador
+    keywords: ["Manini Ríos"]
+
+  - name: "Pedro Bordaberry"
+    role: "Senador · Partido Colorado (Vamos Uruguay)"
+    party: "Partido Colorado"
+    tier: senador
+    keywords: ["Bordaberry"]
+
+  - name: "Mario Bergara"
+    role: "Senador · FA (Asamblea Uruguay)"
+    party: "FA · Asamblea Uruguay"
+    tier: senador
+    keywords: ["Bergara"]
+
+  - name: "Sebastián Da Silva"
+    role: "Senador · Partido Nacional"
+    party: "Partido Nacional"
+    tier: senador
+    keywords: ["Da Silva"]
+
+  - name: "Rodrigo Goñi Reyes"
+    role: "Presidente de la Cámara de Representantes"
+    party: "Partido Nacional"
+    tier: parlamento
+    keywords: ["Rodrigo Goñi", "Cámara de Representantes"]
+
+  - name: "Fernando Pereira"
+    role: "Presidente del Frente Amplio"
+    party: "FA"
+    tier: partido
+    keywords: ["Fernando Pereira", "presidente FA"]
+
+# ---- Glosario base — términos que el bot debe explicar inline ----
+# Si el bot detecta uno de estos términos en un titular destacado, agrega
+# `context_glossary` al render. Editable vía PR.
+glossary:
+  - term: "Rendición de Cuentas"
+    explain: "Ley anual que ajusta el presupuesto en función de cómo va ejecutándose."
+  - term: "Media hora previa"
+    explain: "Espacio al inicio de cada sesión parlamentaria donde legisladores hablan sobre temas libres."
+  - term: "ASSE"
+    explain: "Administración de Servicios de Salud del Estado — la red pública de salud."
+  - term: "BPS"
+    explain: "Banco de Previsión Social — administra jubilaciones, pensiones, asignaciones familiares."
+  - term: "ANEP"
+    explain: "Administración Nacional de Educación Pública — primaria, media y técnica."
+  - term: "UTE"
+    explain: "Administración Nacional de Usinas y Trasmisiones Eléctricas — la empresa estatal de electricidad."
+  - term: "ANCAP"
+    explain: "Administración Nacional de Combustibles, Alcohol y Pórtland — la empresa estatal de energía/petróleo."
+  - term: "OSE"
+    explain: "Obras Sanitarias del Estado — la empresa estatal de agua y saneamiento."
+  - term: "Mercosur"
+    explain: "Bloque económico regional con Argentina, Brasil, Paraguay, Uruguay (y Bolivia en proceso)."
+  - term: "FA"
+    explain: "Frente Amplio — coalición de partidos de izquierda y centroizquierda. Actualmente en el gobierno."
+  - term: "PN"
+    explain: "Partido Nacional — partido tradicional, centroderecha. En oposición."
+  - term: "PC"
+    explain: "Partido Colorado — partido tradicional, centroderecha. En oposición."
+  - term: "Cabildo Abierto"
+    explain: "Partido fundado en 2019 con base en miembros retirados de las Fuerzas Armadas. En oposición."
+  - term: "MPP"
+    explain: "Movimiento de Participación Popular — sector más grande dentro del Frente Amplio."

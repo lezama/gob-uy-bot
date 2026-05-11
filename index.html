@@ -1,0 +1,59 @@
+---
+layout: default
+title: Hoy en el gobierno uruguayo
+---
+
+<section class="hero">
+  <h1 class="hero__title">¿Qué hizo hoy el gobierno?</h1>
+  <p class="hero__sub">
+    Una visualización diaria de la actividad del gobierno, parlamento y políticos uruguayos.
+    Generada cada 6 horas, abierta a colaboración.
+  </p>
+  <p class="hero__nav">
+    <a href="{{ '/como-funciona/' | relative_url }}">¿Cómo funciona el gobierno UY?</a> ·
+    <a href="https://github.com/lezama/gob-uy-bot">código en GitHub</a> ·
+    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+  </p>
+</section>
+
+{% if site.posts.size == 0 %}
+<section class="empty">
+  <h2>Esperando el primer ciclo</h2>
+  <p>El bot empieza a publicar reportes cuando arranca la GitHub Action programada (cada 6h). Si llegaste muy temprano, volvé en un rato.</p>
+  <p>Mientras tanto: <a href="{{ '/como-funciona/' | relative_url }}">leé cómo funciona el gobierno uruguayo en 3 minutos</a>.</p>
+</section>
+{% else %}
+
+{% assign latest = site.posts | first %}
+
+<section class="latest">
+  <p class="latest__label">Último reporte · <time>{{ latest.date | date: "%-d de %B, %Y" }}</time></p>
+  {% include_relative {{ latest.path }} nothing %}
+</section>
+
+{% if site.posts.size > 1 %}
+<section class="archive">
+  <h2 class="section__title">Reportes anteriores</h2>
+  <ul class="archive__list">
+    {% for post in site.posts limit: 30 offset: 1 %}
+    <li>
+      <time>{{ post.date | date: "%Y-%m-%d" }}</time>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% endif %}
+
+<section class="invite">
+  <h2 class="section__title">Cómo colaborar</h2>
+  <p>Este sitio se mejora con PRs. Lugares concretos donde aportar:</p>
+  <ul>
+    <li>Sugerí una <strong>fuente nueva</strong> editando <a href="https://github.com/lezama/gob-uy-bot/edit/main/data/sources.yml"><code>data/sources.yml</code></a></li>
+    <li>Mejorá <strong>cómo el bot prioriza</strong> editando <a href="https://github.com/lezama/gob-uy-bot/edit/main/data/prompts/03-curate.md"><code>data/prompts/03-curate.md</code></a></li>
+    <li>Agregá un <strong>término al glosario</strong> en <a href="https://github.com/lezama/gob-uy-bot/edit/main/data/sources.yml"><code>sources.yml#glossary</code></a></li>
+    <li>Reportá un <strong>bias o error</strong> abriendo un <a href="https://github.com/lezama/gob-uy-bot/issues/new/choose">issue</a></li>
+  </ul>
+</section>

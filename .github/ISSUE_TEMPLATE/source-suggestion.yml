@@ -1,0 +1,54 @@
+name: Sugerir una fuente nueva
+description: Proponé una fuente oficial o de prensa que el bot debería consultar.
+labels: ["suggestion", "source"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por aportar. Las fuentes oficiales y de prensa que el bot consulta están en [`data/sources.yml`](../../blob/main/data/sources.yml). Lo más eficiente es **abrir un PR directamente** editando ese archivo. Pero si preferís sugerir vía issue, completá el formulario.
+
+  - type: input
+    id: source_name
+    attributes:
+      label: Nombre de la fuente
+      placeholder: "Ej: Diario Oficial, IMPO, ANEP, etc."
+    validations:
+      required: true
+
+  - type: input
+    id: source_url
+    attributes:
+      label: URL canónica
+      placeholder: "https://..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source_type
+    attributes:
+      label: Tipo
+      options:
+        - Sitio oficial de un ministerio
+        - Sitio oficial de organismo (ANEP, ASSE, BPS, etc.)
+        - Sitio oficial de Parlamento / comisión
+        - Endpoint JSON / API pública
+        - Diario / portal de noticias
+        - Agenda / calendario público
+        - Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Por qué importa
+      description: ¿Qué información cubre que las fuentes actuales no cubren?
+      placeholder: "Ej: cubre actividad de comisiones parlamentarias que hoy no aparecen en el reporte."
+    validations:
+      required: true
+
+  - type: input
+    id: example_url
+    attributes:
+      label: URL de ejemplo (página específica con contenido reciente)
+      placeholder: "https://..."

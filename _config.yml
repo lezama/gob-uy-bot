@@ -1,0 +1,66 @@
+title: gob-uy-bot
+tagline: Hoy en el gobierno uruguayo, scannable de un vistazo
+description: >-
+  Una visualización diaria de qué hizo el gobierno uruguayo y qué viene en
+  los próximos días. Generada y mantenida por GitHub Copilot vía PRs.
+url: "https://lezama.github.io"
+baseurl: "/gob-uy-bot"
+author: lezama
+lang: es-UY
+
+permalink: /:year/:month/:day/
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+
+# Excludes
+exclude:
+  - README.md
+  - CONTRIBUTING.md
+  - LICENSE
+  - WORLD.md
+  - .github/
+  - data/prompts/
+  - data/state.json
+  - vendor/
+
+# Includes the data folder so sources/glossary are available in templates
+include:
+  - data
+
+# Collections (none yet — _posts/ handles report files)
+collections: {}
+
+# SEO
+twitter:
+  username:
+  card: summary_large_image
+
+# Jekyll: Markdown rendering
+markdown: kramdown
+kramdown:
+  input: GFM
+  smart_quotes: ["apos", "apos", "quot", "quot"]
+
+# Sass (built-in)
+sass:
+  style: compressed
+
+# Show 7 most recent reports on home
+paginate: 7

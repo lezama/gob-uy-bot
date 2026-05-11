@@ -1,0 +1,40 @@
+name: Feedback sobre un reporte específico
+description: El reporte de tal día tiene un error, un sesgo, o omitió algo importante.
+labels: ["feedback"]
+body:
+  - type: input
+    id: report_date
+    attributes:
+      label: Fecha del reporte
+      placeholder: "YYYY-MM-DD"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Tipo de feedback
+      options:
+        - "Falta una noticia importante"
+        - "Incluye algo que no debería estar"
+        - "Información incorrecta"
+        - "Sesgo en la curación"
+        - "Confuso / mal explicado"
+        - "Link roto / fuente caída"
+        - "Otro"
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: Detalle
+      placeholder: "Describí el problema con un ejemplo concreto."
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Si aplica, link a la fuente que el bot debería haber usado o citado correctamente
+      placeholder: "https://..."

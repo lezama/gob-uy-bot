@@ -1,0 +1,44 @@
+name: Proponer mejora a un prompt del bot
+description: El bot está priorizando mal, omitiendo cosas, o explicando mal. Ayudá a mejorarlo.
+labels: ["suggestion", "prompt"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Los prompts del bot viven en [`data/prompts/`](../../tree/main/data/prompts) — son las instrucciones que recibe en cada ciclo. Lo más directo es **abrir un PR** editando el prompt relevante. Pero si querés discutirlo primero o no estás cómodo con git, completá este issue.
+
+  - type: dropdown
+    id: prompt
+    attributes:
+      label: ¿Qué prompt querés mejorar?
+      options:
+        - "01-fetch-today.md — qué fetchea de hoy"
+        - "02-fetch-upcoming.md — qué fetchea de la agenda"
+        - "03-curate.md — criterios para destacar"
+        - "04-render-day.md — cómo arma la viz"
+        - "05-self-improve.md — rutina de auto-mejora"
+        - "copilot-instructions.md — entry point del agente"
+        - "Otro / no estoy seguro"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qué está mal hoy
+      description: Ej. "el bot no destaca interpelaciones" / "explica MEF pero no ASSE" / "siempre pone en top stories al MEF"
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Ejemplo concreto
+      description: Linkeá a un reporte específico donde se nota el problema.
+      placeholder: "https://github.com/lezama/gob-uy-bot/blob/main/_posts/..."
+
+  - type: textarea
+    id: proposed_fix
+    attributes:
+      label: Cambio propuesto (opcional)
+      description: Si tenés una idea concreta de qué cambiarías en el prompt, escribilo. Si no, dejalo en blanco — el mantenedor o el propio bot pueden proponer una solución.

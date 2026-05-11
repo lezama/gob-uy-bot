@@ -1,0 +1,81 @@
+name: Cron — open day cycle issue
+
+# Cada 6 horas abre un issue asignado a @copilot para que arranque un day cycle.
+# Si la asignación a @copilot no está disponible (sin Copilot subscription),
+# se puede invocar manualmente vía workflow_dispatch.
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      note:
+        description: 'Nota opcional para incluir en el body del issue'
+        required: false
+        default: ''
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  open-cycle-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compute cycle metadata
+        id: meta
+        run: |
+          # Read current cycle number from state.json
+          CYCLE=$(jq -r '.cycle // 0' data/state.json)
+          NEXT=$((CYCLE + 1))
+          echo "next_cycle=$NEXT" >> "$GITHUB_OUTPUT"
+          echo "today=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          echo "now_iso=$(date -u +%Y-%m-%dT%H:%MZ)" >> "$GITHUB_OUTPUT"
+
+      - name: Open day cycle issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEXT_CYCLE: ${{ steps.meta.outputs.next_cycle }}
+          TODAY: ${{ steps.meta.outputs.today }}
+          NOW: ${{ steps.meta.outputs.now_iso }}
+          NOTE: ${{ inputs.note }}
+        run: |
+          BODY=$(cat <<EOF
+          @copilot
+
+          Es hora del day cycle #${NEXT_CYCLE} del gob-uy-bot.
+
+          Tu mandato vive en \`.github/copilot-instructions.md\`. Las rutinas modulares en \`data/prompts/\`. Las fuentes en \`data/sources.yml\`. El estado en \`data/state.json\`.
+
+          ## Plan rápido
+
+          1. Leer \`.github/copilot-instructions.md\` (entry point con reglas duras + flujo)
+          2. Ejecutar \`data/prompts/01-fetch-today.md\` — actividad de hoy
+          3. Ejecutar \`data/prompts/02-fetch-upcoming.md\` — agenda próxima
+          4. Ejecutar \`data/prompts/03-curate.md\` — qué destacar
+          5. Ejecutar \`data/prompts/04-render-day.md\` — generar \`_posts/${TODAY}-cycle-${NEXT_CYCLE}.md\`
+          6. Actualizar \`data/state.json\` (cycle=${NEXT_CYCLE}, last_run, cursor++)
+          7. Abrir PR con título \`[ciclo ${NEXT_CYCLE}] ${TODAY} — viz del día\` y label \`auto-merge-candidate\` si solo tocaste \`_posts/\` y \`data/state.json\`
+
+          ## Notas para este ciclo
+
+          - Trigger: ${NOW}
+          ${NOTE:+- Nota: ${NOTE}}
+          - Si una fuente está caída, registrala en \`state.json#failed_sources_log\` y seguí.
+          - Si no hay nada relevante hoy, comiteá un reporte mínimo y avanzá el cursor.
+
+          ---
+
+          *Este issue lo abrió un cron job (\`.github/workflows/cron-trigger.yml\`). Cerralo cuando el PR del ciclo se mergee.*
+          EOF
+          )
+
+          gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "[ciclo ${NEXT_CYCLE}] day cycle ${TODAY}" \
+            --body "$BODY" \
+            --label "day-cycle,auto" \
+            --assignee "Copilot"
