@@ -73,9 +73,25 @@ jobs:
           EOF
           )
 
-          gh issue create \
+          # Crear el issue. La asignación a @copilot requiere un PAT (los GitHub
+          # App tokens default no pueden asignar agents). Si el repo tiene un
+          # secret COPILOT_PAT, lo usamos para asignar; si no, creamos el issue
+          # sin asignación (el @copilot mencionado en el body alcanza si Copilot
+          # coding agent está habilitado para el repo).
+          ISSUE_URL=$(gh issue create \
             --repo "${{ github.repository }}" \
             --title "[ciclo ${NEXT_CYCLE}] day cycle ${TODAY}" \
             --body "$BODY" \
-            --label "day-cycle,auto" \
-            --assignee "Copilot"
+            --label "day-cycle,auto")
+
+          echo "Issue creado: $ISSUE_URL"
+
+          if [ -n "${{ secrets.COPILOT_PAT }}" ]; then
+            echo "Asignando @copilot vía PAT..."
+            ISSUE_NUM="${ISSUE_URL##*/}"
+            GH_TOKEN="${{ secrets.COPILOT_PAT }}" gh issue edit "$ISSUE_NUM" \
+              --repo "${{ github.repository }}" \
+              --add-assignee "Copilot" || echo "(asignación a Copilot falló — verificar PAT scopes y que coding agent esté habilitado en el repo)"
+          else
+            echo "ℹ️  Sin secret COPILOT_PAT — issue creado sin asignación. Para auto-asignar a @copilot agregá un PAT con scope 'repo' en Settings → Secrets como COPILOT_PAT."
+          fi
