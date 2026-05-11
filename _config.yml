@@ -10,6 +10,11 @@ lang: es-UY
 
 permalink: /:year/:month/:day/
 
+# Publish posts dated in the future. Reports tienen `date` con timezone -0300
+# que el agent calcula al momento de generar. Si el build de Pages corre
+# antes que esa hora UTC, Jekyll los skipea por default. Esto lo evita.
+future: true
+
 # Plugins
 plugins:
   - jekyll-feed
@@ -22,7 +27,7 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: post
+      layout: report
   - scope:
       path: ""
       type: pages
