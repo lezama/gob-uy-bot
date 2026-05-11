@@ -74,11 +74,11 @@ jobs:
           EOF
           )
 
-          # Crear el issue. La asignación a @copilot requiere un PAT (los GitHub
-          # App tokens default no pueden asignar agents). Si el repo tiene un
-          # secret COPILOT_PAT, lo usamos para asignar; si no, creamos el issue
-          # sin asignación (el @copilot mencionado en el body alcanza si Copilot
-          # coding agent está habilitado para el repo).
+          # Crear el issue. La asignación a Copilot agent requiere un fine-grained
+          # PAT con permisos: Issues + PRs + Contents + Metadata + **Actions** (todos
+          # read/write excepto Metadata). El PAT vive como secret COPILOT_PAT.
+          # GitHub App tokens NO funcionan para esto (la asignación se factura a
+          # nivel usuario, requiere user-context).
           ISSUE_URL=$(gh issue create \
             --repo "${{ github.repository }}" \
             --title "[ciclo ${NEXT_CYCLE}] day cycle ${TODAY}" \
@@ -86,13 +86,29 @@ jobs:
             --label "day-cycle,auto")
 
           echo "Issue creado: $ISSUE_URL"
+          ISSUE_NUM="${ISSUE_URL##*/}"
 
           if [ -n "${{ secrets.COPILOT_PAT }}" ]; then
-            echo "Asignando @copilot vía PAT..."
-            ISSUE_NUM="${ISSUE_URL##*/}"
-            GH_TOKEN="${{ secrets.COPILOT_PAT }}" gh issue edit "$ISSUE_NUM" \
-              --repo "${{ github.repository }}" \
-              --add-assignee "Copilot" || echo "(asignación a Copilot falló — verificar PAT scopes y que coding agent esté habilitado en el repo)"
+            echo "Asignando copilot-swe-agent[bot] vía REST API..."
+            # REST endpoint canónico — más estable que `gh issue edit` con GraphQL
+            # mutation replaceActorsForAssignable (esa requiere headers experimentales).
+            # Ref: https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/start-copilot-sessions
+            HTTP_CODE=$(curl -sS -o /tmp/assign-result.json -w "%{http_code}" \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.COPILOT_PAT }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${ISSUE_NUM}/assignees" \
+              -d '{"assignees":["copilot-swe-agent[bot]"]}')
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "✅ Asignado a Copilot (HTTP $HTTP_CODE)"
+            else
+              echo "⚠️  Asignación falló (HTTP $HTTP_CODE):"
+              cat /tmp/assign-result.json
+              echo ""
+              echo "Verificá que el PAT tiene Actions: Read and write — sin esa permission GitHub rechaza la asignación."
+            fi
           else
-            echo "ℹ️  Sin secret COPILOT_PAT — issue creado sin asignación. Para auto-asignar a @copilot agregá un PAT con scope 'repo' en Settings → Secrets como COPILOT_PAT."
+            echo "ℹ️  Sin secret COPILOT_PAT — issue creado sin asignación. Agregalo en Settings → Secrets como COPILOT_PAT (fine-grained PAT con Issues + PRs + Contents + Actions read/write + Metadata read)."
           fi
