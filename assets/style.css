@@ -88,6 +88,15 @@ code {
 
 /* ---- Latest report wrapper ---- */
 .latest__label { font-size: 0.875rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 1.5rem 0 0.5rem; }
+.latest__card { border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem; background: #fff; }
+.latest__title { font-size: 1.4rem; line-height: 1.25; margin: 0 0 0.5rem; }
+.latest__title a { border: none; }
+.latest__title a:hover { text-decoration: underline; }
+.latest__meta { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem; }
+.latest__teaser { margin: 0.5rem 0; }
+.latest__topics { margin: 0.5rem 0 1rem; padding-left: 1.25rem; }
+.latest__topics li { margin-bottom: 0.25rem; color: #2a2a2a; font-size: 0.95rem; }
+.latest__cta { font-weight: 600; }
 
 /* ---- Report layout ---- */
 .report__header { padding: 1rem 0 0.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.5rem; }
