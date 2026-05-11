@@ -64,7 +64,34 @@ jobs:
           REASONS=()
           PASS=true
 
-          # 1. Allowed paths
+          # 1a. Reject explícito de paths sensibles (defense in depth — el
+          # default-deny de 1b también los rechaza, pero el mensaje específico
+          # ayuda al agent a entender qué hizo mal).
+          DANGER_PATHS=(
+            ".github/"
+            "data/prompts/"
+            "data/sources.yml"
+            "_config.yml"
+            "Gemfile"
+            "_layouts/"
+            "_includes/"
+            "assets/"
+            "CONTRIBUTING.md"
+            "LICENSE"
+            "README.md"
+          )
+          while IFS= read -r f; do
+            if [ -z "$f" ]; then continue; fi
+            for danger in "${DANGER_PATHS[@]}"; do
+              if [[ "$f" == ${danger}* || "$f" == "$danger" ]]; then
+                PASS=false
+                REASONS+=("ruta sensible (requiere review humano): $f")
+              fi
+            done
+          done < /tmp/files.txt
+
+          # 1b. Allowlist estricta — todo lo que no esté acá explícitamente
+          # se rechaza, aunque no esté en la danger list.
           while IFS= read -r f; do
             if [ -z "$f" ]; then continue; fi
             case "$f" in
@@ -101,6 +128,13 @@ jobs:
               fi
             fi
           done
+
+          # 5. Bloqueo si hay reviews humanas pendientes con CHANGES_REQUESTED
+          REQUESTED_CHANGES=$(gh pr view "$PR" --repo "$REPO" --json reviews --jq '[.reviews[] | select(.state=="CHANGES_REQUESTED")] | length')
+          if [ "$REQUESTED_CHANGES" -gt 0 ]; then
+            PASS=false
+            REASONS+=("hay $REQUESTED_CHANGES review(s) humana(s) con CHANGES_REQUESTED — no bypassear")
+          fi
 
           if [ "$PASS" = "true" ]; then
             echo "pass=true" >> "$GITHUB_OUTPUT"
