@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 3,
-  "last_run_at": "2026-05-12T01:13:32.000Z",
-  "verification_cursor": 3,
+  "cycle": 4,
+  "last_run_at": "2026-05-12T02:12:52.000Z",
+  "verification_cursor": 4,
   "verification_log": [
     {
       "cycle": 1,
@@ -23,6 +23,13 @@
       "at": "2026-05-12T01:13:32.000Z",
       "ministry": "Economía y Finanzas",
       "minister": "Gabriel Oddone",
+      "result": "ok"
+    },
+    {
+      "cycle": 4,
+      "at": "2026-05-12T02:12:52.000Z",
+      "ministry": "Defensa Nacional",
+      "minister": "Sandra Lazo",
       "result": "ok"
     }
   ],
@@ -60,6 +67,18 @@
     },
     {
       "at": "2026-05-12T01:13:32.000Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://www.montevideo.com.uy/Noticias/Politica",
+      "status": "fetch_failed"
+    },
+    {
+      "at": "2026-05-12T02:12:52.000Z",
+      "source": "El Observador / política",
+      "url": "https://www.elobservador.com.uy/seccion/politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-12T02:12:52.000Z",
       "source": "Montevideo Portal / política",
       "url": "https://www.montevideo.com.uy/Noticias/Politica",
       "status": "fetch_failed"
