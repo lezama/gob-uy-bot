@@ -164,12 +164,32 @@ jobs:
       - name: Auto-merge (if passed)
         if: steps.gate.outputs.pass == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          # IMPORTANTE: usar COPILOT_PAT, no github.token. GitHub no triggea
+          # workflows secundarios para eventos creados por GITHUB_TOKEN (anti-loop
+          # protection). Con github.token el merge se hacía pero pages-deploy.yml
+          # NO se disparaba. Verificado empíricamente: 5 cycles mergeados durante
+          # la noche, 0 Pages rebuilds.
+          GH_TOKEN: ${{ secrets.COPILOT_PAT }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
         run: |
+          # 1. Extraer issue origen ANTES del merge (con Closes #N en el body).
+          PR_BODY=$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body')
+          ISSUE_NUM=$(echo "$PR_BODY" | grep -ioE '(closes|fixes|resolves) #[0-9]+' | head -1 | grep -oE '[0-9]+' || true)
+          echo "Issue origen detectado: ${ISSUE_NUM:-<ninguno>}"
+
+          # 2. Mergear con COPILOT_PAT → push event con autor=lezama → triggea workflows.
           gh pr merge "$PR" --repo "$REPO" --squash --delete-branch
           gh pr comment "$PR" --repo "$REPO" --body "✅ Auto-mergeado por workflow \`copilot-auto-merge\` — todas las guardrails pasaron."
+
+          # 3. Cerrar issue origen explícitamente. El `Closes #N` en body no
+          # triggea auto-close cuando el keyword se agregó via edit posterior
+          # (como hace el PR finisher). Lo cerramos a mano si lo detectamos.
+          if [ -n "$ISSUE_NUM" ]; then
+            gh issue close "$ISSUE_NUM" --repo "$REPO" \
+              --comment "Resuelto vía PR #${PR} (auto-mergeado). Reporte publicado." || \
+              echo "Issue #${ISSUE_NUM} ya estaba cerrado o no existe."
+          fi
 
       - name: Mark as needs-review (if failed)
         if: steps.gate.outputs.pass == 'false'
