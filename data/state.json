@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 4,
-  "last_run_at": "2026-05-12T02:12:52.000Z",
-  "verification_cursor": 4,
+  "cycle": 5,
+  "last_run_at": "2026-05-12T08:29:46.000Z",
+  "verification_cursor": 5,
   "verification_log": [
     {
       "cycle": 1,
@@ -31,6 +31,14 @@
       "ministry": "Defensa Nacional",
       "minister": "Sandra Lazo",
       "result": "ok"
+    },
+    {
+      "cycle": 5,
+      "at": "2026-05-12T08:29:46.000Z",
+      "ministry": "Educación y Cultura",
+      "minister": "José Carlos Mahía",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-educacion-cultura devolvió error de conexión (fetch failed)."
     }
   ],
   "drift_log": [],
@@ -81,6 +89,24 @@
       "at": "2026-05-12T02:12:52.000Z",
       "source": "Montevideo Portal / política",
       "url": "https://www.montevideo.com.uy/Noticias/Politica",
+      "status": "fetch_failed"
+    },
+    {
+      "at": "2026-05-12T08:29:46.000Z",
+      "source": "El Observador / política",
+      "url": "https://www.elobservador.com.uy/seccion/politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-12T08:29:46.000Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://www.montevideo.com.uy/Noticias/Politica",
+      "status": "fetch_failed"
+    },
+    {
+      "at": "2026-05-12T08:29:46.000Z",
+      "source": "Ministerio de Educación y Cultura",
+      "url": "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias",
       "status": "fetch_failed"
     }
   ],
