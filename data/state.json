@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 2,
-  "last_run_at": "2026-05-11T14:32:00.000Z",
-  "verification_cursor": 2,
+  "cycle": 3,
+  "last_run_at": "2026-05-12T01:13:32.000Z",
+  "verification_cursor": 3,
   "verification_log": [
     {
       "cycle": 1,
@@ -16,6 +16,13 @@
       "at": "2026-05-11T14:32:00.000Z",
       "ministry": "Relaciones Exteriores",
       "minister": "Mario Lubetkin",
+      "result": "ok"
+    },
+    {
+      "cycle": 3,
+      "at": "2026-05-12T01:13:32.000Z",
+      "ministry": "Economía y Finanzas",
+      "minister": "Gabriel Oddone",
       "result": "ok"
     }
   ],
@@ -41,6 +48,18 @@
     },
     {
       "at": "2026-05-11T14:32:00.000Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://www.montevideo.com.uy/Noticias/Politica",
+      "status": "fetch_failed"
+    },
+    {
+      "at": "2026-05-12T01:13:32.000Z",
+      "source": "El Observador / política",
+      "url": "https://www.elobservador.com.uy/seccion/politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-12T01:13:32.000Z",
       "source": "Montevideo Portal / política",
       "url": "https://www.montevideo.com.uy/Noticias/Politica",
       "status": "fetch_failed"
