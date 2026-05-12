@@ -1,6 +1,6 @@
 # gob-uy-bot 🤖🇺🇾
 
-**Democratizar el acceso a la política uruguaya:** una visualización diaria, scannable de un vistazo, de qué hizo el gobierno hoy y qué viene en los próximos días — para ciudadanos comunes, no para insiders.
+**Democratizar el acceso a la política uruguaya:** una visualización diaria, scannable de un vistazo, de qué hizo el gobierno hoy y qué viene en los próximos días — con lenguaje claro y fuentes linkeadas.
 
 🌐 **Sitio en vivo:** https://lezama.github.io/gob-uy-bot/
 

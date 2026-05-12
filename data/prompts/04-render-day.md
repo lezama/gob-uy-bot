@@ -1,7 +1,7 @@
 # Prompt 04 — Render the day's visualization
 
 > Esta rutina toma el output curado de [`03-curate.md`](03-curate.md) y produce el archivo del día.
-> **Audiencia: ciudadanos comunes, no insiders políticos.** Si usás un término técnico, explicalo.
+> **Escribilo con lenguaje claro y fuentes linkeadas.** Si usás un término técnico, explicalo inline.
 
 ## Misión
 
