@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 10,
-  "last_run_at": "2026-05-13T14:11:56.409Z",
-  "verification_cursor": 10,
+  "cycle": 11,
+  "last_run_at": "2026-05-13T19:44:02.494Z",
+  "verification_cursor": 11,
   "verification_log": [
     {
       "cycle": 1,
@@ -73,6 +73,13 @@
       "at": "2026-05-13T14:11:56.409Z",
       "ministry": "Ganadería, Agricultura y Pesca",
       "minister": "Alfredo Fratti",
+      "result": "ok"
+    },
+    {
+      "cycle": 11,
+      "at": "2026-05-13T19:44:02.494Z",
+      "ministry": "Vivienda y Ordenamiento Territorial",
+      "minister": "Tamara Paseyro",
       "result": "ok"
     }
   ],
@@ -181,13 +188,13 @@
       "status": "fetch_failed"
     },
     {
-      "at": "2026-05-13T14:11:56.409Z",
+      "at": "2026-05-13T19:44:02.494Z",
       "source": "Búsqueda / política",
       "url": "https://www.busqueda.com.uy/politica",
       "status": "403"
     },
     {
-      "at": "2026-05-13T14:11:56.409Z",
+      "at": "2026-05-13T19:44:02.494Z",
       "source": "Subrayado / política",
       "url": "https://www.subrayado.com.uy/politica",
       "status": "403"
