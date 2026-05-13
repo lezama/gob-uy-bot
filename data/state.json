@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 9,
-  "last_run_at": "2026-05-13T08:37:00.000Z",
-  "verification_cursor": 9,
+  "cycle": 10,
+  "last_run_at": "2026-05-13T14:11:56.409Z",
+  "verification_cursor": 10,
   "verification_log": [
     {
       "cycle": 1,
@@ -66,6 +66,13 @@
       "at": "2026-05-13T08:37:00.000Z",
       "ministry": "Salud Pública",
       "minister": "Cristina Lustemberg",
+      "result": "ok"
+    },
+    {
+      "cycle": 10,
+      "at": "2026-05-13T14:11:56.409Z",
+      "ministry": "Ganadería, Agricultura y Pesca",
+      "minister": "Alfredo Fratti",
       "result": "ok"
     }
   ],
@@ -172,6 +179,18 @@
       "source": "Montevideo Portal / política",
       "url": "https://www.montevideo.com.uy/Noticias/Politica",
       "status": "fetch_failed"
+    },
+    {
+      "at": "2026-05-13T14:11:56.409Z",
+      "source": "Búsqueda / política",
+      "url": "https://www.busqueda.com.uy/politica",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-13T14:11:56.409Z",
+      "source": "Subrayado / política",
+      "url": "https://www.subrayado.com.uy/politica",
+      "status": "403"
     }
   ],
   "bias_log": [],
