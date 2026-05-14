@@ -49,7 +49,7 @@ title: Hoy en el gobierno uruguayo
     {%- assign extra_stories = latest.top_stories.size | minus: 1 -%}
     {%- assign upcoming_24h = latest.upcoming.next_24h | size -%}
     <p class="latest__teaser">
-      {% if extra_stories > 0 %}+{{ extra_stories }} {% if extra_stories == 1 %}story{% else %}stories{% endif %} más{% endif %}
+      {% if extra_stories > 0 %}+{{ extra_stories }} {% if extra_stories == 1 %}nota{% else %}notas{% endif %} más{% endif %}
       {% if extra_stories > 0 and upcoming_24h > 0 %} · {% endif %}
       {% if upcoming_24h > 0 %}{{ upcoming_24h }} {% if upcoming_24h == 1 %}evento próximo{% else %}eventos próximos{% endif %}{% endif %}
     </p>
@@ -71,9 +71,9 @@ title: Hoy en el gobierno uruguayo
       <li class="archive__item">
         <time class="archive__date">{% include date-es.html date=post.date short=true %}</time>
         <a class="archive__link" href="{{ post.url | relative_url }}">
-          {% if post_top %}{{ post_top.title | truncate: 80 }}{% else %}{{ post.title }}{% endif %}
+          {% if post_top %}{{ post_top.title | truncatewords: 12 }}{% else %}{{ post.title }}{% endif %}
         </a>
-        {% if post_extra > 0 %}<span class="archive__more">+{{ post_extra }} más</span>{% endif %}
+        {% if post_extra > 0 %}<span class="archive__more">+{{ post_extra }} {% if post_extra == 1 %}nota{% else %}notas{% endif %} más</span>{% endif %}
       </li>
     {% endfor %}
   </ul>
