@@ -59,7 +59,15 @@ parlamento:
   leyes_promulgadas:
     - { numero, fecha, titulo, url }
 quiet:
-  - "Ministerios sin novedades hoy: Turismo, ..."
+  # Array de nombres de ministerios SIN NOVEDADES en la ventana.
+  # Cada item = un ministerio. NO escribir prosa, NO agrupar varios
+  # ministerios en una sola cadena, NO agregar paréntesis explicativos
+  # ("(cubierto en ciclo 13)"). El layout los renderiza como chips
+  # individuales. Si querés explicar contexto, hacelo a nivel de cada
+  # item: { name: "Interior", note: "sitio sin contenido accesible" }.
+  - "Turismo"
+  - "Defensa Nacional"
+  - { name: "Interior", note: "sitio sin contenido accesible" }
 sources_off:
   - { source: "...", reason: "404 since 2026-MM-DD" }
 ---

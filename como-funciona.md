@@ -10,6 +10,17 @@ permalink: /como-funciona/
 
 > Una guía rápida para entender qué hace cada parte del Estado uruguayo. Pensada para complementar los reportes diarios. **¿Querés mejorarla?** [Editá esta página vía PR](https://github.com/lezama/gob-uy-bot/edit/main/como-funciona.md).
 
+<nav class="page-toc" aria-label="Secciones de esta página">
+  <p class="page-toc__label">En esta página</p>
+  <ul>
+    <li><a href="#los-tres-poderes">Los tres poderes</a></li>
+    <li><a href="#el-poder-ejecutivo">El Ejecutivo</a></li>
+    <li><a href="#el-poder-legislativo-el-parlamento">El Legislativo</a></li>
+    <li><a href="#los-partidos-hoy">Los partidos</a></li>
+    <li><a href="#organismos-importantes-que-no-son-ministerios">Organismos no-ministeriales</a></li>
+  </ul>
+</nav>
+
 ## Los tres poderes
 
 Uruguay es una **república democrática presidencialista**. El Estado tiene tres poderes independientes:
@@ -39,6 +50,8 @@ Actualmente: **Carolina Cosse** (Frente Amplio, FLS).
 ### Los ministerios
 
 14 ministerios actuales. Cada uno conduce un área temática:
+
+<p class="stale-note"><strong>Nota:</strong> esta tabla se actualiza manualmente. Para la versión vigente consultá <a href="https://www.gub.uy/instituciones?type=ministerio">gub.uy/instituciones</a>. El bot, en cambio, lee la lista canónica desde <a href="https://github.com/lezama/gob-uy-bot/blob/main/data/sources.yml"><code>data/sources.yml</code></a> y se actualiza vía PR.</p>
 
 | Ministerio | Sigla | Qué hace |
 |---|---|---|

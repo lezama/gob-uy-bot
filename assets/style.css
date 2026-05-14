@@ -105,7 +105,7 @@ code {
   background: #fff;
   max-width: 720px;
 }
-.latest__title { font-size: 1.4rem; line-height: 1.25; margin: 0 0 0.25rem; }
+.latest__title { font-size: 1.25rem; line-height: 1.25; margin: 0 0 0.25rem; font-weight: 700; }
 .latest__title a { border: none; }
 .latest__title a:hover { text-decoration: underline; }
 .latest__meta { font-size: 0.85rem; color: var(--muted); margin: 0 0 1rem; }
@@ -119,9 +119,11 @@ code {
 .latest__source {
   font-size: 0.75rem;
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0 0 0.25rem;
+  margin: 0 0 0.35rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 .latest__headline { margin: 0; font-weight: 600; line-height: 1.35; }
 .latest__headline a { border: none; }
@@ -133,8 +135,30 @@ code {
 /* ---- Report layout ---- */
 .report__header { padding: 1rem 0 0.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 1rem; }
 .report__updated  { font-size: 0.8rem; color: var(--muted); margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
-.report__title  { font-size: 1.6rem; margin: 0.25rem 0 0.5rem; line-height: 1.2; max-width: var(--prose-width); }
-.report__window { font-size: 0.875rem; color: var(--muted); margin: 0 0 1rem; }
+.report__title  { font-size: 1.6rem; margin: 0.25rem 0 0.75rem; line-height: 1.2; max-width: var(--prose-width); }
+
+/* Verification badge in report header */
+.report__verification-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+  padding: 0.55rem 0.85rem;
+  background: var(--accent-soft);
+  border-radius: 4px;
+  max-width: var(--prose-width);
+}
+.report__verification-icon { font-size: 1rem; flex-shrink: 0; }
+.report__verification-more {
+  color: var(--accent);
+  font-size: 0.85rem;
+  border-bottom: none;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.report__verification-more:hover { text-decoration: underline; }
 
 /* ---- Paginator (prev/next day) ---- */
 .paginator {
@@ -157,7 +181,7 @@ code {
 }
 .paginator a:hover { background: var(--accent-soft); }
 .paginator__index { color: var(--muted); }
-.paginator__disabled { color: var(--rule); padding: 0.4rem 0.6rem; }
+.paginator__placeholder { padding: 0.4rem 0.6rem; min-width: 5rem; }
 
 @media (max-width: 540px) {
   .paginator { font-size: 0.85rem; }
@@ -219,7 +243,32 @@ code {
   gap: 0.5rem;
 }
 .card--top { border-left: 3px solid var(--accent); }
-.card__source { font-size: 0.8rem; color: var(--muted); margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+.card__source {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.card__source-primary {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+.card__source-ministry {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 0.05em 0.45em;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.card__source-when { color: var(--muted); }
 .card__title  { font-size: 1.05rem; margin: 0; line-height: 1.35; }
 .card__title a { border: none; }
 .card__title a:hover { text-decoration: underline; }
@@ -233,7 +282,28 @@ code {
 }
 .card__people { margin: 0; padding-left: 1.25rem; font-size: 0.9rem; color: var(--ink); }
 .card__role   { color: var(--muted); }
-.card__why    { font-size: 0.875rem; color: var(--muted); margin: 0; padding: 0.5rem 0.75rem; background: var(--accent-soft); border-radius: 3px; }
+.card__why {
+  display: block;
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  background: var(--accent-soft);
+  border-left: 2px solid var(--accent);
+  border-radius: 3px;
+}
+.card__why-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+.card__why-text {
+  display: block;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+}
 
 .card__glossary { font-size: 0.875rem; }
 .card__glossary summary { cursor: pointer; color: var(--muted); }
@@ -263,11 +333,15 @@ code {
 /* ---- Ministry feed ---- */
 .ministry { border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.5rem 0.75rem; margin-bottom: 0.5rem; background: #fff; }
 .ministry__head { cursor: pointer; }
+.ministry__head--inline { cursor: default; margin: 0; }
+.ministry--inline { padding: 0.6rem 0.85rem; }
 .ministry__minister { color: var(--muted); font-weight: 400; }
 .ministry__count { color: var(--muted); font-size: 0.85rem; margin-left: 0.25rem; }
 .ministry__items { margin: 0.5rem 0 0; padding-left: 1.25rem; }
 .ministry__items li { margin-bottom: 0.5rem; font-size: 0.95rem; }
 .ministry__items time { color: var(--muted); margin-right: 0.5rem; font-variant-numeric: tabular-nums; }
+.ministry__inline-item { margin: 0.3rem 0 0; font-size: 0.95rem; }
+.ministry__inline-item time { color: var(--muted); margin-right: 0.5rem; font-variant-numeric: tabular-nums; }
 .ministry__summary { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.875rem; }
 
 /* ---- Meta / Verification ---- */
@@ -280,8 +354,35 @@ code {
 .meta__result--drift { color: var(--warn); }
 .meta__result--error { color: #a31f1f; }
 
-/* ---- Quiet / off ---- */
-.section--quiet, .section--off { color: var(--muted); font-size: 0.9rem; }
+/* ---- Quiet (Sin novedades) — chip row ---- */
+.section--quiet { font-size: 0.9rem; }
+.quiet__intro { color: var(--muted); margin: 0 0 0.5rem; }
+.quiet__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.quiet__chip {
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+}
+.quiet__chip-note { color: var(--muted); opacity: 0.75; font-size: 0.95em; }
+.quiet__prose { color: var(--muted); margin: 0; max-width: var(--prose-width); }
+
+/* ---- Sources off (collapsed) ---- */
+.section--off { font-size: 0.9rem; color: var(--muted); }
+.off__details { background: #fff; border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.4rem 0.85rem; }
+.off__summary { cursor: pointer; color: var(--warn); font-size: 0.85rem; }
+.off__list { margin: 0.5rem 0 0.25rem; padding-left: 1.25rem; }
+.off__list li { margin-bottom: 0.25rem; }
+.off__list code { background: transparent; padding: 0; font-size: 0.85em; }
 
 /* ---- Archive ---- */
 .archive__list {
@@ -371,8 +472,49 @@ code {
 /* ---- Prose pages (como-funciona, metodologia) ---- */
 .prose-page { max-width: var(--prose-width); }
 .prose-page h1 { font-size: 1.75rem; line-height: 1.2; }
-.prose-page h2 { font-size: 1.25rem; margin-top: 2rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--rule); }
+.prose-page h2 { font-size: 1.25rem; margin-top: 2rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--rule); scroll-margin-top: 1rem; }
 .prose-page h3 { font-size: 1.05rem; margin-top: 1.5rem; }
+
+/* In-page TOC for prose pages (non-sticky) */
+.page-toc {
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+.page-toc__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0 0 0.4rem;
+}
+.page-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.page-toc a {
+  display: inline-block;
+  font-size: 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  background: #fff;
+  color: var(--ink);
+}
+.page-toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+.prose-page .stale-note {
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: var(--accent-soft);
+  border-left: 2px solid var(--accent);
+  padding: 0.5rem 0.85rem;
+  border-radius: 3px;
+  margin: 0.5rem 0 1rem;
+}
 .prose-page blockquote {
   border-left: 3px solid var(--accent);
   margin: 1rem 0;

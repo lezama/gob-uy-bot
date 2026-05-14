@@ -30,16 +30,23 @@ title: Hoy en el gobierno uruguayo
 <section class="latest">
   <p class="latest__label">Último reporte</p>
   <article class="latest__card">
-    <h2 class="latest__title">
+    <h3 class="latest__title">
       <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
-    </h2>
+    </h3>
     <p class="latest__meta">
       Actualizado: <time>{% include date-es.html date=latest.date time=true %}</time>
     </p>
 
     {% if top %}
     <div class="latest__preview">
-      {% if top.source_label %}<p class="latest__source">{{ top.source_label }}{% if top.when %} · <time>{{ top.when }}</time>{% endif %}</p>{% endif %}
+      {% if top.source_label %}
+        {%- assign top_parts = top.source_label | split: " / " -%}
+        <p class="latest__source">
+          <span class="card__source-primary">{{ top_parts[0] }}</span>
+          {% if top_parts.size > 1 %}<span class="card__source-ministry">{{ top_parts[1] }}</span>{% endif %}
+          {% if top.when %}<span class="card__source-when"><time>{{ top.when }}</time></span>{% endif %}
+        </p>
+      {% endif %}
       <p class="latest__headline">
         {% if top.url %}<a href="{{ top.url }}" rel="noopener">{{ top.title }}</a>{% else %}{{ top.title }}{% endif %}
       </p>
@@ -69,7 +76,7 @@ title: Hoy en el gobierno uruguayo
       {%- assign post_top = post.top_stories | first -%}
       {%- assign post_extra = post.top_stories.size | minus: 1 -%}
       <li class="archive__item">
-        <time class="archive__date">{% include date-es.html date=post.date short=true %}</time>
+        <time class="archive__date">{% include date-es.html date=post.date auto_year=true %}</time>
         <a class="archive__link" href="{{ post.url | relative_url }}">
           {% if post_top %}{{ post_top.title | truncatewords: 12 }}{% else %}{{ post.title }}{% endif %}
         </a>
