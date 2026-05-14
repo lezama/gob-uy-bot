@@ -1,0 +1,76 @@
+# 14 ministerios uruguayos — orden protocolar
+# Usado por templates de Jekyll (site.data.ministries).
+# La fuente canónica para el bot es data/sources.yml; este archivo es
+# un mirror compacto para el sitio (códigos cortos + nombres de display).
+# Si Orsi reshuffle el gabinete, actualizar AMBOS archivos.
+
+- code: MI
+  short: Interior
+  full: Ministerio del Interior
+  match: Interior
+  minister: Carlos Negro
+- code: MRREE
+  short: RR.EE.
+  full: Ministerio de Relaciones Exteriores
+  match: Relaciones Exteriores
+  minister: Mario Lubetkin
+- code: MEF
+  short: Economía
+  full: Ministerio de Economía y Finanzas
+  match: Economía y Finanzas
+  minister: Gabriel Oddone
+- code: MDN
+  short: Defensa
+  full: Ministerio de Defensa Nacional
+  match: Defensa Nacional
+  minister: Sandra Lazo
+- code: MEC
+  short: Educación
+  full: Ministerio de Educación y Cultura
+  match: Educación y Cultura
+  minister: José Carlos Mahía
+- code: MTOP
+  short: Transporte
+  full: Ministerio de Transporte y Obras Públicas
+  match: Transporte y Obras Públicas
+  minister: Lucía Etcheverry
+- code: MIEM
+  short: Industria
+  full: Ministerio de Industria, Energía y Minería
+  match: Industria, Energía y Minería
+  minister: Fernanda Cardona
+- code: MTSS
+  short: Trabajo
+  full: Ministerio de Trabajo y Seguridad Social
+  match: Trabajo y Seguridad Social
+  minister: Juan Castillo
+- code: MSP
+  short: Salud
+  full: Ministerio de Salud Pública
+  match: Salud Pública
+  minister: Cristina Lustemberg
+- code: MGAP
+  short: Agro
+  full: Ministerio de Ganadería, Agricultura y Pesca
+  match: Ganadería, Agricultura y Pesca
+  minister: Alfredo Fratti
+- code: MTUR
+  short: Turismo
+  full: Ministerio de Turismo
+  match: Turismo
+  minister: Pablo Menoni
+- code: MVOT
+  short: Vivienda
+  full: Ministerio de Vivienda y Ordenamiento Territorial
+  match: Vivienda y Ordenamiento Territorial
+  minister: Tamara Paseyro
+- code: MIDES
+  short: Desarrollo Social
+  full: Ministerio de Desarrollo Social
+  match: Desarrollo Social
+  minister: Gonzalo Civila
+- code: MA
+  short: Ambiente
+  full: Ministerio de Ambiente
+  match: Ambiente
+  minister: Edgardo Ortuño

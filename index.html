@@ -3,84 +3,271 @@ layout: default
 title: Hoy en el gobierno uruguayo
 ---
 
-<section class="hero">
-  <h1 class="hero__title">¿Qué hizo hoy el gobierno?</h1>
-  <p class="hero__sub">
-    Una visualización diaria de la actividad del gobierno, parlamento y políticos uruguayos.
-    Generada cada 6 horas por un bot autónomo, con lenguaje claro y fuentes linkeadas.
-  </p>
-  <p class="hero__nav">
-    <a href="{{ '/metodologia/' | relative_url }}">¿Cómo funciona este bot?</a> ·
-    <a href="{{ '/como-funciona/' | relative_url }}">Gobierno uruguayo</a> ·
-    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
-  </p>
-</section>
-
 {% if site.posts.size == 0 %}
-<section class="empty">
-  <h2>Esperando el primer ciclo</h2>
-  <p>El bot empieza a publicar reportes cuando arranca la GitHub Action programada (cada 6h). Si llegaste muy temprano, volvé en un rato.</p>
-  <p>Mientras tanto: <a href="{{ '/como-funciona/' | relative_url }}">leé cómo funciona el gobierno uruguayo en 3 minutos</a>.</p>
+<section class="bh-hero">
+  <div>
+    <p class="eyebrow">Esperando el primer ciclo</p>
+    <h1 class="bh-hero__title">¿Qué hizo <em>hoy</em> el gobierno?</h1>
+    <p class="bh-hero__sub">El bot empieza a publicar reportes cuando arranca la GitHub Action programada (cada 6 h). Si llegaste muy temprano, volvé en un rato.</p>
+  </div>
 </section>
 {% else %}
 
 {%- assign latest = site.posts | first -%}
-{%- assign top = latest.top_stories | first -%}
+{%- assign featured = latest.top_stories | first -%}
+{%- assign secondary = latest.top_stories | slice: 1, 3 -%}
 
-<section class="latest">
-  <p class="latest__label">Último reporte</p>
-  <article class="latest__card">
-    <h3 class="latest__title">
-      <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
-    </h3>
-    <p class="latest__meta">
-      Actualizado: <time>{% include date-es.html date=latest.date time=true %}</time>
+{%- comment -%}
+  Build ministry-status map from latest report.
+{%- endcomment -%}
+{%- assign verified_ministry = latest.verification_subject.ministry | default: "" -%}
+
+<!-- HERO BAND -->
+<section class="bh-hero">
+  <div>
+    <p class="eyebrow">{% include date-es.html date=latest.date %} · ciclo #{{ latest.cycle | default: "?" }}</p>
+    <h1 class="bh-hero__title">¿Qué hizo <em>hoy</em> el gobierno?</h1>
+    <p class="bh-hero__sub">
+      Una visualización diaria de la actividad del gobierno, parlamento y políticos uruguayos. Generada cada 6 horas por un bot autónomo, con lenguaje claro y fuentes linkeadas.
     </p>
-
-    {% if top %}
-    <div class="latest__preview">
-      {% if top.source_label %}
-        {%- assign top_parts = top.source_label | split: " / " -%}
-        <p class="latest__source">
-          <span class="card__source-primary">{{ top_parts[0] }}</span>
-          {% if top_parts.size > 1 %}<span class="card__source-ministry">{{ top_parts[1] }}</span>{% endif %}
-          {% if top.when %}<span class="card__source-when"><time>{{ top.when }}</time></span>{% endif %}
-        </p>
+  </div>
+  <aside class="bh-hero__stat">
+    <ul>
+      <li>
+        <b>{{ latest.top_stories.size | default: 0 }}</b>
+        <span>notas hoy</span>
+      </li>
+      <li>
+        <b>{{ latest.upcoming.next_24h.size | default: 0 }}</b>
+        <span>eventos en 24 h</span>
+      </li>
+      <li>
+        <b>{{ latest.parlamento.asuntos_entrados.size | default: 0 }}</b>
+        <span>proyectos en parlamento</span>
+      </li>
+      {% if latest.verification_subject %}
+      <li class="bh-hero__ver">
+        <b>
+          {% case latest.verification_subject.result %}
+            {% when "ok" %}<span class="dot dot--ok"></span>
+            {% when "drift" %}<span class="dot dot--signal"></span>
+            {% when "error" %}<span class="dot" style="background:#a31f2c"></span>
+            {% else %}<span class="dot"></span>
+          {% endcase %}
+          {{ latest.verification_subject.minister | split: " " | last }}
+        </b>
+        <span>verificación · {% case latest.verification_subject.result %}{% when "ok" %}coincide{% when "drift" %}diverge{% when "error" %}error{% else %}{{ latest.verification_subject.result }}{% endcase %}</span>
+      </li>
       {% endif %}
-      <p class="latest__headline">
-        {% if top.url %}<a href="{{ top.url }}" rel="noopener">{{ top.title }}</a>{% else %}{{ top.title }}{% endif %}
-      </p>
+    </ul>
+  </aside>
+</section>
+
+<hr class="divider divider--strong" />
+
+<!-- FEATURED + RAIL -->
+<section class="bh-grid">
+  <div class="bh-grid__main">
+    <p class="eyebrow eyebrow--ink" style="margin-bottom: 14px;">★ Lo más importante de hoy</p>
+
+    {% if featured %}
+    <article class="story story--feature">
+      <div class="story__src">
+        {% if featured.source_label %}
+          {%- assign feat_parts = featured.source_label | split: " / " -%}
+          {% if feat_parts.size > 1 %}<span class="minpill">{{ feat_parts[1] }}</span>{% endif %}
+          <span class="chip chip--azul">{{ feat_parts[0] }}</span>
+        {% endif %}
+        {% if featured.when %}<span class="eyebrow">{{ featured.when }}</span>{% endif %}
+        {% if featured.url %}<a href="{{ featured.url }}" rel="noopener" class="eyebrow" style="margin-left:auto;">fuente oficial ↗</a>{% endif %}
+      </div>
+      <h2 class="story__title">
+        {% if featured.url %}<a href="{{ featured.url }}" rel="noopener">{{ featured.title }}</a>{% else %}{{ featured.title }}{% endif %}
+      </h2>
+      {% if featured.summary %}<p class="story__summary">{{ featured.summary }}</p>{% endif %}
+      {% if featured.quote %}
+      <blockquote class="story__quote">«{{ featured.quote }}»</blockquote>
+      {% endif %}
+      {% if featured.people and featured.people.size > 0 %}
+      <ul class="story__people">
+        {% for p in featured.people %}
+        <li><span class="name">{{ p.name }}</span> {% if p.role %}<span class="role">— {{ p.role }}</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% if featured.why_it_matters %}
+      <div class="story__why">
+        <span class="story__why-label">Por qué importa</span>
+        <span>{{ featured.why_it_matters }}</span>
+      </div>
+      {% endif %}
+    </article>
+    {% endif %}
+
+    {% if secondary and secondary.size > 0 %}
+    <div class="bh-secondary">
+      {% for s in secondary %}
+      <article class="story">
+        <div class="story__src">
+          {% if s.source_label %}
+            {%- assign s_parts = s.source_label | split: " / " -%}
+            {% if s_parts.size > 1 %}<span class="minpill">{{ s_parts[1] }}</span>{% endif %}
+            <span class="chip chip--azul">{{ s_parts[0] }}</span>
+          {% endif %}
+          {% if s.when %}<span class="eyebrow" style="margin-left:auto;">{{ s.when }}</span>{% endif %}
+        </div>
+        <h3 class="story__title" style="font-size:18px;">
+          {% if s.url %}<a href="{{ s.url }}" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}
+        </h3>
+        {% if s.summary %}<p class="story__summary" style="font-size:13.5px;">{{ s.summary | truncatewords: 28 }}</p>{% endif %}
+      </article>
+      {% endfor %}
     </div>
     {% endif %}
 
-    {%- assign extra_stories = latest.top_stories.size | minus: 1 -%}
-    {%- assign upcoming_24h = latest.upcoming.next_24h | size -%}
-    <p class="latest__teaser">
-      {% if extra_stories > 0 %}+{{ extra_stories }} {% if extra_stories == 1 %}nota{% else %}notas{% endif %} más{% endif %}
-      {% if extra_stories > 0 and upcoming_24h > 0 %} · {% endif %}
-      {% if upcoming_24h > 0 %}{{ upcoming_24h }} {% if upcoming_24h == 1 %}evento próximo{% else %}eventos próximos{% endif %}{% endif %}
-    </p>
+    <a class="bh-readmore" href="{{ latest.url | relative_url }}">
+      Ver reporte completo del {% include date-es.html date=latest.date short=true %}
+      <span>→</span>
+    </a>
+  </div>
 
-    <p><a class="latest__cta" href="{{ latest.url | relative_url }}">Ver reporte completo →</a></p>
-  </article>
+  <aside class="bh-rail">
+    {% if latest.upcoming.next_24h and latest.upcoming.next_24h.size > 0 %}
+    <div class="bh-rail__card">
+      <header class="bh-rail__hd">
+        <p class="eyebrow eyebrow--ink">📅 Qué viene · próximas 24 h</p>
+        <a class="bh-rail__more" href="{{ latest.url | relative_url }}#que-viene">ver todo →</a>
+      </header>
+      <ol class="bh-timeline">
+        {% for e in latest.upcoming.next_24h limit: 4 %}
+        <li class="bh-timeline__item">
+          <time class="mono">{{ e.when | split: " " | last }}</time>
+          <div>
+            <div class="bh-timeline__title">{{ e.title }}</div>
+            {% if e.where %}<div class="bh-timeline__meta">@ {{ e.where | truncate: 50 }}</div>{% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+
+      {% if latest.upcoming.next_7d and latest.upcoming.next_7d.size > 0 %}
+      <hr class="divider" style="margin: 18px 0;" />
+      <p class="eyebrow" style="margin-bottom:10px;">en la próxima semana</p>
+      <ol class="bh-timeline bh-timeline--mini">
+        {% for e in latest.upcoming.next_7d limit: 4 %}
+        <li>
+          <time class="mono">{{ e.when | truncate: 16, "" }}</time>
+          <span>{{ e.title | truncate: 60 }}</span>
+        </li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if latest.verification_subject %}
+    <div class="bh-rail__card bh-rail__verify">
+      <p class="eyebrow eyebrow--azul" style="margin-bottom: 8px;">verificación de hoy</p>
+      <p style="font-size: 14px; line-height: 1.45;">
+        Cotejamos a <strong>{{ latest.verification_subject.minister }}</strong> ({{ latest.verification_subject.ministry }}):
+        {% case latest.verification_subject.result %}
+          {% when "ok" %}<span style="color: var(--ok); font-weight: 600;">coincide ✓</span>
+          {% when "drift" %}<span style="color: var(--signal); font-weight: 600;">diverge ⚠</span>
+          {% when "error" %}<span style="color: #a31f2c; font-weight: 600;">no verificable ✕</span>
+          {% else %}<span style="font-weight: 600;">{{ latest.verification_subject.result }}</span>
+        {% endcase %}
+      </p>
+      {% if latest.verification_subject.note %}
+      <p style="font-size: 12px; color: var(--ink-mute); margin-top: 8px; line-height: 1.5;">{{ latest.verification_subject.note }}</p>
+      {% endif %}
+      <p style="margin-top:10px;"><a class="linklike mono" style="font-size:11px; color:var(--azul);" href="{{ '/metodologia/' | relative_url }}#verificacion">¿cómo verificamos? →</a></p>
+    </div>
+    {% endif %}
+  </aside>
 </section>
 
+<!-- MINISTRY GRID -->
+{% if site.data.ministries %}
+<section class="bh-mins">
+  {%- comment -%}Count active ministries by matching ministry_feed against ministries.match{%- endcomment -%}
+  {%- assign active_count = 0 -%}
+  {% if latest.ministry_feed %}
+    {% for mf in latest.ministry_feed %}
+      {%- assign active_count = active_count | plus: 1 -%}
+    {% endfor %}
+  {% endif %}
+  {%- assign total_min = site.data.ministries.size -%}
+  {%- assign covered_count = total_min | minus: active_count -%}
+
+  <header class="bh-mins__hd">
+    <h2 class="bh-mins__title">Pulso de los 14 ministerios</h2>
+    <p class="bh-mins__sub">
+      Hoy <b>{{ active_count }} con novedades</b> · {{ covered_count }} sin actividad reciente · verificado: <b>{{ latest.verification_subject.ministry | default: "—" }}</b>
+    </p>
+  </header>
+  <div class="bh-mins__grid">
+    {% for m in site.data.ministries %}
+      {%- assign activity = 0 -%}
+      {%- assign is_verified = false -%}
+      {%- if m.short == verified_ministry or m.match == verified_ministry or m.full == verified_ministry -%}
+        {%- assign is_verified = true -%}
+      {%- endif -%}
+      {% if latest.ministry_feed %}
+        {% for mf in latest.ministry_feed %}
+          {%- if mf.ministry == m.match or mf.ministry == m.full or mf.ministry == m.short -%}
+            {%- assign activity = mf.items.size | default: 1 -%}
+          {%- endif -%}
+        {% endfor %}
+      {% endif %}
+      {%- if activity > 0 -%}
+        {%- assign mstatus = "active" -%}
+      {%- elsif is_verified -%}
+        {%- assign mstatus = "active" -%}
+      {%- else -%}
+        {%- assign mstatus = "quiet" -%}
+      {%- endif -%}
+    <div class="minicell minicell--{{ mstatus }}" title="{{ m.full }} — {{ m.minister }}">
+      <span class="minicell__code">{{ m.code }}</span>
+      <span class="minicell__short">{{ m.short }}</span>
+      <span class="minicell__min">{{ m.minister }}</span>
+      <span class="minicell__bar">
+        {% if activity > 0 %}{% for i in (1..activity) %}<i></i>{% endfor %}{% else %}<em>—</em>{% endif %}
+      </span>
+      {% if is_verified %}<span class="minicell__check" title="Verificado en este ciclo">✓</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- ARCHIVE -->
 {% if site.posts.size > 1 %}
 {%- assign by_date = site.posts | group_by_exp: "p", "p.date | date: '%Y-%m-%d'" -%}
 {% if by_date.size > 1 %}
-<section class="archive">
-  <h2 class="section__title">Reportes anteriores</h2>
-  <ul class="archive__list">
+<section class="bh-arch">
+  <header class="bh-mins__hd">
+    <h2 class="bh-mins__title">Reportes anteriores</h2>
+    <a href="{{ '/feed.xml' | relative_url }}" class="linklike" style="font-size:13px; color:var(--ink-mute);">suscribite vía RSS →</a>
+  </header>
+  <ul class="bh-arch__list">
     {% for group in by_date offset: 1 limit: 30 %}
       {%- assign post = group.items | first -%}
       {%- assign post_top = post.top_stories | first -%}
       {%- assign post_extra = post.top_stories.size | minus: 1 -%}
-      <li class="archive__item">
-        <time class="archive__date">{% include date-es.html date=post.date auto_year=true %}</time>
-        <a class="archive__link" href="{{ post.url | relative_url }}">
-          {% if post_top %}{{ post_top.title | truncatewords: 12 }}{% else %}{{ post.title }}{% endif %}
-        </a>
-        {% if post_extra > 0 %}<span class="archive__more">+{{ post_extra }} {% if post_extra == 1 %}nota{% else %}notas{% endif %} más</span>{% endif %}
+      <li class="bh-arch__row">
+        <div class="bh-arch__date">
+          <span class="mono" style="font-size:12px; color:var(--ink-mute);">{{ post.date | date: "%Y-%m-%d" }}</span>
+          <span class="bh-arch__day">{% include date-es.html date=post.date short=true %}</span>
+        </div>
+        <div class="bh-arch__body">
+          <a class="bh-arch__lede linklike" href="{{ post.url | relative_url }}">{% if post_top %}{{ post_top.title | truncatewords: 14 }}{% else %}{{ post.title }}{% endif %}</a>
+          <p class="bh-arch__meta">
+            {{ group.items.size }} {% if group.items.size == 1 %}ciclo{% else %}ciclos{% endif %}
+            {% if post_extra > 0 %}· +{{ post_extra }} {% if post_extra == 1 %}nota{% else %}notas{% endif %}{% endif %}
+            {% if post.verification_subject %}· verificación → {{ post.verification_subject.minister | split: " " | last }}{% endif %}
+          </p>
+        </div>
+        <span class="bh-arch__cta">leer →</span>
       </li>
     {% endfor %}
   </ul>
@@ -89,12 +276,3 @@ title: Hoy en el gobierno uruguayo
 {% endif %}
 
 {% endif %}
-
-<section class="invite">
-  <h2 class="section__title">¿Encontraste algo raro?</h2>
-  <p>Este sitio se mejora con feedback. Si viste un error, un sesgo, o algo que falta:</p>
-  <p class="invite__ctas">
-    <a class="invite__cta invite__cta--primary" href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Reportá un error o bias</a>
-    <a class="invite__cta invite__cta--secondary" href="https://github.com/lezama/gob-uy-bot/blob/main/CONTRIBUTING.md" rel="noopener">Cómo contribuir →</a>
-  </p>
-</section>

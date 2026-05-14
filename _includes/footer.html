@@ -1,13 +1,21 @@
-<footer class="site-footer">
-  <div class="site-footer__inner">
-    <p>
-      <strong>gob-uy-bot</strong> · <a href="https://github.com/lezama/gob-uy-bot">Código abierto · MIT</a> ·
-      <a href="{{ '/feed.xml' | relative_url }}">RSS</a> ·
-      <a href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Reportá un error o bias</a>
+<footer class="bh-foot">
+  <div>
+    <p class="eyebrow eyebrow--ink">Sobre este sitio</p>
+    <p style="font-size:13.5px; margin-top:8px; max-width:480px; line-height:1.55;">
+      <strong style="color:var(--paper); font-family:var(--display); font-style:italic; font-size:17px;">Hoy.uy</strong> es un bot autónomo que cada 6 horas resume la actividad del gobierno y parlamento uruguayos con lenguaje claro y fuentes linkeadas. Sin servidores, sin API keys propias. Código y prompts abiertos.
     </p>
-    <p>
-      Datos públicos de <a href="https://www.gub.uy">gub.uy</a> y <a href="https://parlamento.gub.uy">parlamento.gub.uy</a>.
-      <a href="{{ '/metodologia/' | relative_url }}">Cómo trabajamos →</a>
+    <p class="mono" style="font-size:11px; color:rgba(244,239,228,0.55); margin-top:14px; letter-spacing:.04em;">
+      datos públicos de <a class="linklike" href="https://www.gub.uy">gub.uy</a> + <a class="linklike" href="https://parlamento.gub.uy">parlamento.gub.uy</a> · MIT · <a class="linklike" href="{{ '/feed.xml' | relative_url }}">RSS</a>
     </p>
+  </div>
+  <div>
+    <p class="eyebrow eyebrow--ink">¿Encontraste algo raro?</p>
+    <p style="font-size:13.5px; margin-top:8px; line-height:1.55;">
+      Este sitio se mejora con feedback. Si viste un error, un sesgo, o algo que falta:
+    </p>
+    <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+      <a class="btn btn--primary" href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Reportá un sesgo →</a>
+      <a class="btn btn--ghost" href="{{ '/metodologia/' | relative_url }}">Cómo trabajamos</a>
+    </div>
   </div>
 </footer>

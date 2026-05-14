@@ -3,8 +3,7 @@ layout: default
 ---
 
 {%- comment -%}
-  Find adjacent reports by date (cycles within the same day collapse to one URL).
-  site.posts is sorted reverse-chronologically.
+  Adjacent reports by date.
 {%- endcomment -%}
 {%- assign current_date = page.date | date: "%Y-%m-%d" -%}
 {%- assign prev_post = nil -%}
@@ -18,90 +17,203 @@ layout: default
   {%- endif -%}
 {%- endfor -%}
 
-<article class="report">
-  <header class="report__header">
-    <p class="report__updated">Actualizado: <time>{% include date-es.html date=page.date time=true %}</time></p>
-    <h1 class="report__title">{{ page.title }}</h1>
+{%- assign featured = page.top_stories | first -%}
+{%- assign others = page.top_stories | slice: 1, 99 -%}
+{%- assign day_num = page.date | date: "%-d" -%}
+{%- assign month_num = page.date | date: "%m" -%}
+{%- case month_num -%}
+  {%- when "01" -%}{%- assign month_short = "ENE" -%}
+  {%- when "02" -%}{%- assign month_short = "FEB" -%}
+  {%- when "03" -%}{%- assign month_short = "MAR" -%}
+  {%- when "04" -%}{%- assign month_short = "ABR" -%}
+  {%- when "05" -%}{%- assign month_short = "MAY" -%}
+  {%- when "06" -%}{%- assign month_short = "JUN" -%}
+  {%- when "07" -%}{%- assign month_short = "JUL" -%}
+  {%- when "08" -%}{%- assign month_short = "AGO" -%}
+  {%- when "09" -%}{%- assign month_short = "SEP" -%}
+  {%- when "10" -%}{%- assign month_short = "OCT" -%}
+  {%- when "11" -%}{%- assign month_short = "NOV" -%}
+  {%- when "12" -%}{%- assign month_short = "DIC" -%}
+{%- endcase -%}
+{%- assign year_short = page.date | date: "%Y" -%}
+{%- assign weekday_num = page.date | date: "%w" -%}
+{%- case weekday_num -%}
+  {%- when "0" -%}{%- assign weekday = "domingo" -%}
+  {%- when "1" -%}{%- assign weekday = "lunes" -%}
+  {%- when "2" -%}{%- assign weekday = "martes" -%}
+  {%- when "3" -%}{%- assign weekday = "miércoles" -%}
+  {%- when "4" -%}{%- assign weekday = "jueves" -%}
+  {%- when "5" -%}{%- assign weekday = "viernes" -%}
+  {%- when "6" -%}{%- assign weekday = "sábado" -%}
+{%- endcase -%}
 
-    {% if page.verification_subject %}
-    <p class="report__verification-badge">
+<article class="br">
+  <!-- Paginator top -->
+  <nav class="br-pag" aria-label="Reportes adyacentes">
+    {% if prev_post %}
+      <a class="br-pag__back" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %} · día anterior</a>
+    {% else %}<span class="br-pag__placeholder br-pag__placeholder--empty"></span>{% endif %}
+    <a class="br-pag__index" href="{{ '/' | relative_url }}">archivo completo</a>
+    {% if next_post %}
+      <a class="br-pag__back" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
+    {% else %}<span class="br-pag__placeholder mono">próximo ciclo en ~6 h</span>{% endif %}
+  </nav>
+
+  <!-- Lede block -->
+  <section class="br-lede">
+    <div class="br-lede__date">
+      <span class="br-lede__weekday">{{ weekday }}</span>
+      <span class="br-lede__day">{{ day_num }}</span>
+      <span class="br-lede__month">{{ month_short }} {{ year_short }}</span>
+    </div>
+    <div>
+      <p class="eyebrow">Reporte diario · ciclo #{{ page.cycle }} · ventana {{ page.window.from }} → {{ page.window.to }}</p>
+      <h1 class="br-lede__title">Hoy en el gobierno uruguayo</h1>
+      {% if page.lede %}
+      <p class="br-lede__sub">{{ page.lede }}</p>
+      {% elsif featured %}
+      <p class="br-lede__sub">{{ featured.summary | truncatewords: 38 }}</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Verification banner -->
+  {% if page.verification_subject %}
+  <section class="br-verify br-verify--{{ page.verification_subject.result | default: 'ok' }}">
+    <span class="br-verify__icon">
       {% case page.verification_subject.result %}
-        {% when "ok" %}<span class="report__verification-icon report__verification-icon--ok">✅</span>
-        {% when "drift" %}<span class="report__verification-icon report__verification-icon--drift">⚠️</span>
-        {% when "error" %}<span class="report__verification-icon report__verification-icon--error">❌</span>
-        {% else %}<span class="report__verification-icon">·</span>
-      {% endcase %}
-      Hoy verificamos a <strong>{{ page.verification_subject.minister }}</strong> ({{ page.verification_subject.ministry }}) —
-      {% case page.verification_subject.result %}
-        {% when "ok" %}coincide con la fuente oficial.
-        {% when "drift" %}hay diferencias con la fuente oficial.
-        {% when "error" %}no pudo verificarse.
-        {% else %}{{ page.verification_subject.result }}.
-      {% endcase %}
-      <a href="#verificacion" class="report__verification-more">Detalle ↓</a>
-    </p>
+        {% when "ok" %}✓{% when "drift" %}⚠{% when "error" %}✕{% else %}·{% endcase %}
+    </span>
+    <div>
+      <p class="eyebrow eyebrow--ok">Verificación cruzada · este ciclo</p>
+      <p class="br-verify__text">
+        Cotejamos a <b>{{ page.verification_subject.minister }}</b> ({{ page.verification_subject.ministry }}) con la fuente oficial:
+        {% case page.verification_subject.result %}
+          {% when "ok" %}<b>coinciden</b> las citas reportadas.
+          {% when "drift" %}<b>hay diferencias</b> con la fuente oficial.
+          {% when "error" %}<b>no pudo verificarse</b> (fuente inaccesible).
+          {% else %}{{ page.verification_subject.result }}.
+        {% endcase %}
+      </p>
+    </div>
+    <a href="#verificacion" class="br-verify__more">detalle ↓</a>
+  </section>
+  {% endif %}
+
+  <!-- TOC chips sticky -->
+  <nav class="br-toc" aria-label="Secciones de este reporte">
+    {% if page.top_stories and page.top_stories.size > 0 %}
+    <a href="#hoy"><span class="dot dot--azul"></span>Hoy <span class="mono">{{ page.top_stories.size }}</span></a>
     {% endif %}
-
-    <nav class="paginator paginator--top" aria-label="Reportes adyacentes">
-      {% if prev_post %}
-        <a class="paginator__prev" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %}</a>
-      {% else %}<span class="paginator__placeholder"></span>{% endif %}
-      <a class="paginator__index" href="{{ '/' | relative_url }}">Volver al listado</a>
-      {% if next_post %}
-        <a class="paginator__next" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
-      {% else %}<span class="paginator__placeholder"></span>{% endif %}
-    </nav>
-  </header>
-
-  <nav class="report-toc" aria-label="Secciones de este reporte">
-    <ul>
-      {% if page.top_stories and page.top_stories.size > 0 %}<li><a href="#recientes">🔥 Recientes</a></li>{% endif %}
-      {% if page.upcoming %}<li><a href="#que-viene">📅 Qué viene</a></li>{% endif %}
-      {% if page.ministry_feed and page.ministry_feed.size > 0 %}<li><a href="#ministerios">🏛️ Ministerios</a></li>{% endif %}
-      {% if page.parlamento %}<li><a href="#parlamento">📜 Parlamento</a></li>{% endif %}
-      {% if page.verification_subject %}<li><a href="#verificacion">Verificación</a></li>{% endif %}
-    </ul>
+    {% if page.upcoming %}
+      {%- assign upc_count = page.upcoming.next_24h.size | default: 0 | plus: page.upcoming.next_7d.size | default: 0 -%}
+      <a href="#que-viene"><span class="dot dot--azul"></span>Qué viene <span class="mono">{{ upc_count }}</span></a>
+    {% endif %}
+    {% if page.ministry_feed and page.ministry_feed.size > 0 %}
+    <a href="#ministerios"><span class="dot dot--azul"></span>Ministerios <span class="mono">{{ page.ministry_feed.size }}</span></a>
+    {% endif %}
+    {% if page.parlamento %}
+      {%- assign parl_count = page.parlamento.asuntos_entrados.size | default: 0 -%}
+    <a href="#parlamento"><span class="dot dot--azul"></span>Parlamento <span class="mono">{{ parl_count }}</span></a>
+    {% endif %}
+    {% if page.verification_subject %}
+    <a href="#verificacion"><span class="dot dot--ok"></span>Verificación</a>
+    {% endif %}
+    {% if page.quiet and page.quiet.size > 0 %}
+    <a href="#quiet" style="margin-left:auto; color: var(--ink-mute);"><span class="dot dot--quiet"></span>Sin novedades</a>
+    {% endif %}
+    {% if page.sources_off and page.sources_off.size > 0 %}
+    <a href="#fuentes" style="color: var(--signal);"><span class="dot dot--signal"></span>Fuentes <span class="mono">{{ page.sources_off.size }}</span></a>
+    {% endif %}
   </nav>
 
   {% if page.top_stories and page.top_stories.size > 0 %}
-  <section id="recientes" class="section section--top">
-    <h2 class="section__title">🔥 Recientes</h2>
-    <div class="cards">
-      {% for s in page.top_stories %}
-      <article class="card card--top">
-        {% if s.source_label %}
-          {%- assign label_parts = s.source_label | split: " / " -%}
-          <p class="card__source">
-            <span class="card__source-primary">{{ label_parts[0] }}</span>
-            {% if label_parts.size > 1 %}<span class="card__source-ministry">{{ label_parts[1] }}</span>{% endif %}
-            {% if s.when %}<span class="card__source-when"><time>{{ s.when }}</time></span>{% endif %}
-          </p>
+  <section id="hoy" class="br-section">
+    <header class="br-section__hd">
+      <h2 class="br-section__title">Hoy</h2>
+      <p class="br-section__count">{{ page.top_stories.size }} notas · {% include date-es.html date=page.date short=true %}</p>
+    </header>
+
+    {% if featured %}
+    <article class="story story--feature br-feature">
+      <div class="story__src">
+        {% if featured.source_label %}
+          {%- assign f_parts = featured.source_label | split: " / " -%}
+          {% if f_parts.size > 1 %}<span class="minpill">{{ f_parts[1] }}</span>{% endif %}
+          <span class="chip chip--azul">{{ f_parts[0] }}</span>
         {% endif %}
-        <h3 class="card__title">
+        {% if featured.when %}<span class="eyebrow">{{ featured.when }}</span>{% endif %}
+        {% if featured.url %}<a class="eyebrow" style="margin-left:auto;" href="{{ featured.url }}" rel="noopener">fuente ↗</a>{% endif %}
+      </div>
+      <h3 class="story__title">
+        {% if featured.url %}<a href="{{ featured.url }}" rel="noopener">{{ featured.title }}</a>{% else %}{{ featured.title }}{% endif %}
+      </h3>
+      {% if featured.summary %}<p class="story__summary" style="font-size:16px; line-height:1.6;">{{ featured.summary }}</p>{% endif %}
+      {% if featured.quote %}
+      <blockquote class="story__quote" style="font-size:20px;">«{{ featured.quote }}»</blockquote>
+      {% endif %}
+      {% if featured.people and featured.people.size > 0 %}
+      <ul class="story__people">
+        {% for p in featured.people %}
+        <li><span class="name">{{ p.name }}</span> {% if p.role %}<span class="role">— {{ p.role }}</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% if featured.why_it_matters %}
+      <div class="story__why">
+        <span class="story__why-label">Por qué importa</span>
+        <span>{{ featured.why_it_matters }}</span>
+      </div>
+      {% endif %}
+      {% if featured.context_glossary and featured.context_glossary.size > 0 %}
+      <details class="story__glossary">
+        <summary>📖 Glosario · {{ featured.context_glossary.size }} términos</summary>
+        <dl>
+          {% for g in featured.context_glossary %}
+          <dt>{{ g.term }}</dt><dd>{{ g.explain }}</dd>
+          {% endfor %}
+        </dl>
+      </details>
+      {% endif %}
+    </article>
+    {% endif %}
+
+    {% if others and others.size > 0 %}
+    <div class="br-stories">
+      {% for s in others %}
+      <article class="story">
+        <div class="story__src">
+          {% if s.source_label %}
+            {%- assign s_parts = s.source_label | split: " / " -%}
+            {% if s_parts.size > 1 %}<span class="minpill">{{ s_parts[1] }}</span>{% endif %}
+            <span class="chip chip--azul">{{ s_parts[0] }}</span>
+          {% endif %}
+          {% if s.when %}<span class="eyebrow" style="margin-left:auto;">{{ s.when }}</span>{% endif %}
+        </div>
+        <h3 class="story__title" style="font-size:19px;">
           {% if s.url %}<a href="{{ s.url }}" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}
         </h3>
-        {% if s.summary %}<p class="card__summary">{{ s.summary }}</p>{% endif %}
-        {% if s.quote %}<blockquote class="card__quote">{{ s.quote }}</blockquote>{% endif %}
+        {% if s.summary %}<p class="story__summary">{{ s.summary }}</p>{% endif %}
+        {% if s.quote %}<blockquote class="story__quote">«{{ s.quote }}»</blockquote>{% endif %}
         {% if s.people and s.people.size > 0 %}
-        <ul class="card__people">
+        <ul class="story__people">
           {% for p in s.people %}
-          <li><strong>{{ p.name }}</strong>{% if p.role %} <span class="card__role">— {{ p.role }}</span>{% endif %}</li>
+          <li><span class="name">{{ p.name }}</span> {% if p.role %}<span class="role">— {{ p.role }}</span>{% endif %}</li>
           {% endfor %}
         </ul>
         {% endif %}
         {% if s.why_it_matters %}
-        <p class="card__why">
-          <span class="card__why-label">💡 Por qué importa</span>
-          <span class="card__why-text">{{ s.why_it_matters }}</span>
-        </p>
+        <div class="story__why">
+          <span class="story__why-label">Por qué importa</span>
+          <span>{{ s.why_it_matters }}</span>
+        </div>
         {% endif %}
         {% if s.context_glossary and s.context_glossary.size > 0 %}
-        <details class="card__glossary">
-          <summary>📖 Glosario</summary>
+        <details class="story__glossary">
+          <summary>📖 Glosario · {{ s.context_glossary.size }} términos</summary>
           <dl>
             {% for g in s.context_glossary %}
-            <dt>{{ g.term }}</dt>
-            <dd>{{ g.explain }}</dd>
+            <dt>{{ g.term }}</dt><dd>{{ g.explain }}</dd>
             {% endfor %}
           </dl>
         </details>
@@ -109,120 +221,198 @@ layout: default
       </article>
       {% endfor %}
     </div>
+    {% endif %}
   </section>
   {% endif %}
 
   {% if page.upcoming %}
-  <section id="que-viene" class="section section--upcoming">
-    <h2 class="section__title">📅 Qué viene</h2>
+  <section id="que-viene" class="br-section">
+    <header class="br-section__hd">
+      <h2 class="br-section__title">Qué viene</h2>
+      <p class="br-section__count">
+        {{ page.upcoming.next_24h.size | default: 0 }} hoy ·
+        {{ page.upcoming.next_7d.size | default: 0 }} esta semana
+      </p>
+    </header>
 
-    {% if page.upcoming.next_24h and page.upcoming.next_24h.size > 0 %}
-    <h3 class="section__sub">En las próximas 24 horas</h3>
-    <ul class="timeline">
-      {% for e in page.upcoming.next_24h %}
-      <li class="timeline__item">
-        <time class="timeline__when">{{ e.when }}</time>
-        <span class="timeline__title">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</span>
-        {% if e.where %}<span class="timeline__where">@ {{ e.where }}</span>{% endif %}
-        {% if e.who %}<span class="timeline__who">— {{ e.who | join: ', ' }}</span>{% endif %}
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+    <div class="br-calendar">
+      <!-- 24h -->
+      <div class="br-cal__col {% if page.upcoming.next_24h.size > 0 %}br-cal__col--today{% else %}br-cal__col--empty{% endif %}">
+        <header class="br-cal__hd">
+          <p class="eyebrow eyebrow--ink">Próximas 24 horas</p>
+          <span class="mono" style="font-size:11px; color:var(--ink-mute);">{% include date-es.html date=page.date short=true %}</span>
+        </header>
+        {% if page.upcoming.next_24h and page.upcoming.next_24h.size > 0 %}
+        <ol class="br-cal__list">
+          {% for e in page.upcoming.next_24h %}
+          <li class="br-cal__item">
+            <time class="mono">{{ e.when | split: " " | last }}</time>
+            <div>
+              <div class="br-cal__title">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</div>
+              {% if e.where %}<div class="br-cal__where">@ {{ e.where }}</div>{% endif %}
+              {% if e.who %}<div class="br-cal__who"><span class="minpill" style="font-size:9.5px;">{{ e.who | first | default: e.who }}</span></div>{% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+        {% else %}
+        <div class="br-cal__empty">
+          <p>Sin eventos confirmados.</p>
+        </div>
+        {% endif %}
+      </div>
 
-    {% if page.upcoming.next_7d and page.upcoming.next_7d.size > 0 %}
-    <h3 class="section__sub">En la próxima semana</h3>
-    <ul class="timeline">
-      {% for e in page.upcoming.next_7d %}
-      <li class="timeline__item">
-        <time class="timeline__when">{{ e.when }}</time>
-        <span class="timeline__title">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</span>
-        {% if e.where %}<span class="timeline__where">@ {{ e.where }}</span>{% endif %}
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+      <!-- 7d -->
+      <div class="br-cal__col {% unless page.upcoming.next_7d.size > 0 %}br-cal__col--empty{% endunless %}">
+        <header class="br-cal__hd">
+          <p class="eyebrow">Próxima semana</p>
+        </header>
+        {% if page.upcoming.next_7d and page.upcoming.next_7d.size > 0 %}
+        <ol class="br-cal__list">
+          {% for e in page.upcoming.next_7d %}
+          <li class="br-cal__item br-cal__item--mini">
+            <time class="mono">{{ e.when }}</time>
+            <div>
+              <div class="br-cal__title" style="font-size:13.5px;">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</div>
+              {% if e.where %}<div class="br-cal__where">@ {{ e.where }}</div>{% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+        {% else %}
+        <div class="br-cal__empty"><p>Sin eventos confirmados.</p></div>
+        {% endif %}
+      </div>
 
-    {% if page.upcoming.next_14d and page.upcoming.next_14d.size > 0 %}
-    <h3 class="section__sub">En las próximas dos semanas</h3>
-    <ul class="timeline">
-      {% for e in page.upcoming.next_14d %}
-      <li class="timeline__item">
-        <time class="timeline__when">{{ e.when }}</time>
-        <span class="timeline__title">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</span>
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+      <!-- 14d -->
+      <div class="br-cal__col {% unless page.upcoming.next_14d.size > 0 %}br-cal__col--empty{% endunless %}">
+        <header class="br-cal__hd">
+          <p class="eyebrow">Próximas 2 semanas</p>
+        </header>
+        {% if page.upcoming.next_14d and page.upcoming.next_14d.size > 0 %}
+        <ol class="br-cal__list">
+          {% for e in page.upcoming.next_14d %}
+          <li class="br-cal__item br-cal__item--mini">
+            <time class="mono">{{ e.when }}</time>
+            <div>
+              <div class="br-cal__title" style="font-size:13.5px;">{% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">{{ e.title }}</a>{% else %}{{ e.title }}{% endif %}</div>
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+        {% else %}
+        <div class="br-cal__empty">
+          <p>Sin eventos confirmados todavía.</p>
+          <p class="mono" style="font-size:11px; color:var(--ink-mute); margin-top:8px; letter-spacing:.02em;">la agenda se actualiza cada 6 h →</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
   </section>
   {% endif %}
 
   {% if page.ministry_feed and page.ministry_feed.size > 0 %}
-  <section id="ministerios" class="section section--ministries">
-    <h2 class="section__title">🏛️ Por ministerio</h2>
-    {% for m in page.ministry_feed %}
-      {% if m.items.size == 1 %}
-        {%- assign it = m.items | first -%}
-        <div class="ministry ministry--inline">
-          <p class="ministry__head ministry__head--inline">
-            <strong>{{ m.ministry }}</strong>
-            {% if m.minister %}<span class="ministry__minister">— {{ m.minister }}</span>{% endif %}
-          </p>
-          <p class="ministry__inline-item">
-            <time>{{ it.time }}</time>
-            {% if it.url %}<a href="{{ it.url }}" rel="noopener">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}
-          </p>
-          {% if it.summary %}<p class="ministry__summary">{{ it.summary }}</p>{% endif %}
-        </div>
-      {% else %}
-        <details class="ministry">
-          <summary class="ministry__head">
-            <strong>{{ m.ministry }}</strong>
-            {% if m.minister %}<span class="ministry__minister">— {{ m.minister }}</span>{% endif %}
-            <span class="ministry__count">({{ m.items.size }})</span>
-          </summary>
-          <ul class="ministry__items">
-            {% for it in m.items %}
-            <li>
-              <time>{{ it.time }}</time>
+  <section id="ministerios" class="br-section">
+    <header class="br-section__hd">
+      <h2 class="br-section__title">Por ministerio</h2>
+      <p class="br-section__count">{{ page.ministry_feed.size }} con actividad propia</p>
+    </header>
+
+    <div class="br-mfeed">
+      {% for m in page.ministry_feed %}
+        {%- comment -%}Find matching code from data{%- endcomment -%}
+        {%- assign m_code = "" -%}
+        {% for d in site.data.ministries %}
+          {%- if d.match == m.ministry or d.full == m.ministry or d.short == m.ministry -%}
+            {%- assign m_code = d.code -%}
+          {%- endif -%}
+        {% endfor %}
+        {% if m.items.size == 1 %}
+          {%- assign it = m.items | first -%}
+          <div class="br-mrow br-mrow--inline">
+            {% if m_code != "" %}<span class="minpill">{{ m_code }}</span>{% endif %}
+            <b>{{ m.ministry }}</b>
+            {% if m.minister %}<span class="br-mrow__min">— {{ m.minister }}</span>{% endif %}
+            {% if m.ministry == page.verification_subject.ministry %}<span class="chip chip--ok" style="margin-left:auto;">verificado hoy ✓</span>{% endif %}
+            <span class="br-mrow__bullet">
+              <time class="mono">{{ it.time }}</time>
               {% if it.url %}<a href="{{ it.url }}" rel="noopener">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}
-              {% if it.summary %}<p class="ministry__summary">{{ it.summary }}</p>{% endif %}
-            </li>
-            {% endfor %}
-          </ul>
-        </details>
-      {% endif %}
-    {% endfor %}
+            </span>
+          </div>
+        {% else %}
+          <details class="br-mrow" {% if forloop.first %}open{% endif %}>
+            <summary>
+              {% if m_code != "" %}<span class="minpill">{{ m_code }}</span>{% endif %}
+              <b>{{ m.ministry }}</b>
+              {% if m.minister %}<span class="br-mrow__min">— {{ m.minister }}</span>{% endif %}
+              <span class="br-mrow__count">{{ m.items.size }} notas</span>
+            </summary>
+            <ul class="br-mrow__items">
+              {% for it in m.items %}
+              <li>
+                <time>{{ it.time }}</time>
+                {% if it.url %}<a href="{{ it.url }}" rel="noopener">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}
+                {% if it.summary %}<p>{{ it.summary }}</p>{% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
+      {% endfor %}
+    </div>
   </section>
   {% endif %}
 
   {% if page.parlamento %}
-  <section id="parlamento" class="section section--parlamento">
-    <h2 class="section__title">📜 Parlamento</h2>
-
-    {% if page.parlamento.sesiones and page.parlamento.sesiones.size > 0 %}
-    <h3 class="section__sub">Sesiones de esta ventana</h3>
-    <ul>
-      {% for s in page.parlamento.sesiones %}
-      <li><time>{{ s.fecha }}</time> Sesión {{ s.sesion }} · {{ s.tipo }} · {% if s.pdf %}<a href="{{ s.pdf }}">PDF</a>{% endif %}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+  <section id="parlamento" class="br-section">
+    <header class="br-section__hd">
+      <h2 class="br-section__title">Parlamento</h2>
+      <p class="br-section__count">
+        {{ page.parlamento.asuntos_entrados.size | default: 0 }} proyectos ·
+        {{ page.parlamento.sesiones.size | default: 0 }} sesiones ·
+        {{ page.parlamento.leyes_promulgadas.size | default: 0 }} leyes
+      </p>
+    </header>
 
     {% if page.parlamento.asuntos_entrados and page.parlamento.asuntos_entrados.size > 0 %}
-    <h3 class="section__sub">Proyectos entrados ({{ page.parlamento.asuntos_entrados.size }})</h3>
-    <ul>
-      {% for a in page.parlamento.asuntos_entrados %}
-      <li><code>{{ a.codigo }}</code> · <time>{{ a.fecha }}</time> · {% if a.url %}<a href="{{ a.url }}">{{ a.titulo }}</a>{% else %}{{ a.titulo }}{% endif %}</li>
+    <table class="br-tbl">
+      <thead>
+        <tr>
+          <th>cód.</th>
+          <th>fecha</th>
+          <th>asunto</th>
+          <th>cámara</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in page.parlamento.asuntos_entrados %}
+        <tr>
+          <td>{{ a.codigo }}</td>
+          <td>{{ a.fecha }}</td>
+          <td>{% if a.url %}<a class="linklike" href="{{ a.url }}" rel="noopener">{{ a.titulo }}</a>{% else %}{{ a.titulo }}{% endif %}</td>
+          <td>
+            <span class="chip {% if a.camara == 'Senadores' %}chip--azul{% endif %}">{{ a.camara | default: "—" }}</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {% if page.parlamento.sesiones and page.parlamento.sesiones.size > 0 %}
+    <p class="eyebrow" style="margin-top:24px; margin-bottom:8px;">Sesiones de esta ventana</p>
+    <ul style="font-size: 13.5px; line-height: 1.6;">
+      {% for s in page.parlamento.sesiones %}
+      <li><time class="mono">{{ s.fecha }}</time> · Sesión {{ s.sesion }} · {{ s.tipo }} {% if s.pdf %}· <a class="linklike mono" href="{{ s.pdf }}">PDF</a>{% endif %}</li>
       {% endfor %}
     </ul>
     {% endif %}
 
     {% if page.parlamento.leyes_promulgadas and page.parlamento.leyes_promulgadas.size > 0 %}
-    <h3 class="section__sub">Leyes promulgadas en la ventana</h3>
-    <ul>
+    <p class="eyebrow" style="margin-top:24px; margin-bottom:8px;">Leyes promulgadas</p>
+    <ul style="font-size: 13.5px; line-height: 1.6;">
       {% for l in page.parlamento.leyes_promulgadas %}
-      <li>Ley <strong>{{ l.numero }}</strong> · <time>{{ l.fecha }}</time> · {% if l.url %}<a href="{{ l.url }}">{{ l.titulo }}</a>{% else %}{{ l.titulo }}{% endif %}</li>
+      <li>Ley <strong>{{ l.numero }}</strong> · <time class="mono">{{ l.fecha }}</time> · {% if l.url %}<a class="linklike" href="{{ l.url }}">{{ l.titulo }}</a>{% else %}{{ l.titulo }}{% endif %}</li>
       {% endfor %}
     </ul>
     {% endif %}
@@ -230,75 +420,90 @@ layout: default
   {% endif %}
 
   {% if page.verification_subject %}
-  <section id="verificacion" class="section section--meta">
-    <h3 class="section__sub">Verificación cruzada · detalle</h3>
-    <p class="meta__verification">
-      En cada ciclo cotejamos al menos una declaración pública con su fuente primaria.
-      Hoy revisamos a <strong>{{ page.verification_subject.minister }}</strong> ({{ page.verification_subject.ministry }}):
-      {% case page.verification_subject.result %}
-        {% when "ok" %}<span class="meta__result meta__result--ok">✅ las citas coinciden con la fuente oficial</span>
-        {% when "drift" %}<span class="meta__result meta__result--drift">⚠️ hay diferencias con la fuente oficial</span>
-        {% when "error" %}<span class="meta__result meta__result--error">❌ no pudo verificarse</span>
-        {% else %}<span class="meta__result">{{ page.verification_subject.result }}</span>
-      {% endcase %}.
-    </p>
-    {% if page.verification_subject.note %}
-    <p class="meta__verification-note">{{ page.verification_subject.note }}</p>
-    {% endif %}
-    <p class="meta__verification-link"><a href="{{ '/metodologia/' | relative_url }}#verificacion">¿Cómo verificamos? →</a></p>
+  <section id="verificacion" class="br-section">
+    <header class="br-section__hd">
+      <h2 class="br-section__title">Verificación cruzada · detalle</h2>
+    </header>
+    <div class="br-vbox br-vbox--{{ page.verification_subject.result | default: 'ok' }}">
+      <div class="br-vbox__head">
+        <span class="chip {% case page.verification_subject.result %}{% when 'ok' %}chip--ok{% when 'drift' %}chip--signal{% when 'error' %}chip--signal{% endcase %}">
+          {% case page.verification_subject.result %}{% when "ok" %}✓ coincide{% when "drift" %}⚠ diverge{% when "error" %}✕ error{% else %}{{ page.verification_subject.result }}{% endcase %}
+        </span>
+        <p style="font-size: 15px;">Hoy revisamos a <b>{{ page.verification_subject.minister }}</b>, {{ page.verification_subject.ministry }}.</p>
+      </div>
+      <p class="br-vbox__note">
+        En cada ciclo cotejamos al menos una declaración pública con su fuente primaria.
+        {% if page.verification_subject.note %}{{ page.verification_subject.note }}{% endif %}
+      </p>
+      <a class="linklike mono" style="font-size: 12px; color: var(--azul);" href="{{ '/metodologia/' | relative_url }}#verificacion">¿Cómo verificamos? → metodología</a>
+    </div>
   </section>
   {% endif %}
 
-  {% if page.quiet and page.quiet.size > 0 %}
-  <section class="section section--quiet">
-    <h3 class="section__sub">⚪ Sin novedades</h3>
-    {%- comment -%}
-      Two data shapes supported, depending on what the bot emitted:
-        A) array of short ministry names → render as chip row
-        B) array with a single long descriptive string → render as prose
-      Heuristic: if quiet has only 1 element AND that element is long (>40 chars),
-      treat as prose. Otherwise chip row.
-    {%- endcomment -%}
-    {%- assign first_quiet = page.quiet | first -%}
-    {%- assign first_quiet_str = first_quiet | default: "" -%}
-    {%- if page.quiet.size == 1 and first_quiet_str.size > 40 -%}
-    <p class="quiet__prose">{{ first_quiet_str }}</p>
-    {%- else -%}
-    <p class="quiet__intro">Ministerios sin novedades destacables en esta ventana:</p>
-    <ul class="quiet__chips">
-      {% for m in page.quiet %}
-      <li class="quiet__chip">{% if m.name %}{{ m.name }}{% if m.note %} <span class="quiet__chip-note">· {{ m.note }}</span>{% endif %}{% else %}{{ m }}{% endif %}</li>
-      {% endfor %}
-    </ul>
-    {%- endif -%}
+  <!-- Tail: quiet + sources off -->
+  {% if page.quiet and page.quiet.size > 0 or page.sources_off and page.sources_off.size > 0 %}
+  <section class="br-section br-section--tail">
+    <div class="br-tail">
+      {% if page.quiet and page.quiet.size > 0 %}
+      <div id="quiet" class="br-tail__box">
+        <p class="eyebrow eyebrow--ink" style="margin-bottom: 10px;">⚪ Sin novedades en esta ventana</p>
+        {%- assign first_quiet = page.quiet | first -%}
+        {%- assign first_quiet_str = first_quiet | default: "" -%}
+        {%- if page.quiet.size == 1 and first_quiet_str.size > 40 -%}
+        <p class="br-quiet__prose">{{ first_quiet_str }}</p>
+        {%- else -%}
+        <div class="br-quiet">
+          {% for m in page.quiet %}
+          <span class="chip chip--ghost">{% if m.name %}{{ m.name }}{% if m.note %} <em class="mono" style="font-style:normal; color:var(--ink-faint); margin-left:6px; font-size:10px;">· {{ m.note }}</em>{% endif %}{% else %}{{ m }}{% endif %}</span>
+          {% endfor %}
+        </div>
+        {%- endif -%}
+        <p class="mono" style="font-size: 11px; color: var(--ink-mute); margin-top: 12px; letter-spacing: .02em;">
+          ventana {{ page.window.from }} → {{ page.window.to }}
+        </p>
+      </div>
+      {% endif %}
+      {% if page.sources_off and page.sources_off.size > 0 %}
+      <div id="fuentes" class="br-tail__box br-tail__box--signal">
+        <p class="eyebrow eyebrow--signal" style="margin-bottom: 10px;">⚠ Fuentes con problemas</p>
+        <ul class="br-soff">
+          {% for s in page.sources_off %}
+          <li>
+            <code>{{ s.source }}</code>
+            <span>{{ s.reason }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <p class="mono" style="font-size: 11px; color: var(--signal); margin-top: 10px; letter-spacing: .02em;">
+          transparencia operativa · ver <a class="linklike" href="https://github.com/lezama/gob-uy-bot/blob/main/data/sources.yml">data/sources.yml</a>
+        </p>
+      </div>
+      {% endif %}
+    </div>
   </section>
   {% endif %}
 
-  {% if page.sources_off and page.sources_off.size > 0 %}
-  <section class="section section--off">
-    <details class="off__details">
-      <summary class="off__summary">⚠️ {{ page.sources_off.size }} {% if page.sources_off.size == 1 %}fuente con{% else %}fuentes con{% endif %} problemas en este ciclo</summary>
-      <ul class="off__list">
-        {% for s in page.sources_off %}
-        <li><code>{{ s.source }}</code> — {{ s.reason }}</li>
-        {% endfor %}
-      </ul>
-    </details>
-  </section>
-  {% endif %}
-
-  <nav class="paginator paginator--bottom" aria-label="Reportes adyacentes">
+  <!-- Paginator bottom -->
+  <nav class="br-pag br-pag--bottom" aria-label="Reportes adyacentes">
     {% if prev_post %}
-      <a class="paginator__prev" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %}</a>
-    {% else %}<span class="paginator__placeholder"></span>{% endif %}
-    <a class="paginator__index" href="{{ '/' | relative_url }}">Volver al listado</a>
+      <a class="br-pag__back" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %}</a>
+    {% else %}<span class="br-pag__placeholder br-pag__placeholder--empty"></span>{% endif %}
+    <a class="br-pag__index" href="{{ '/' | relative_url }}">Volver al archivo</a>
     {% if next_post %}
-      <a class="paginator__next" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
-    {% else %}<span class="paginator__placeholder"></span>{% endif %}
+      <a class="br-pag__back" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
+    {% else %}<span class="br-pag__placeholder mono">próximo ciclo en ~6 h</span>{% endif %}
   </nav>
 
-  <footer class="report__footer">
-    <p>Reporte generado por <a href="https://github.com/lezama/gob-uy-bot/blob/main/.github/copilot-instructions.md">gob-uy-bot</a> · ciclo #{{ page.cycle }} · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time> · ventana {{ page.window.from }} → {{ page.window.to }}</p>
-    <p>¿Detectaste un error o sesgo? <a href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Abrí un issue</a> o <a href="https://github.com/lezama/gob-uy-bot/edit/main/_posts/{{ page.path | split: '/' | last }}">editá este reporte directamente</a>.</p>
+  <footer class="br-footer">
+    <p>
+      Reporte generado por <a class="linklike" href="https://github.com/lezama/gob-uy-bot/blob/main/.github/copilot-instructions.md">gob-uy-bot</a>
+      · ciclo #{{ page.cycle }} · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time>
+      · ventana {{ page.window.from }} → {{ page.window.to }}
+    </p>
+    <p>
+      ¿Detectaste un error o sesgo?
+      <a class="linklike" href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Abrí un issue</a>
+      o <a class="linklike" href="https://github.com/lezama/gob-uy-bot/edit/main/_posts/{{ page.path | split: '/' | last }}">editá este reporte directamente</a>.
+    </p>
   </footer>
 </article>
