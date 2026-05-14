@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 12,
-  "last_run_at": "2026-05-14T02:30:00.579Z",
-  "verification_cursor": 12,
+  "cycle": 13,
+  "last_run_at": "2026-05-14T08:30:11.615Z",
+  "verification_cursor": 13,
   "verification_log": [
     {
       "cycle": 1,
@@ -87,6 +87,13 @@
       "at": "2026-05-14T02:30:00.579Z",
       "ministry": "Desarrollo Social",
       "minister": "Gonzalo Civila",
+      "result": "ok"
+    },
+    {
+      "cycle": 13,
+      "at": "2026-05-14T08:30:11.615Z",
+      "ministry": "Ambiente",
+      "minister": "Edgardo Ortuño",
       "result": "ok"
     }
   ],
@@ -202,6 +209,18 @@
     },
     {
       "at": "2026-05-13T19:44:02.494Z",
+      "source": "Subrayado / política",
+      "url": "https://www.subrayado.com.uy/politica",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-14T08:30:11.615Z",
+      "source": "Búsqueda / política",
+      "url": "https://www.busqueda.com.uy/politica",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-14T08:30:11.615Z",
       "source": "Subrayado / política",
       "url": "https://www.subrayado.com.uy/politica",
       "status": "403"
