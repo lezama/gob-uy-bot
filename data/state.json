@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 14,
-  "last_run_at": "2026-05-14T13:51:00.506Z",
-  "verification_cursor": 14,
+  "cycle": 15,
+  "last_run_at": "2026-05-14T19:30:02.120Z",
+  "verification_cursor": 15,
   "verification_log": [
     {
       "cycle": 1,
@@ -102,6 +102,14 @@
       "ministry": "Turismo",
       "minister": "Pablo Menoni",
       "result": "ok"
+    },
+    {
+      "cycle": 15,
+      "at": "2026-05-14T19:30:02.120Z",
+      "ministry": "Interior",
+      "minister": "Carlos Negro",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-interior/comunicacion/noticias devuelve sección de filtros vacía — sin noticias accesibles."
     }
   ],
   "drift_log": [],
@@ -248,6 +256,36 @@
       "at": "2026-05-14T13:51:00.506Z",
       "source": "Ministerio del Interior",
       "url": "https://www.gub.uy/ministerio-interior/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-14T19:30:02.120Z",
+      "source": "Búsqueda / política",
+      "url": "https://www.busqueda.com.uy/politica",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-14T19:30:02.120Z",
+      "source": "Subrayado / política",
+      "url": "https://www.subrayado.com.uy/politica",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-14T19:30:02.120Z",
+      "source": "Ministerio del Interior",
+      "url": "https://www.gub.uy/ministerio-interior/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-14T19:30:02.120Z",
+      "source": "Ministerio de Relaciones Exteriores",
+      "url": "https://www.gub.uy/ministerio-relaciones-exteriores/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-14T19:30:02.120Z",
+      "source": "Ministerio de Economía y Finanzas",
+      "url": "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias",
       "status": "empty_response"
     }
   ],
