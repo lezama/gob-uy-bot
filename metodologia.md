@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Metodología
+title: Sobre el bot
 permalink: /metodologia/
 ---
 
 <div class="prose-page" markdown="1">
 
-# Cómo funciona este bot
+# Sobre el bot
 
 > Una explicación honesta de cómo se generan los reportes diarios, qué fuentes usamos, cómo decidimos qué destacar, y qué dejamos afuera. Si encontrás un error o un sesgo, [reportalo](https://github.com/lezama/gob-uy-bot/issues/new/choose).
 

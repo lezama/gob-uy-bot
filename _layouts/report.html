@@ -22,24 +22,40 @@ layout: default
   <header class="report__header">
     <p class="report__updated">Actualizado: <time>{% include date-es.html date=page.date time=true %}</time></p>
     <h1 class="report__title">{{ page.title }}</h1>
-    <p class="report__window">
-      Ventana: <time>{{ page.window.from }}</time> → <time>{{ page.window.to }}</time>
+
+    {% if page.verification_subject %}
+    <p class="report__verification-badge">
+      {% case page.verification_subject.result %}
+        {% when "ok" %}<span class="report__verification-icon report__verification-icon--ok">✅</span>
+        {% when "drift" %}<span class="report__verification-icon report__verification-icon--drift">⚠️</span>
+        {% when "error" %}<span class="report__verification-icon report__verification-icon--error">❌</span>
+        {% else %}<span class="report__verification-icon">·</span>
+      {% endcase %}
+      Hoy verificamos a <strong>{{ page.verification_subject.minister }}</strong> ({{ page.verification_subject.ministry }}) —
+      {% case page.verification_subject.result %}
+        {% when "ok" %}coincide con la fuente oficial.
+        {% when "drift" %}hay diferencias con la fuente oficial.
+        {% when "error" %}no pudo verificarse.
+        {% else %}{{ page.verification_subject.result }}.
+      {% endcase %}
+      <a href="#verificacion" class="report__verification-more">Detalle ↓</a>
     </p>
+    {% endif %}
 
     <nav class="paginator paginator--top" aria-label="Reportes adyacentes">
       {% if prev_post %}
         <a class="paginator__prev" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %}</a>
-      {% else %}<span class="paginator__prev paginator__disabled">← anterior</span>{% endif %}
+      {% else %}<span class="paginator__placeholder"></span>{% endif %}
       <a class="paginator__index" href="{{ '/' | relative_url }}">Volver al listado</a>
       {% if next_post %}
         <a class="paginator__next" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
-      {% else %}<span class="paginator__next paginator__disabled">siguiente →</span>{% endif %}
+      {% else %}<span class="paginator__placeholder"></span>{% endif %}
     </nav>
   </header>
 
   <nav class="report-toc" aria-label="Secciones de este reporte">
     <ul>
-      {% if page.top_stories and page.top_stories.size > 0 %}<li><a href="#hoy">🔥 Hoy</a></li>{% endif %}
+      {% if page.top_stories and page.top_stories.size > 0 %}<li><a href="#recientes">🔥 Recientes</a></li>{% endif %}
       {% if page.upcoming %}<li><a href="#que-viene">📅 Qué viene</a></li>{% endif %}
       {% if page.ministry_feed and page.ministry_feed.size > 0 %}<li><a href="#ministerios">🏛️ Ministerios</a></li>{% endif %}
       {% if page.parlamento %}<li><a href="#parlamento">📜 Parlamento</a></li>{% endif %}
@@ -48,12 +64,19 @@ layout: default
   </nav>
 
   {% if page.top_stories and page.top_stories.size > 0 %}
-  <section id="hoy" class="section section--top">
-    <h2 class="section__title">🔥 Hoy</h2>
+  <section id="recientes" class="section section--top">
+    <h2 class="section__title">🔥 Recientes</h2>
     <div class="cards">
       {% for s in page.top_stories %}
       <article class="card card--top">
-        {% if s.source_label %}<p class="card__source">{{ s.source_label }}{% if s.when %} · <time>{{ s.when }}</time>{% endif %}</p>{% endif %}
+        {% if s.source_label %}
+          {%- assign label_parts = s.source_label | split: " / " -%}
+          <p class="card__source">
+            <span class="card__source-primary">{{ label_parts[0] }}</span>
+            {% if label_parts.size > 1 %}<span class="card__source-ministry">{{ label_parts[1] }}</span>{% endif %}
+            {% if s.when %}<span class="card__source-when"><time>{{ s.when }}</time></span>{% endif %}
+          </p>
+        {% endif %}
         <h3 class="card__title">
           {% if s.url %}<a href="{{ s.url }}" rel="noopener">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}
         </h3>
@@ -66,7 +89,12 @@ layout: default
           {% endfor %}
         </ul>
         {% endif %}
-        {% if s.why_it_matters %}<p class="card__why"><strong>Por qué importa:</strong> {{ s.why_it_matters }}</p>{% endif %}
+        {% if s.why_it_matters %}
+        <p class="card__why">
+          <span class="card__why-label">💡 Por qué importa</span>
+          <span class="card__why-text">{{ s.why_it_matters }}</span>
+        </p>
+        {% endif %}
         {% if s.context_glossary and s.context_glossary.size > 0 %}
         <details class="card__glossary">
           <summary>📖 Glosario</summary>
@@ -133,22 +161,37 @@ layout: default
   <section id="ministerios" class="section section--ministries">
     <h2 class="section__title">🏛️ Por ministerio</h2>
     {% for m in page.ministry_feed %}
-    <details class="ministry">
-      <summary class="ministry__head">
-        <strong>{{ m.ministry }}</strong>
-        {% if m.minister %}<span class="ministry__minister">— {{ m.minister }}</span>{% endif %}
-        <span class="ministry__count">({{ m.items.size }})</span>
-      </summary>
-      <ul class="ministry__items">
-        {% for it in m.items %}
-        <li>
-          <time>{{ it.time }}</time>
-          {% if it.url %}<a href="{{ it.url }}" rel="noopener">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}
+      {% if m.items.size == 1 %}
+        {%- assign it = m.items | first -%}
+        <div class="ministry ministry--inline">
+          <p class="ministry__head ministry__head--inline">
+            <strong>{{ m.ministry }}</strong>
+            {% if m.minister %}<span class="ministry__minister">— {{ m.minister }}</span>{% endif %}
+          </p>
+          <p class="ministry__inline-item">
+            <time>{{ it.time }}</time>
+            {% if it.url %}<a href="{{ it.url }}" rel="noopener">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}
+          </p>
           {% if it.summary %}<p class="ministry__summary">{{ it.summary }}</p>{% endif %}
-        </li>
-        {% endfor %}
-      </ul>
-    </details>
+        </div>
+      {% else %}
+        <details class="ministry">
+          <summary class="ministry__head">
+            <strong>{{ m.ministry }}</strong>
+            {% if m.minister %}<span class="ministry__minister">— {{ m.minister }}</span>{% endif %}
+            <span class="ministry__count">({{ m.items.size }})</span>
+          </summary>
+          <ul class="ministry__items">
+            {% for it in m.items %}
+            <li>
+              <time>{{ it.time }}</time>
+              {% if it.url %}<a href="{{ it.url }}" rel="noopener">{{ it.title }}</a>{% else %}{{ it.title }}{% endif %}
+              {% if it.summary %}<p class="ministry__summary">{{ it.summary }}</p>{% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% endif %}
     {% endfor %}
   </section>
   {% endif %}
@@ -188,7 +231,7 @@ layout: default
 
   {% if page.verification_subject %}
   <section id="verificacion" class="section section--meta">
-    <h3 class="section__sub">Verificación cruzada</h3>
+    <h3 class="section__sub">Verificación cruzada · detalle</h3>
     <p class="meta__verification">
       En cada ciclo cotejamos al menos una declaración pública con su fuente primaria.
       Hoy revisamos a <strong>{{ page.verification_subject.minister }}</strong> ({{ page.verification_subject.ministry }}):
@@ -209,33 +252,53 @@ layout: default
   {% if page.quiet and page.quiet.size > 0 %}
   <section class="section section--quiet">
     <h3 class="section__sub">⚪ Sin novedades</h3>
-    <p>{{ page.quiet | join: ', ' }}.</p>
+    {%- comment -%}
+      Two data shapes supported, depending on what the bot emitted:
+        A) array of short ministry names → render as chip row
+        B) array with a single long descriptive string → render as prose
+      Heuristic: if quiet has only 1 element AND that element is long (>40 chars),
+      treat as prose. Otherwise chip row.
+    {%- endcomment -%}
+    {%- assign first_quiet = page.quiet | first -%}
+    {%- assign first_quiet_str = first_quiet | default: "" -%}
+    {%- if page.quiet.size == 1 and first_quiet_str.size > 40 -%}
+    <p class="quiet__prose">{{ first_quiet_str }}</p>
+    {%- else -%}
+    <p class="quiet__intro">Ministerios sin novedades destacables en esta ventana:</p>
+    <ul class="quiet__chips">
+      {% for m in page.quiet %}
+      <li class="quiet__chip">{% if m.name %}{{ m.name }}{% if m.note %} <span class="quiet__chip-note">· {{ m.note }}</span>{% endif %}{% else %}{{ m }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+    {%- endif -%}
   </section>
   {% endif %}
 
   {% if page.sources_off and page.sources_off.size > 0 %}
   <section class="section section--off">
-    <h3 class="section__sub">⚠️ Fuentes con problemas</h3>
-    <ul>
-      {% for s in page.sources_off %}
-      <li><code>{{ s.source }}</code> — {{ s.reason }}</li>
-      {% endfor %}
-    </ul>
+    <details class="off__details">
+      <summary class="off__summary">⚠️ {{ page.sources_off.size }} {% if page.sources_off.size == 1 %}fuente con{% else %}fuentes con{% endif %} problemas en este ciclo</summary>
+      <ul class="off__list">
+        {% for s in page.sources_off %}
+        <li><code>{{ s.source }}</code> — {{ s.reason }}</li>
+        {% endfor %}
+      </ul>
+    </details>
   </section>
   {% endif %}
 
   <nav class="paginator paginator--bottom" aria-label="Reportes adyacentes">
     {% if prev_post %}
       <a class="paginator__prev" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %}</a>
-    {% else %}<span class="paginator__prev paginator__disabled">← anterior</span>{% endif %}
+    {% else %}<span class="paginator__placeholder"></span>{% endif %}
     <a class="paginator__index" href="{{ '/' | relative_url }}">Volver al listado</a>
     {% if next_post %}
       <a class="paginator__next" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
-    {% else %}<span class="paginator__next paginator__disabled">siguiente →</span>{% endif %}
+    {% else %}<span class="paginator__placeholder"></span>{% endif %}
   </nav>
 
   <footer class="report__footer">
-    <p>Reporte generado por <a href="https://github.com/lezama/gob-uy-bot/blob/main/.github/copilot-instructions.md">gob-uy-bot</a> · ciclo #{{ page.cycle }} · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time></p>
+    <p>Reporte generado por <a href="https://github.com/lezama/gob-uy-bot/blob/main/.github/copilot-instructions.md">gob-uy-bot</a> · ciclo #{{ page.cycle }} · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time> · ventana {{ page.window.from }} → {{ page.window.to }}</p>
     <p>¿Detectaste un error o sesgo? <a href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Abrí un issue</a> o <a href="https://github.com/lezama/gob-uy-bot/edit/main/_posts/{{ page.path | split: '/' | last }}">editá este reporte directamente</a>.</p>
   </footer>
 </article>

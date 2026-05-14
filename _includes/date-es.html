@@ -1,9 +1,10 @@
 {%- comment -%}
   Renders a date in Spanish.
   Usage:
-    {% include date-es.html date=page.date %}            → "14 de mayo de 2026"
-    {% include date-es.html date=page.date time=true %}  → "14 de mayo de 2026 · 08:30"
-    {% include date-es.html date=page.date short=true %} → "14 de mayo"
+    {% include date-es.html date=page.date %}                 → "14 de mayo de 2026"
+    {% include date-es.html date=page.date time=true %}       → "14 de mayo de 2026 · 08:30"
+    {% include date-es.html date=page.date short=true %}      → "14 de mayo"
+    {% include date-es.html date=page.date auto_year=true %}  → "14 de mayo" if same year as today, else full date
 {%- endcomment -%}
 {%- assign d = include.date -%}
 {%- assign day = d | date: "%-d" -%}
@@ -23,7 +24,14 @@
   {%- when "11" -%}{%- assign mes = "noviembre" -%}
   {%- when "12" -%}{%- assign mes = "diciembre" -%}
 {%- endcase -%}
-{%- if include.short -%}
+{%- if include.auto_year -%}
+  {%- assign current_year = site.time | date: "%Y" -%}
+  {%- if year == current_year -%}
+{{ day }} de {{ mes }}
+  {%- else -%}
+{{ day }} de {{ mes }} de {{ year }}
+  {%- endif -%}
+{%- elsif include.short -%}
 {{ day }} de {{ mes }}
 {%- else -%}
 {{ day }} de {{ mes }} de {{ year }}{%- if include.time %} · {{ d | date: "%H:%M" }}{% endif -%}
