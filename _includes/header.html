@@ -1,13 +1,38 @@
-<header class="site-header">
-  <div class="site-header__inner">
-    <a class="site-header__brand" href="{{ '/' | relative_url }}">
-      <span class="site-header__title">{{ site.title }}</span>
-    </a>
-    <nav class="site-header__nav">
-      <a href="{{ '/' | relative_url }}">Hoy</a>
-      <a href="{{ '/metodologia/' | relative_url }}">Sobre el bot</a>
-      <a href="{{ '/como-funciona/' | relative_url }}">El gobierno UY</a>
-      <a href="https://github.com/lezama/gob-uy-bot" rel="noopener">GitHub</a>
-    </nav>
+{%- comment -%}
+  Live cycle metadata derived from latest post.
+{%- endcomment -%}
+{%- assign latest = site.posts | first -%}
+
+<header class="mast">
+  <div class="mast__brand">
+    <a class="mast__logo" href="{{ '/' | relative_url }}">Hoy.uy</a>
+    <span class="mast__tag">Boletín del gobierno uruguayo</span>
   </div>
+  <nav class="mast__nav">
+    <a href="{{ '/' | relative_url }}"{% if page.url == "/" %} class="is-current"{% endif %}>Hoy</a>
+    <a href="{{ '/metodologia/' | relative_url }}"{% if page.url contains "metodologia" %} class="is-current"{% endif %}>Sobre el bot</a>
+    <a href="{{ '/como-funciona/' | relative_url }}"{% if page.url contains "como-funciona" %} class="is-current"{% endif %}>El gobierno UY</a>
+    <a href="https://github.com/lezama/gob-uy-bot" rel="noopener">GitHub</a>
+  </nav>
+  {% if latest %}
+  <div class="mast__meta mono">
+    <span class="live">ciclo #{{ latest.cycle | default: "?" }}</span>
+    <span>act. {{ latest.date | date: "%Y-%m-%d · %H:%M" }}</span>
+  </div>
+  {% endif %}
 </header>
+
+<style>
+  .mast__meta { display: flex; align-items: center; gap: 24px; font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+  .mast__meta .live { display: inline-flex; align-items: center; gap: 6px; }
+  .mast__meta .live::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ok);
+    animation: gob-pulse 2s ease-out infinite;
+  }
+  @keyframes gob-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(31,106,58,.5); }
+    70%  { box-shadow: 0 0 0 7px rgba(31,106,58,0); }
+    100% { box-shadow: 0 0 0 0 rgba(31,106,58,0); }
+  }
+</style>
