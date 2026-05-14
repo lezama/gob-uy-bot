@@ -9,4 +9,5 @@ vendor/
 .bundle/
 Gemfile.lock
 .tmp/
+.ux-review/
 

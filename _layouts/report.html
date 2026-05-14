@@ -2,18 +2,53 @@
 layout: default
 ---
 
+{%- comment -%}
+  Find adjacent reports by date (cycles within the same day collapse to one URL).
+  site.posts is sorted reverse-chronologically.
+{%- endcomment -%}
+{%- assign current_date = page.date | date: "%Y-%m-%d" -%}
+{%- assign prev_post = nil -%}
+{%- assign next_post = nil -%}
+{%- for p in site.posts -%}
+  {%- assign pdate = p.date | date: "%Y-%m-%d" -%}
+  {%- if pdate < current_date -%}
+    {%- if prev_post == nil -%}{%- assign prev_post = p -%}{%- endif -%}
+  {%- elsif pdate > current_date -%}
+    {%- assign next_post = p -%}
+  {%- endif -%}
+{%- endfor -%}
+
 <article class="report">
   <header class="report__header">
-    <p class="report__cycle">Ciclo #{{ page.cycle | default: "?" }}</p>
+    <p class="report__updated">Actualizado: <time>{% include date-es.html date=page.date time=true %}</time></p>
     <h1 class="report__title">{{ page.title }}</h1>
     <p class="report__window">
-      Ventana: <time>{{ page.window.from }}</time> →
-      <time>{{ page.window.to }}</time>
+      Ventana: <time>{{ page.window.from }}</time> → <time>{{ page.window.to }}</time>
     </p>
+
+    <nav class="paginator paginator--top" aria-label="Reportes adyacentes">
+      {% if prev_post %}
+        <a class="paginator__prev" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %}</a>
+      {% else %}<span class="paginator__prev paginator__disabled">← anterior</span>{% endif %}
+      <a class="paginator__index" href="{{ '/' | relative_url }}">Volver al listado</a>
+      {% if next_post %}
+        <a class="paginator__next" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
+      {% else %}<span class="paginator__next paginator__disabled">siguiente →</span>{% endif %}
+    </nav>
   </header>
 
+  <nav class="report-toc" aria-label="Secciones de este reporte">
+    <ul>
+      {% if page.top_stories and page.top_stories.size > 0 %}<li><a href="#hoy">🔥 Hoy</a></li>{% endif %}
+      {% if page.upcoming %}<li><a href="#que-viene">📅 Qué viene</a></li>{% endif %}
+      {% if page.ministry_feed and page.ministry_feed.size > 0 %}<li><a href="#ministerios">🏛️ Ministerios</a></li>{% endif %}
+      {% if page.parlamento %}<li><a href="#parlamento">📜 Parlamento</a></li>{% endif %}
+      {% if page.verification_subject %}<li><a href="#verificacion">Verificación</a></li>{% endif %}
+    </ul>
+  </nav>
+
   {% if page.top_stories and page.top_stories.size > 0 %}
-  <section class="section section--top">
+  <section id="hoy" class="section section--top">
     <h2 class="section__title">🔥 Hoy</h2>
     <div class="cards">
       {% for s in page.top_stories %}
@@ -50,7 +85,7 @@ layout: default
   {% endif %}
 
   {% if page.upcoming %}
-  <section class="section section--upcoming">
+  <section id="que-viene" class="section section--upcoming">
     <h2 class="section__title">📅 Qué viene</h2>
 
     {% if page.upcoming.next_24h and page.upcoming.next_24h.size > 0 %}
@@ -95,7 +130,7 @@ layout: default
   {% endif %}
 
   {% if page.ministry_feed and page.ministry_feed.size > 0 %}
-  <section class="section section--ministries">
+  <section id="ministerios" class="section section--ministries">
     <h2 class="section__title">🏛️ Por ministerio</h2>
     {% for m in page.ministry_feed %}
     <details class="ministry">
@@ -119,7 +154,7 @@ layout: default
   {% endif %}
 
   {% if page.parlamento %}
-  <section class="section section--parlamento">
+  <section id="parlamento" class="section section--parlamento">
     <h2 class="section__title">📜 Parlamento</h2>
 
     {% if page.parlamento.sesiones and page.parlamento.sesiones.size > 0 %}
@@ -152,12 +187,22 @@ layout: default
   {% endif %}
 
   {% if page.verification_subject %}
-  <section class="section section--meta">
-    <h3 class="section__sub">Verificación de este ciclo</h3>
+  <section id="verificacion" class="section section--meta">
+    <h3 class="section__sub">Verificación cruzada</h3>
     <p class="meta__verification">
-      <strong>{{ page.verification_subject.minister }}</strong> ({{ page.verification_subject.ministry }}) —
-      <span class="meta__result meta__result--{{ page.verification_subject.result }}">{{ page.verification_subject.result }}</span>
+      En cada ciclo cotejamos al menos una declaración pública con su fuente primaria.
+      Hoy revisamos a <strong>{{ page.verification_subject.minister }}</strong> ({{ page.verification_subject.ministry }}):
+      {% case page.verification_subject.result %}
+        {% when "ok" %}<span class="meta__result meta__result--ok">✅ las citas coinciden con la fuente oficial</span>
+        {% when "drift" %}<span class="meta__result meta__result--drift">⚠️ hay diferencias con la fuente oficial</span>
+        {% when "error" %}<span class="meta__result meta__result--error">❌ no pudo verificarse</span>
+        {% else %}<span class="meta__result">{{ page.verification_subject.result }}</span>
+      {% endcase %}.
     </p>
+    {% if page.verification_subject.note %}
+    <p class="meta__verification-note">{{ page.verification_subject.note }}</p>
+    {% endif %}
+    <p class="meta__verification-link"><a href="{{ '/metodologia/' | relative_url }}#verificacion">¿Cómo verificamos? →</a></p>
   </section>
   {% endif %}
 
@@ -178,6 +223,16 @@ layout: default
     </ul>
   </section>
   {% endif %}
+
+  <nav class="paginator paginator--bottom" aria-label="Reportes adyacentes">
+    {% if prev_post %}
+      <a class="paginator__prev" href="{{ prev_post.url | relative_url }}">← {% include date-es.html date=prev_post.date short=true %}</a>
+    {% else %}<span class="paginator__prev paginator__disabled">← anterior</span>{% endif %}
+    <a class="paginator__index" href="{{ '/' | relative_url }}">Volver al listado</a>
+    {% if next_post %}
+      <a class="paginator__next" href="{{ next_post.url | relative_url }}">{% include date-es.html date=next_post.date short=true %} →</a>
+    {% else %}<span class="paginator__next paginator__disabled">siguiente →</span>{% endif %}
+  </nav>
 
   <footer class="report__footer">
     <p>Reporte generado por <a href="https://github.com/lezama/gob-uy-bot/blob/main/.github/copilot-instructions.md">gob-uy-bot</a> · ciclo #{{ page.cycle }} · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time></p>

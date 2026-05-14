@@ -10,8 +10,8 @@ title: Hoy en el gobierno uruguayo
     Generada cada 6 horas por un bot autónomo, con lenguaje claro y fuentes linkeadas.
   </p>
   <p class="hero__nav">
-    <a href="{{ '/como-funciona/' | relative_url }}">¿Cómo funciona el gobierno UY?</a> ·
-    <a href="https://github.com/lezama/gob-uy-bot">código en GitHub</a> ·
+    <a href="{{ '/metodologia/' | relative_url }}">¿Cómo funciona este bot?</a> ·
+    <a href="{{ '/como-funciona/' | relative_url }}">Gobierno uruguayo</a> ·
     <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
   </p>
 </section>
@@ -24,7 +24,8 @@ title: Hoy en el gobierno uruguayo
 </section>
 {% else %}
 
-{% assign latest = site.posts | first %}
+{%- assign latest = site.posts | first -%}
+{%- assign top = latest.top_stories | first -%}
 
 <section class="latest">
   <p class="latest__label">Último reporte</p>
@@ -33,47 +34,60 @@ title: Hoy en el gobierno uruguayo
       <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
     </h2>
     <p class="latest__meta">
-      <time>{{ latest.date | date: "%-d de %B, %Y · %H:%M" }}</time>
-      {% if latest.cycle %} · ciclo #{{ latest.cycle }}{% endif %}
+      Actualizado: <time>{% include date-es.html date=latest.date time=true %}</time>
     </p>
-    {% if latest.top_stories and latest.top_stories.size > 0 %}
-    <p class="latest__teaser">
-      <strong>{{ latest.top_stories.size }} top stories hoy</strong>
-      {% if latest.upcoming and latest.upcoming.next_24h %} · {{ latest.upcoming.next_24h.size }} eventos próximos{% endif %}
-    </p>
-    <ul class="latest__topics">
-      {% for s in latest.top_stories limit: 3 %}
-      <li>{{ s.title | truncate: 90 }}</li>
-      {% endfor %}
-    </ul>
+
+    {% if top %}
+    <div class="latest__preview">
+      {% if top.source_label %}<p class="latest__source">{{ top.source_label }}{% if top.when %} · <time>{{ top.when }}</time>{% endif %}</p>{% endif %}
+      <p class="latest__headline">
+        {% if top.url %}<a href="{{ top.url }}" rel="noopener">{{ top.title }}</a>{% else %}{{ top.title }}{% endif %}
+      </p>
+    </div>
     {% endif %}
+
+    {%- assign extra_stories = latest.top_stories.size | minus: 1 -%}
+    {%- assign upcoming_24h = latest.upcoming.next_24h | size -%}
+    <p class="latest__teaser">
+      {% if extra_stories > 0 %}+{{ extra_stories }} {% if extra_stories == 1 %}story{% else %}stories{% endif %} más{% endif %}
+      {% if extra_stories > 0 and upcoming_24h > 0 %} · {% endif %}
+      {% if upcoming_24h > 0 %}{{ upcoming_24h }} {% if upcoming_24h == 1 %}evento próximo{% else %}eventos próximos{% endif %}{% endif %}
+    </p>
+
     <p><a class="latest__cta" href="{{ latest.url | relative_url }}">Ver reporte completo →</a></p>
   </article>
 </section>
 
 {% if site.posts.size > 1 %}
+{%- assign by_date = site.posts | group_by_exp: "p", "p.date | date: '%Y-%m-%d'" -%}
+{% if by_date.size > 1 %}
 <section class="archive">
   <h2 class="section__title">Reportes anteriores</h2>
   <ul class="archive__list">
-    {% for post in site.posts limit: 30 offset: 1 %}
-    <li>
-      <time>{{ post.date | date: "%Y-%m-%d" }}</time>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </li>
+    {% for group in by_date offset: 1 limit: 30 %}
+      {%- assign post = group.items | first -%}
+      {%- assign post_top = post.top_stories | first -%}
+      {%- assign post_extra = post.top_stories.size | minus: 1 -%}
+      <li class="archive__item">
+        <time class="archive__date">{% include date-es.html date=post.date short=true %}</time>
+        <a class="archive__link" href="{{ post.url | relative_url }}">
+          {% if post_top %}{{ post_top.title | truncate: 80 }}{% else %}{{ post.title }}{% endif %}
+        </a>
+        {% if post_extra > 0 %}<span class="archive__more">+{{ post_extra }} más</span>{% endif %}
+      </li>
     {% endfor %}
   </ul>
 </section>
+{% endif %}
 {% endif %}
 
 {% endif %}
 
 <section class="invite">
-  <h2 class="section__title">Cómo colaborar</h2>
-  <p>Este sitio se mejora con PRs. Lugares concretos donde aportar:</p>
-  <ul>
-    <li>Sugerí una <strong>fuente nueva</strong> editando <a href="https://github.com/lezama/gob-uy-bot/edit/main/data/sources.yml"><code>data/sources.yml</code></a></li>
-    <li>Mejorá <strong>cómo el bot prioriza</strong> editando <a href="https://github.com/lezama/gob-uy-bot/edit/main/data/prompts/03-curate.md"><code>data/prompts/03-curate.md</code></a></li>
-    <li>Agregá un <strong>término al glosario</strong> en <a href="https://github.com/lezama/gob-uy-bot/edit/main/data/sources.yml"><code>sources.yml#glossary</code></a></li>
-    <li>Reportá un <strong>bias o error</strong> abriendo un <a href="https://github.com/lezama/gob-uy-bot/issues/new/choose">issue</a></li>
-  </ul>
+  <h2 class="section__title">¿Encontraste algo raro?</h2>
+  <p>Este sitio se mejora con feedback. Si viste un error, un sesgo, o algo que falta:</p>
+  <p class="invite__ctas">
+    <a class="invite__cta invite__cta--primary" href="https://github.com/lezama/gob-uy-bot/issues/new/choose">Reportá un error o bias</a>
+    <a class="invite__cta invite__cta--secondary" href="https://github.com/lezama/gob-uy-bot/blob/main/CONTRIBUTING.md" rel="noopener">Cómo contribuir →</a>
+  </p>
 </section>

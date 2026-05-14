@@ -1,0 +1,30 @@
+{%- comment -%}
+  Renders a date in Spanish.
+  Usage:
+    {% include date-es.html date=page.date %}            → "14 de mayo de 2026"
+    {% include date-es.html date=page.date time=true %}  → "14 de mayo de 2026 · 08:30"
+    {% include date-es.html date=page.date short=true %} → "14 de mayo"
+{%- endcomment -%}
+{%- assign d = include.date -%}
+{%- assign day = d | date: "%-d" -%}
+{%- assign month_num = d | date: "%m" -%}
+{%- assign year = d | date: "%Y" -%}
+{%- case month_num -%}
+  {%- when "01" -%}{%- assign mes = "enero" -%}
+  {%- when "02" -%}{%- assign mes = "febrero" -%}
+  {%- when "03" -%}{%- assign mes = "marzo" -%}
+  {%- when "04" -%}{%- assign mes = "abril" -%}
+  {%- when "05" -%}{%- assign mes = "mayo" -%}
+  {%- when "06" -%}{%- assign mes = "junio" -%}
+  {%- when "07" -%}{%- assign mes = "julio" -%}
+  {%- when "08" -%}{%- assign mes = "agosto" -%}
+  {%- when "09" -%}{%- assign mes = "septiembre" -%}
+  {%- when "10" -%}{%- assign mes = "octubre" -%}
+  {%- when "11" -%}{%- assign mes = "noviembre" -%}
+  {%- when "12" -%}{%- assign mes = "diciembre" -%}
+{%- endcase -%}
+{%- if include.short -%}
+{{ day }} de {{ mes }}
+{%- else -%}
+{{ day }} de {{ mes }} de {{ year }}{%- if include.time %} · {{ d | date: "%H:%M" }}{% endif -%}
+{%- endif -%}

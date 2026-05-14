@@ -5,6 +5,7 @@ description: >-
   los próximos días. Generada y mantenida por GitHub Copilot vía PRs.
 url: "https://lezama.github.io"
 baseurl: "/gob-uy-bot"
+repository: lezama/gob-uy-bot
 author: lezama
 lang: es-UY
 
@@ -14,6 +15,11 @@ permalink: /:year/:month/:day/
 # que el agent calcula al momento de generar. Si el build de Pages corre
 # antes que esa hora UTC, Jekyll los skipea por default. Esto lo evita.
 future: true
+
+# Interpret dates in Uruguay time so a post stamped at 01:58 -0300 doesn't
+# land in the previous day's permalink when the build runner happens to be
+# in a tz west of UTC. Affects permalinks AND `| date:` filter output.
+timezone: America/Montevideo
 
 # Plugins
 plugins:

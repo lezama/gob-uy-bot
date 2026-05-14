@@ -4,6 +4,8 @@ title: ¿Cómo funciona el gobierno uruguayo?
 permalink: /como-funciona/
 ---
 
+<div class="prose-page" markdown="1">
+
 # ¿Cómo funciona el gobierno uruguayo?
 
 > Una guía rápida para entender qué hace cada parte del Estado uruguayo. Pensada para complementar los reportes diarios. **¿Querés mejorarla?** [Editá esta página vía PR](https://github.com/lezama/gob-uy-bot/edit/main/como-funciona.md).
@@ -148,3 +150,7 @@ Esta página existe para **bajar la barrera de entrada** a entender la política
 - O **abrí un issue** sugiriendo qué agregar/cambiar
 
 No hace falta ser experto — si vos no entendiste algo del primer intento, tu feedback ya es valioso.
+
+<p class="exit-ramp">Ahora que sabés cómo funciona el gobierno, <a href="{{ '/' | relative_url }}">mirá qué hizo hoy →</a></p>
+
+</div>
