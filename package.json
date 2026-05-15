@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "gob-uy-bot-scripts",
+  "version": "0.0.0",
+  "description": "Scripts auxiliares del agente — solo Playwright por ahora, para fallback de browser real cuando curl no alcanza. Pin de versión exacta para que el workflow no se sorprenda con un major en pleno ciclo.",
+  "scripts": {
+    "fetch": "node scripts/fetch-browser.js"
+  },
+  "dependencies": {
+    "playwright": "1.48.0"
+  }
+}

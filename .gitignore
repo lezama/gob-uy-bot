@@ -10,4 +10,6 @@ vendor/
 Gemfile.lock
 .tmp/
 .ux-review/
+node_modules/
+package-lock.json
 
