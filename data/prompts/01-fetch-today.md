@@ -102,12 +102,81 @@ items:
     # etc
 ```
 
+## Cascada de fallbacks (cuando una fuente falla)
+
+El `curl` simple falla en tres escenarios bastante distintos. Antes de
+declarar la fuente "off" y dejarla en `sources_off`, intentá esta cascada
+en orden:
+
+### Nivel 1 — HTTP fetch (default)
+
+```bash
+curl -sL --max-time 15 -A "Mozilla/5.0 ..." "$url"
+```
+
+Suele funcionar para sitios estáticos y endpoints JSON oficiales.
+
+### Nivel 2 — Browser real (Playwright)
+
+Si Nivel 1 devuelve 4xx, body vacío, o un placeholder de JS-app no
+hidratado, usá:
+
+```bash
+scripts/fetch-browser.sh "$url" --screenshot
+# stdout: HTML renderizado por Chromium real
+# stderr: STATUS <code> + SCREENSHOT <path>
+# exit 0: ok · 2: 4xx/5xx · 3: body sospechoso · 1: error
+```
+
+**Cuándo usar Nivel 2:**
+
+- **Sitios JS-rendered** (`montevideo.com.uy` historicamente).
+- **Sitios que bloquean por user-agent** (algunos ministerios).
+- **Paywalled** (`busqueda.com.uy`, `subrayado.com.uy`, `ladiaria.com.uy`
+  para no suscriptores): el navegador real ve el lede + headline que
+  están arriba de la wall. Extraé eso; **no intentes saltear la wall**
+  (eso es scraping abusivo y rompe con los términos del medio).
+
+El screenshot queda en `.tmp/screenshots/<sha>.png` — evidencia visual
+de lo que el bot vio. NO comitear (está en `.gitignore`).
+
+### Nivel 3 — Wayback Machine
+
+Si Nivel 2 también falla (404 persistente, dominio movido), pedile a
+Internet Archive un snapshot:
+
+```bash
+scripts/wayback-fallback.sh "$url"
+# SNAPSHOT <archive-url>   → usá esa URL
+# TRIGGERED <save-url>     → archivó ahora, volvé en el próximo ciclo
+# NONE                     → de verdad no hay nada; declarar off
+```
+
+Si conseguís un snapshot, usalo como `url` en el reporte pero **marcalo
+explícitamente** en el `source_label` (ej: `LA DIARIA / archive.org`)
+para que el lector sepa que está viendo una versión preservada.
+
+### Nivel 4 — Declarar off
+
+Si los 3 fallaron, agregá la fuente a `sources_off` con razón específica:
+
+```yaml
+- source: "El Observador / política"
+  reason: "URL 404 persistente · sin snapshot en Wayback · ciclos fallidos: 4"
+```
+
+Y registralo en `state.json#failed_sources_log` con timestamp + nivel
+que falló. Si una fuente acumula 5+ ciclos en Nivel 4, abrí un issue
+separado titulado `[fuentes] revisar URL de X` para que un humano la
+mueva a `_quarantine` o le encuentre el endpoint nuevo.
+
 ## Reglas
 
 - ❌ **No inventes** items. Si una fuente devuelve vacío, marcá `items_count: 0` y seguí.
 - ❌ **No persistas** este raw output al repo. Es scratch del ciclo.
+- ❌ **No uses Playwright para saltear paywalls** — solo para leer lo que el medio sí muestra antes de la wall (típicamente headline + primer párrafo).
 - ✅ Si encontrás un nuevo endpoint JSON oficial que no está en `data/sources.yml`, mencionalo en el PR del día (commit separado: "discovered new source X").
-- ✅ Si una fuente está caída, **registralo** en `state.json#failed_sources_log` con timestamp.
+- ✅ Si una fuente está caída, **registralo** en `state.json#failed_sources_log` con timestamp + nivel de fallback que falló.
 
 ## Próximo paso
 

@@ -35,6 +35,19 @@ jobs:
           sudo mv /tmp/pup_bin/pup /usr/local/bin/pup
           sudo chmod +x /usr/local/bin/pup
 
+      - name: Setup Node 20 (para scripts/fetch-browser.js)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Playwright + Chromium
+        # Fallback de browser real para sitios JS-rendered, UA-blocked
+        # o paywalled (lee el lede que renderiza antes de la wall).
+        # Usado por scripts/fetch-browser.js cuando un curl normal falla.
+        run: |
+          npm install --no-save playwright@1.48.0
+          npx playwright install chromium --with-deps
+
       - name: Verify tools available
         run: |
           echo "=== Verificando herramientas ==="
@@ -43,5 +56,6 @@ jobs:
           gh --version
           htmlq --version || echo "htmlq ok"
           pup --version || echo "pup ok"
+          node --version
+          node -e "require('playwright').chromium.launch().then(b => b.close()).then(() => console.log('playwright ok'))"
           echo "=== Todo listo para el agent ==="
-
