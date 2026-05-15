@@ -244,9 +244,10 @@ press:
 
   montevideo_portal:
     name: "Montevideo Portal"
-    url: "https://www.montevideo.com.uy/Noticias/Politica"
-    enabled: false
-    status: 404
+    url: "https://montevideo.com.uy/Noticias/Politica"
+    enabled: true
+    status: ok
+    _note: "URL apex (sin www) para matchear el rule exacto `montevideo.com.uy` del allowlist del Copilot agent. Ambas variantes www/apex resuelven al mismo contenido — verificado curl + Playwright. Si vuelve a fallar, primero verificar el allowlist."
 
 # ---- Personas — watchlist ----
 # El bot las cruza con las menciones encontradas en news/agendas para tagear cards.
