@@ -237,10 +237,10 @@ press:
 
   elobservador:
     name: "El Observador"
-    url: "https://www.elobservador.com.uy/seccion/politica"
-    enabled: false
-    status: 404
-    _note: "URL antigua dio 404; investigar URL correcta y reabrir vía PR."
+    url: "https://www.elobservador.com.uy/nacional"
+    enabled: true
+    status: ok
+    _note: "URL anterior /seccion/politica dio 404 a partir del 2026-05-11. El medio reestructuró URLs: la sección de actualidad doméstica ahora vive en /nacional — el <title> dice literal 'Noticias de política de Uruguay - El Observador'. Verificado con curl. Requiere elobservador.com.uy en el allowlist del Copilot agent."
 
   montevideo_portal:
     name: "Montevideo Portal"
