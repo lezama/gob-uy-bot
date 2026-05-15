@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 19,
-  "last_run_at": "2026-05-15T12:57:57.493Z",
-  "verification_cursor": 19,
+  "cycle": 20,
+  "last_run_at": "2026-05-15T13:29:27Z",
+  "verification_cursor": 20,
   "verification_log": [
     {
       "cycle": 1,
@@ -133,6 +133,13 @@
       "minister": "José Carlos Mahía",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-educacion-cultura/comunicacion/noticias devuelve sección de filtros vacía — sin noticias accesibles."
+    },
+    {
+      "cycle": 20,
+      "at": "2026-05-15T13:29:27Z",
+      "ministry": "Transporte y Obras Públicas",
+      "minister": "Lucía Etcheverry",
+      "result": "ok"
     }
   ],
   "drift_log": [],
@@ -364,6 +371,18 @@
       "source": "Montevideo Portal / política",
       "url": "https://www.montevideo.com.uy/Noticias/Politica",
       "status": "fetch_failed_browser_dns_wayback_none"
+    },
+    {
+      "at": "2026-05-15T13:29:27Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-15T13:29:27Z",
+      "source": "Presidencia / calendario",
+      "url": "https://www.gub.uy/presidencia/comunicacion/calendario-actividades",
+      "status": "fetch_failed_browser_timeout_wayback_none"
     }
   ],
   "bias_log": [],
