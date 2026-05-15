@@ -36,11 +36,20 @@ const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
   "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  // ignoreHTTPSErrors + --ignore-certificate-errors:
+  // El sandbox del Copilot Agent ha mostrado ERR_CERT_AUTHORITY_INVALID
+  // contra busqueda.com.uy y subrayado.com.uy (proxy/CA chain del entorno).
+  // El uso es read-only de noticias públicas — sin credenciales — así que
+  // saltear la validación de cert no expone datos sensibles.
+  const browser = await chromium.launch({
+    headless: true,
+    args: ["--ignore-certificate-errors"],
+  });
   const ctx = await browser.newContext({
     userAgent: UA,
     locale: "es-UY",
     viewport: { width: 1280, height: 900 },
+    ignoreHTTPSErrors: true,
   });
   const page = await ctx.newPage();
 

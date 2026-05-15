@@ -142,8 +142,9 @@ de lo que el bot vio. NO comitear (está en `.gitignore`).
 
 ### Nivel 3 — Wayback Machine
 
-Si Nivel 2 también falla (404 persistente, dominio movido), pedile a
-Internet Archive un snapshot:
+Si Nivel 2 **falla por cualquier razón** — 404, dominio movido, TLS
+broken en el sandbox, DNS bloqueado, timeout, body vacío — pedile a
+Internet Archive un snapshot antes de declarar la fuente off:
 
 ```bash
 scripts/wayback-fallback.sh "$url"
