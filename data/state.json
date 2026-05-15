@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 15,
-  "last_run_at": "2026-05-14T19:30:02.120Z",
-  "verification_cursor": 15,
+  "cycle": 16,
+  "last_run_at": "2026-05-15T02:28:23.343Z",
+  "verification_cursor": 16,
   "verification_log": [
     {
       "cycle": 1,
@@ -110,6 +110,14 @@
       "minister": "Carlos Negro",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-interior/comunicacion/noticias devuelve sección de filtros vacía — sin noticias accesibles."
+    },
+    {
+      "cycle": 16,
+      "at": "2026-05-15T02:28:23.343Z",
+      "ministry": "Relaciones Exteriores",
+      "minister": "Mario Lubetkin",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-relaciones-exteriores/comunicacion/noticias devuelve sección de filtros vacía — sin noticias accesibles."
     }
   ],
   "drift_log": [],
@@ -286,6 +294,30 @@
       "at": "2026-05-14T19:30:02.120Z",
       "source": "Ministerio de Economía y Finanzas",
       "url": "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-15T02:28:23.343Z",
+      "source": "Ministerio de Relaciones Exteriores",
+      "url": "https://www.gub.uy/ministerio-relaciones-exteriores/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-15T02:28:23.343Z",
+      "source": "Ministerio de Economía y Finanzas",
+      "url": "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-15T02:28:23.343Z",
+      "source": "Ministerio de Desarrollo Social",
+      "url": "https://www.gub.uy/ministerio-desarrollo-social/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-15T02:28:23.343Z",
+      "source": "Ministerio de Turismo",
+      "url": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias",
       "status": "empty_response"
     }
   ],
