@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 21,
-  "last_run_at": "2026-05-15T13:48:36Z",
-  "verification_cursor": 21,
+  "cycle": 22,
+  "last_run_at": "2026-05-15T19:21:50Z",
+  "verification_cursor": 22,
   "verification_log": [
     {
       "cycle": 1,
@@ -147,6 +147,14 @@
       "ministry": "Industria, Energía y Minería",
       "minister": "Fernanda Cardona",
       "result": "ok"
+    },
+    {
+      "cycle": 22,
+      "at": "2026-05-15T19:21:50Z",
+      "ministry": "Trabajo y Seguridad Social",
+      "minister": "Juan Castillo",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias devolvió cuerpo vacío (0 bytes) — sin fallback Playwright disponible en este entorno."
     }
   ],
   "drift_log": [],
@@ -390,6 +398,36 @@
       "source": "Presidencia / calendario",
       "url": "https://www.gub.uy/presidencia/comunicacion/calendario-actividades",
       "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-15T19:21:50Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "fetch_failed_curl_empty"
+    },
+    {
+      "at": "2026-05-15T19:21:50Z",
+      "source": "Ministerio de Trabajo y Seguridad Social",
+      "url": "https://www.gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-15T19:21:50Z",
+      "source": "Búsqueda / política",
+      "url": "https://www.busqueda.com.uy/politica",
+      "status": "fetch_failed_browser_tls"
+    },
+    {
+      "at": "2026-05-15T19:21:50Z",
+      "source": "Subrayado / política",
+      "url": "https://www.subrayado.com.uy/politica",
+      "status": "fetch_failed_browser_tls"
+    },
+    {
+      "at": "2026-05-15T19:21:50Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "fetch_failed_browser_dns"
     }
   ],
   "bias_log": [],
