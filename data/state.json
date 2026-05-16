@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 22,
-  "last_run_at": "2026-05-15T19:21:36Z",
-  "verification_cursor": 22,
+  "cycle": 23,
+  "last_run_at": "2026-05-16T02:11:12Z",
+  "verification_cursor": 23,
   "verification_log": [
     {
       "cycle": 1,
@@ -155,6 +155,14 @@
       "minister": "Juan Castillo",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias devuelve respuesta vacía (HTTP 200 sin contenido)."
+    },
+    {
+      "cycle": 23,
+      "at": "2026-05-16T02:11:12Z",
+      "ministry": "Salud Pública",
+      "minister": "Cristina Lustemberg",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-salud-publica agotó timeout en navegador y no hubo snapshot en Wayback (NONE)."
     }
   ],
   "drift_log": [],
@@ -410,6 +418,18 @@
       "source": "Ministerio de Trabajo y Seguridad Social",
       "url": "https://www.gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias",
       "status": "empty_response"
+    },
+    {
+      "at": "2026-05-16T02:11:12Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-16T02:11:12Z",
+      "source": "Ministerio de Salud Pública",
+      "url": "https://www.gub.uy/ministerio-salud-publica/comunicacion/noticias",
+      "status": "fetch_failed_browser_timeout_wayback_none"
     }
   ],
   "bias_log": [],
