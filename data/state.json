@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 23,
-  "last_run_at": "2026-05-16T02:11:12Z",
-  "verification_cursor": 23,
+  "cycle": 24,
+  "last_run_at": "2026-05-16T07:54:19Z",
+  "verification_cursor": 24,
   "verification_log": [
     {
       "cycle": 1,
@@ -163,6 +163,13 @@
       "minister": "Cristina Lustemberg",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-salud-publica agotó timeout en navegador y no hubo snapshot en Wayback (NONE)."
+    },
+    {
+      "cycle": 24,
+      "at": "2026-05-16T07:54:19Z",
+      "ministry": "Ganadería, Agricultura y Pesca",
+      "minister": "Alfredo Fratti",
+      "result": "ok"
     }
   ],
   "drift_log": [],
@@ -429,6 +436,12 @@
       "at": "2026-05-16T02:11:12Z",
       "source": "Ministerio de Salud Pública",
       "url": "https://www.gub.uy/ministerio-salud-publica/comunicacion/noticias",
+      "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-16T07:54:19Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
       "status": "fetch_failed_browser_timeout_wayback_none"
     }
   ],
