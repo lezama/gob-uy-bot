@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 24,
-  "last_run_at": "2026-05-16T07:54:19Z",
-  "verification_cursor": 24,
+  "cycle": 25,
+  "last_run_at": "2026-05-16T13:04:50Z",
+  "verification_cursor": 25,
   "verification_log": [
     {
       "cycle": 1,
@@ -170,6 +170,14 @@
       "ministry": "Ganadería, Agricultura y Pesca",
       "minister": "Alfredo Fratti",
       "result": "ok"
+    },
+    {
+      "cycle": 25,
+      "at": "2026-05-16T13:04:50Z",
+      "ministry": "Vivienda y Ordenamiento Territorial",
+      "minister": "Tamara Paseyro",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-vivienda-ordenamiento-territorial/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido)."
     }
   ],
   "drift_log": [],
@@ -443,6 +451,24 @@
       "source": "Presidencia / noticias",
       "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
       "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-16T13:04:50Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-16T13:04:50Z",
+      "source": "Presidencia / calendario",
+      "url": "https://www.gub.uy/presidencia/comunicacion/calendario-actividades",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-16T13:04:50Z",
+      "source": "Ministerio de Vivienda y Ordenamiento Territorial",
+      "url": "https://www.gub.uy/ministerio-vivienda-ordenamiento-territorial/comunicacion/noticias",
+      "status": "empty_response"
     }
   ],
   "bias_log": [],
