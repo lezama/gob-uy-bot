@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 26,
-  "last_run_at": "2026-05-16T18:54:21Z",
-  "verification_cursor": 26,
+  "cycle": 27,
+  "last_run_at": "2026-05-17T02:16:35Z",
+  "verification_cursor": 27,
   "verification_log": [
     {
       "cycle": 1,
@@ -186,6 +186,14 @@
       "minister": "Gonzalo Civila",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-desarrollo-social/comunicacion/noticias agotó timeout en navegador; Wayback Machine devolvió NONE."
+    },
+    {
+      "cycle": 27,
+      "at": "2026-05-17T02:16:35Z",
+      "ministry": "Ambiente",
+      "minister": "Edgardo Ortuño",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-ambiente/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido); Wayback Machine devolvió NONE."
     }
   ],
   "drift_log": [],
@@ -495,6 +503,30 @@
       "source": "Ministerio de Desarrollo Social",
       "url": "https://www.gub.uy/ministerio-desarrollo-social/comunicacion/noticias",
       "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-17T02:16:35Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "fetch_failed_browser_timeout_wayback_none"
+    },
+    {
+      "at": "2026-05-17T02:16:35Z",
+      "source": "Presidencia / calendario",
+      "url": "https://www.gub.uy/presidencia/comunicacion/calendario-actividades",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-17T02:16:35Z",
+      "source": "Ministerio de Ambiente",
+      "url": "https://www.gub.uy/ministerio-ambiente/comunicacion/noticias",
+      "status": "empty_response_wayback_none"
+    },
+    {
+      "at": "2026-05-17T02:16:35Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "404"
     }
   ],
   "bias_log": [],
