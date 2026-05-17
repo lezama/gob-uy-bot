@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 28,
-  "last_run_at": "2026-05-17T08:12:48Z",
-  "verification_cursor": 28,
+  "cycle": 29,
+  "last_run_at": "2026-05-17T13:02:17Z",
+  "verification_cursor": 29,
   "verification_log": [
     {
       "cycle": 1,
@@ -200,6 +200,13 @@
       "at": "2026-05-17T08:12:48Z",
       "ministry": "Turismo",
       "minister": "Pablo Menoni",
+      "result": "ok"
+    },
+    {
+      "cycle": 29,
+      "at": "2026-05-17T13:02:17Z",
+      "ministry": "Interior",
+      "minister": "Carlos Negro",
       "result": "ok"
     }
   ],
@@ -537,6 +544,18 @@
     },
     {
       "at": "2026-05-17T08:12:48Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-17T13:02:17Z",
+      "source": "La Diaria / política",
+      "url": "https://ladiaria.com.uy/politica/",
+      "status": "503"
+    },
+    {
+      "at": "2026-05-17T13:02:17Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "404"
