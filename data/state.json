@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 27,
-  "last_run_at": "2026-05-17T02:16:35Z",
-  "verification_cursor": 27,
+  "cycle": 28,
+  "last_run_at": "2026-05-17T08:12:48Z",
+  "verification_cursor": 28,
   "verification_log": [
     {
       "cycle": 1,
@@ -194,6 +194,13 @@
       "minister": "Edgardo Ortuño",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-ambiente/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido); Wayback Machine devolvió NONE."
+    },
+    {
+      "cycle": 28,
+      "at": "2026-05-17T08:12:48Z",
+      "ministry": "Turismo",
+      "minister": "Pablo Menoni",
+      "result": "ok"
     }
   ],
   "drift_log": [],
@@ -524,6 +531,12 @@
     },
     {
       "at": "2026-05-17T02:16:35Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-17T08:12:48Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "404"
