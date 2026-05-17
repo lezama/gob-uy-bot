@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 29,
-  "last_run_at": "2026-05-17T13:02:17Z",
-  "verification_cursor": 29,
+  "cycle": 30,
+  "last_run_at": "2026-05-17T19:01:52Z",
+  "verification_cursor": 30,
   "verification_log": [
     {
       "cycle": 1,
@@ -208,6 +208,14 @@
       "ministry": "Interior",
       "minister": "Carlos Negro",
       "result": "ok"
+    },
+    {
+      "cycle": 30,
+      "at": "2026-05-17T19:01:52Z",
+      "ministry": "Relaciones Exteriores",
+      "minister": "Mario Lubetkin",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-relaciones-exteriores/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido)."
     }
   ],
   "drift_log": [],
@@ -556,6 +564,30 @@
     },
     {
       "at": "2026-05-17T13:02:17Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-17T19:01:52Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-17T19:01:52Z",
+      "source": "Ministerio de Relaciones Exteriores",
+      "url": "https://www.gub.uy/ministerio-relaciones-exteriores/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-17T19:01:52Z",
+      "source": "Ministerio del Interior",
+      "url": "https://www.gub.uy/ministerio-interior/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-17T19:01:52Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "404"
