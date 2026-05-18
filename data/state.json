@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 30,
-  "last_run_at": "2026-05-17T19:01:52Z",
-  "verification_cursor": 30,
+  "cycle": 31,
+  "last_run_at": "2026-05-18T02:36:24Z",
+  "verification_cursor": 31,
   "verification_log": [
     {
       "cycle": 1,
@@ -216,6 +216,14 @@
       "minister": "Mario Lubetkin",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-relaciones-exteriores/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido)."
+    },
+    {
+      "cycle": 31,
+      "at": "2026-05-18T02:36:24Z",
+      "ministry": "Economía y Finanzas",
+      "minister": "Gabriel Oddone",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-economia-finanzas/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido). Actividad confirmada vía Parlamento: el Senado votó interpelación al ministro Oddone (sesión 13 de mayo)."
     }
   ],
   "drift_log": [],
@@ -588,6 +596,24 @@
     },
     {
       "at": "2026-05-17T19:01:52Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-18T02:36:24Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-18T02:36:24Z",
+      "source": "Ministerio de Economía y Finanzas",
+      "url": "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias",
+      "status": "empty_response"
+    },
+    {
+      "at": "2026-05-18T02:36:24Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "404"
