@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 33,
-  "last_run_at": "2026-05-18T15:01:24Z",
-  "verification_cursor": 33,
+  "cycle": 34,
+  "last_run_at": "2026-05-18T19:29:03Z",
+  "verification_cursor": 34,
   "verification_log": [
     {
       "cycle": 1,
@@ -239,6 +239,14 @@
       "minister": "José Carlos Mahía",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-educacion-cultura/comunicacion/noticias devolvió sólo el bloque de filtros, sin publicaciones accesibles."
+    },
+    {
+      "cycle": 34,
+      "at": "2026-05-18T19:29:03Z",
+      "ministry": "Transporte y Obras Públicas",
+      "minister": "Lucía Etcheverry",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-transporte-obras-publicas/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido); Wayback Machine devolvió NONE."
     }
   ],
   "drift_log": [],
@@ -650,6 +658,22 @@
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "404"
+    },
+    {
+      "at": "2026-05-18T19:29:03Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "empty_response",
+      "level": 3,
+      "note": "curl y Playwright devolvieron cuerpo vacío; Wayback Machine devolvió NONE."
+    },
+    {
+      "at": "2026-05-18T19:29:03Z",
+      "source": "Ministerio de Transporte y Obras Públicas",
+      "url": "https://www.gub.uy/ministerio-transporte-obras-publicas/comunicacion/noticias",
+      "status": "empty_response",
+      "level": 3,
+      "note": "curl y Playwright devolvieron cuerpo vacío; Wayback Machine devolvió NONE."
     }
   ],
   "bias_log": [],
