@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 32,
-  "last_run_at": "2026-05-18T09:45:21Z",
-  "verification_cursor": 32,
+  "cycle": 33,
+  "last_run_at": "2026-05-18T15:01:24Z",
+  "verification_cursor": 33,
   "verification_log": [
     {
       "cycle": 1,
@@ -231,6 +231,14 @@
       "ministry": "Defensa Nacional",
       "minister": "Sandra Lazo",
       "result": "ok"
+    },
+    {
+      "cycle": 33,
+      "at": "2026-05-18T15:01:24Z",
+      "ministry": "Educación y Cultura",
+      "minister": "José Carlos Mahía",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-educacion-cultura/comunicacion/noticias devolvió sólo el bloque de filtros, sin publicaciones accesibles."
     }
   ],
   "drift_log": [],
@@ -627,6 +635,18 @@
     },
     {
       "at": "2026-05-18T09:45:21Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "404"
+    },
+    {
+      "at": "2026-05-18T15:01:24Z",
+      "source": "Ministerio de Educación y Cultura",
+      "url": "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias",
+      "status": "filters_only"
+    },
+    {
+      "at": "2026-05-18T15:01:24Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "404"
