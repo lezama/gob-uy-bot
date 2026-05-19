@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 34,
-  "last_run_at": "2026-05-18T19:29:03Z",
-  "verification_cursor": 34,
+  "cycle": 35,
+  "last_run_at": "2026-05-19T02:33:00Z",
+  "verification_cursor": 35,
   "verification_log": [
     {
       "cycle": 1,
@@ -247,6 +247,13 @@
       "minister": "Lucía Etcheverry",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-transporte-obras-publicas/comunicacion/noticias devolvió respuesta vacía (HTTP 200 sin contenido); Wayback Machine devolvió NONE."
+    },
+    {
+      "cycle": 35,
+      "at": "2026-05-19T02:33:00Z",
+      "ministry": "Industria, Energía y Minería",
+      "minister": "Fernanda Cardona",
+      "result": "ok"
     }
   ],
   "drift_log": [],
@@ -674,6 +681,14 @@
       "status": "empty_response",
       "level": 3,
       "note": "curl y Playwright devolvieron cuerpo vacío; Wayback Machine devolvió NONE."
+    },
+    {
+      "at": "2026-05-19T02:33:00Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "404",
+      "level": 2,
+      "note": "Playwright devolvió página \"Documento no encontrado\" (HTTP 200 con body de error)."
     }
   ],
   "bias_log": [],
