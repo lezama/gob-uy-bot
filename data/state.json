@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 36,
-  "last_run_at": "2026-05-19T14:43:00Z",
-  "verification_cursor": 36,
+  "cycle": 37,
+  "last_run_at": "2026-05-19T19:44:00Z",
+  "verification_cursor": 37,
   "verification_log": [
     {
       "cycle": 1,
@@ -262,6 +262,14 @@
       "minister": "Juan Castillo",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias devolvió cuerpo vacío (0 bytes); sin snapshot en Wayback."
+    },
+    {
+      "cycle": 37,
+      "at": "2026-05-19T19:44:00Z",
+      "ministry": "Salud Pública",
+      "minister": "Cristina Lustemberg",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-salud-publica/comunicacion/noticias devolvió cuerpo vacío en este entorno (curl exit 92)."
     }
   ],
   "drift_log": [],
@@ -767,6 +775,48 @@
       "url": "https://www.busqueda.com.uy/politica",
       "status": "403",
       "level": 1
+    },
+    {
+      "at": "2026-05-19T19:44:00Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "fetch_failed_curl_92"
+    },
+    {
+      "at": "2026-05-19T19:44:00Z",
+      "source": "Parlamento / asuntos entrados (Senado)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-19T19:44:00Z",
+      "source": "Parlamento / asuntos entrados (Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-19T19:44:00Z",
+      "source": "Parlamento / noticias Senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-19T19:44:00Z",
+      "source": "Parlamento / noticias Diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/noticias",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-19T19:44:00Z",
+      "source": "Parlamento / leyes promulgadas",
+      "url": "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-19T19:44:00Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
     }
   ],
   "bias_log": [],
