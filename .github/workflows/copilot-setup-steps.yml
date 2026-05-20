@@ -40,6 +40,16 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Setup Python transcript tools
+        # YouTube transcripts are a provisional fallback for recent sessions
+        # while the official Diario de Sesiones PDF is not published yet.
+        run: |
+          python3 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-copilot.txt
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
       - name: Install Playwright + Chromium
         # Fallback de browser real para sitios JS-rendered, UA-blocked
         # o paywalled (lee el lede que renderiza antes de la wall).
@@ -57,5 +67,6 @@ jobs:
           htmlq --version || echo "htmlq ok"
           pup --version || echo "pup ok"
           node --version
+          python3 -c "import youtube_transcript_api; print('youtube-transcript-api ok')"
           node -e "require('playwright').chromium.launch().then(b => b.close()).then(() => console.log('playwright ok'))"
           echo "=== Todo listo para el agent ==="

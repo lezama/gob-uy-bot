@@ -11,6 +11,28 @@ Tomás los items crudos de `01-fetch-today.md` + `02-fetch-upcoming.md` y los cl
 - 🟡 **Medio** — relevante pero no portada; va al feed por ministerio
 - ⚪ **Bajo / ruido** — no se incluye en la viz
 
+## Filtro de politicidad para prensa
+
+Las fuentes de prensa pueden venir desde portadas amplias, no solo desde
+`/politica`. Antes de priorizar, decidí si el item realmente pertenece al
+dominio político/institucional.
+
+Retené un item de prensa si tiene al menos una señal fuerte o dos débiles
+registradas en `political_signals`:
+
+- Fuerte: persona del watchlist, partido político, institución estatal,
+  Parlamento, ministerio, Presidencia, intendencia, Junta Departamental,
+  proceso legislativo, decisión de gobierno, política pública, designación,
+  renuncia, interpelación, presupuesto o Rendición de Cuentas.
+- Débil: URL/breadcrumb de política o nacional, cargo público sin nombre
+  propio, tema de alta política pública (salud, seguridad, educación, vivienda,
+  trabajo, ambiente, energía, relaciones exteriores).
+
+Descartá aunque venga de una sección política si es policial, deportivo,
+espectáculo, clima, tránsito, consumo, viral o sociedad sin autoridad pública
+ni decisión estatal concreta. No uses la palabra "política" de la URL como
+única prueba.
+
 ## Criterios para Top Stories
 
 **SÍ va a top:**

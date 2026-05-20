@@ -194,6 +194,12 @@ parlamento:
     status: ok
     explain: "Cada item es un PDF de la sesión completa con votaciones nominales."
 
+  diarios_sesiones_biblioteca:
+    url: "https://biblioteca.parlamento.gub.uy/PublicacionesPeriodicas/busquedalibreTimeLine/?op=ds"
+    enabled: true
+    status: ok
+    explain: "Diarios de sesiones del Parlamento (Diputados, Senado, Asamblea General y Comisión Permanente). PDFs con texto embebido en diarios modernos; usar IA multimodal solo si pdftotext queda vacío."
+
   leyes_promulgadas:
     url: "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas"
     enabled: true
@@ -210,44 +216,62 @@ parlamento:
     enabled: true
     status: ok
 
+  youtube_senado:
+    url: "https://www.youtube.com/@SenadoUY"
+    enabled: true
+    status: ok
+    explain: "Videos oficiales de sesiones del Senado. Transcript automático de YouTube solo como fuente provisional hasta que se publique el Diario de Sesiones."
+
+  youtube_diputados:
+    url: "https://www.youtube.com/@DiputadosUY"
+    enabled: true
+    status: ok
+    explain: "Videos oficiales de sesiones de Diputados. Transcript automático de YouTube solo como fuente provisional hasta que se publique el Diario de Sesiones."
+
 # ---- Prensa nacional ----
 press:
   ladiaria:
     name: "La Diaria"
-    url: "https://ladiaria.com.uy/politica/"
+    url: "https://ladiaria.com.uy/"
+    politics_url: "https://ladiaria.com.uy/politica/"
     enabled: true
     status: ok
     paywall: true
-    _note: "Paywall pero los titulares y dechecks son visibles sin suscripción."
+    _note: "Entrada amplia + sección política. Paywall pero los titulares y dechecks son visibles sin suscripción."
 
   busqueda:
     name: "Búsqueda"
-    url: "https://www.busqueda.com.uy/politica"
+    url: "https://www.busqueda.com.uy/"
+    politics_url: "https://www.busqueda.com.uy/politica"
     enabled: true
     status: ok
     paywall: true
+    _note: "Entrada amplia + sección política. No asumir que solo /politica contiene noticias políticamente relevantes."
 
   subrayado:
     name: "Subrayado"
-    url: "https://www.subrayado.com.uy/politica"
+    url: "https://www.subrayado.com.uy/"
+    politics_url: "https://www.subrayado.com.uy/politica"
     enabled: true
     status: ok
     paywall: false
-    _note: "Sin fechas individuales por artículo — frágil para windowing."
+    _note: "Entrada amplia + sección política. Sin fechas individuales por artículo — frágil para windowing."
 
   elobservador:
     name: "El Observador"
-    url: "https://www.elobservador.com.uy/nacional"
+    url: "https://www.elobservador.com.uy/"
+    politics_url: "https://www.elobservador.com.uy/nacional"
     enabled: true
     status: ok
-    _note: "URL anterior /seccion/politica dio 404 a partir del 2026-05-11. El medio reestructuró URLs: la sección de actualidad doméstica ahora vive en /nacional — el <title> dice literal 'Noticias de política de Uruguay - El Observador'. Verificado con curl. Requiere elobservador.com.uy en el allowlist del Copilot agent."
+    _note: "URL anterior /seccion/politica dio 404 a partir del 2026-05-11. El medio reestructuró URLs: la sección de actualidad doméstica ahora vive en /nacional. Usar portada amplia y clasificar por señales políticas, no por nombre de sección."
 
   montevideo_portal:
     name: "Montevideo Portal"
-    url: "https://montevideo.com.uy/Noticias/Politica"
+    url: "https://www.montevideo.com.uy/"
+    politics_url: "https://www.montevideo.com.uy/categoria/Politica-245"
     enabled: true
     status: ok
-    _note: "URL apex (sin www) para matchear el rule exacto `montevideo.com.uy` del allowlist del Copilot agent. Ambas variantes www/apex resuelven al mismo contenido — verificado curl + Playwright. Si vuelve a fallar, primero verificar el allowlist."
+    _note: "La URL histórica /Noticias/Politica responde HTTP 200 con 'Documento no encontrado'. Usar portada amplia + /categoria/Politica-245 y descartar por señales políticas."
 
 # ---- Personas — watchlist ----
 # El bot las cruza con las menciones encontradas en news/agendas para tagear cards.

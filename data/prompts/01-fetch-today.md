@@ -20,7 +20,7 @@ HASTA  = HOY
 ### 2. Fetcheá Presidencia
 
 ```bash
-curl -sL https://www.gub.uy/presidencia/comunicacion/noticias \
+curl -sL --max-time 15 -A "Mozilla/5.0 ..." https://www.gub.uy/presidencia/comunicacion/noticias \
   | grep -oE 'href="/presidencia/comunicacion/noticias/[a-z0-9-]+"[^>]*>[^<]+' \
   | head -20
 ```
@@ -41,7 +41,7 @@ Para cada noticia, además fetcheá la página individual para extraer fecha + c
 Para cada `ministerio` en `data/sources.yml#ministries` con `enabled: true` y URL no en `_quarantine`:
 
 ```bash
-curl -sL "${ministry.news_url}"
+curl -sL --max-time 15 -A "Mozilla/5.0 ..." "${ministry.news_url}"
 ```
 
 Mismo formato de output. Si una URL falla 3+ ciclos consecutivos, agregala a `_quarantine` en `state.json` (NO la elimines de `sources.yml`).
@@ -54,27 +54,105 @@ Mismo formato de output. Si una URL falla 3+ ciclos consecutivos, agregala a `_q
 FROM=$(date -u -d '-3 days' +%Y-%m-%d)
 TO=$(date -u +%Y-%m-%d)
 
-curl -sL "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=${FROM}&Fechahasta=${TO}&_format=json" \
+curl -sL --max-time 15 -A "Mozilla/5.0 ..." "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=${FROM}&Fechahasta=${TO}&_format=json" \
   | jq -r '.[] | "\(.Ast_FechaDeEntradaAlCuerpo)|\(.Cpo_Codigo)|\(.Ast_Titulo)"'
 ```
 
 **Diario de sesiones** (Diputados, JSON):
 
 ```bash
-curl -sL https://documentos.diputados.gub.uy/docs/DAdiarioSesiones.json \
+curl -sL --max-time 15 -A "Mozilla/5.0 ..." https://documentos.diputados.gub.uy/docs/DAdiarioSesiones.json \
   | jq -r --arg from "$FROM" '.[] | select(.SesionFecha | type == "string") | select((.SesionFecha | gsub("/"; "-")) >= $from)'
 ```
+
+Para procesar el transcript de una sesión publicada, usá el extractor local:
+
+```bash
+scripts/extract-session-transcript.js --source diputados --latest \
+  --out .tmp/session-transcripts/diputados-latest.json
+```
+
+El extractor descarga el PDF oficial, intenta texto nativo con `pdftotext`,
+segmenta intervenciones por orador y marca `needs_multimodal: true` solo si el
+PDF parece escaneado o no tiene texto suficiente. Para un PDF de Senado o de la
+Biblioteca, pasá la URL directa:
+
+```bash
+scripts/extract-session-transcript.js --url "$pdf_url" --chamber "Cámara de Senadores" \
+  --date "$date" --out .tmp/session-transcripts/senado.json
+```
+
+Usá IA multimodal/OCR únicamente como fallback cuando `needs_multimodal` sea
+`true`; en diarios modernos de Diputados y Senado, `pdftotext` suele alcanzar y
+es más verificable.
+
+**YouTube transcript provisional** — si hay una sesión reciente en el canal
+oficial pero todavía no está el Diario de Sesiones PDF, podés usar captions de
+YouTube como fuente provisional:
+
+```bash
+scripts/fetch-youtube-transcript.py --url "$youtube_url" \
+  --out .tmp/youtube-transcripts/session.json
+```
+
+Reglas para YouTube:
+
+- Solo canales oficiales (`@SenadoUY`, `@DiputadosUY` o canal enlazado desde
+  Parlamento/Biblioteca).
+- Marcar siempre `source_label: "YouTube transcript (provisional)"`.
+- Usar para temas, timestamps y detección de actores; no para citas literales
+  fuertes sin confirmar contra el Diario PDF.
+- Si falla por bloqueo de IP en GitHub CI, registrarlo como fuente off
+  provisional y seguir con noticias/diarios disponibles.
 
 **Leyes promulgadas** — sin JSON oficial; HTML scrape de `https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas`.
 
 ### 5. Fetcheá prensa nacional
 
-Para cada source en `data/sources.yml#press` con `status: ok`:
-- La Diaria — `https://ladiaria.com.uy/politica/`
-- Búsqueda — `https://www.busqueda.com.uy/politica`
-- Subrayado — `https://www.subrayado.com.uy/politica`
+Para cada source en `data/sources.yml#press` con `status: ok`, no asumas que
+la sección `/politica` es completa ni estable. Armá una lista deduplicada de
+entradas:
 
-Extraé titulares + URLs + cruzá menciones a `people` del watchlist.
+- `source.url` — portada amplia del medio.
+- `source.politics_url` — sección política/nacional si existe.
+- `source.extra_urls[]` — otras secciones declaradas en `sources.yml`, si hay.
+
+Extraé titulares + URLs + bajadas de las primeras 20-30 notas visibles por
+entrada, deduplicá por URL canónica y cruzá menciones a `people` del watchlist.
+
+Después aplicá un prefiltro de politicidad. Guardá un item de prensa como
+candidato solo si tiene al menos una señal fuerte o dos señales débiles:
+
+**Señales fuertes**
+- Persona del `watchlist` o partido político identificado.
+- Institución política: Presidencia, ministerio, Parlamento, Senado, Diputados,
+  intendencia, Junta Departamental, Jutep, Corte Electoral, Fiscalía cuando
+  involucra a autoridades públicas.
+- Proceso institucional: proyecto de ley, decreto, presupuesto, Rendición de
+  Cuentas, interpelación, comisión parlamentaria, votación, paro general,
+  designación, renuncia, licitación o política pública.
+
+**Señales débiles**
+- La URL o breadcrumb dice política/nacional/gobierno/parlamento.
+- Menciona cargos sin nombre propio: presidente, ministro/a, senador/a,
+  diputado/a, intendente/a.
+- Tema público con impacto estatal: salud, seguridad, educación, vivienda,
+  trabajo, ambiente, energía, relaciones exteriores.
+
+**Descartá como ruido aunque venga de una sección política**
+- Policiales sin autoridad pública o política pública asociada.
+- Deportes, espectáculos, clima, tránsito, tecnología de consumo, sociedad o
+  historias humanas sin decisión estatal concreta.
+- Promociones, newsletter, columnas genéricas sin hecho verificable.
+
+En el raw output, incluí por qué entró:
+
+```yaml
+- source: "Subrayado"
+  title: "..."
+  url: "https://..."
+  political_signals: ["person:Carolina Cosse", "institution:Parlamento"]
+```
 
 ### 6. Output
 
@@ -92,8 +170,9 @@ sources_fetched:
   parlamento:
     asuntos: { items_count: 12, ok: true }
     sesiones: { items_count: 2, ok: true }
+    transcripts: { items_count: 1, ok: true }
   prensa:
-    ladiaria: { items_count: 8, ok: true }
+    ladiaria: { items_count: 8, candidates_count: 3, ok: true }
     # ...
 items:
   - source: ...
@@ -115,6 +194,16 @@ curl -sL --max-time 15 -A "Mozilla/5.0 ..." "$url"
 ```
 
 Suele funcionar para sitios estáticos y endpoints JSON oficiales.
+
+Un HTTP 403/timeout de una URL individual NO alcanza para declarar la fuente
+off. Para fuentes con varias entradas (`url`, `politics_url`, `extra_urls`),
+probá todas las entradas configuradas y solo marcá la fuente off si todas
+fallan tras los niveles de fallback.
+
+Un HTTP 200 con texto de error también cuenta como fallo de URL. Caso conocido:
+Montevideo Portal `/Noticias/Politica` puede devolver `Documento no encontrado`;
+eso significa URL obsoleta, no fuente caída. Usá `politics_url` o la portada
+amplia y seguí con el prefiltro de politicidad.
 
 ### Nivel 2 — Browser real (Playwright)
 

@@ -1,0 +1,71 @@
+name: Test YouTube transcript fallback
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_url:
+        description: "YouTube video URL to test"
+        required: true
+        default: "https://www.youtube.com/watch?v=y3hokZ6D6mE"
+  push:
+    paths:
+      - .github/workflows/test-youtube-transcript.yml
+      - requirements-copilot.txt
+      - scripts/fetch-youtube-transcript.py
+
+permissions:
+  contents: read
+
+jobs:
+  transcript:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install transcript dependency
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-copilot.txt
+
+      - name: Fetch transcript
+        env:
+          VIDEO_URL: ${{ inputs.video_url || 'https://www.youtube.com/watch?v=y3hokZ6D6mE' }}
+        run: |
+          mkdir -p .tmp/youtube-transcripts
+          scripts/fetch-youtube-transcript.py \
+            --url "$VIDEO_URL" \
+            --out .tmp/youtube-transcripts/test.json
+
+      - name: Assert transcript is usable
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path(".tmp/youtube-transcripts/test.json").read_text())
+          print(json.dumps({
+              "ok": data.get("ok"),
+              "video_id": data.get("video_id"),
+              "language": data.get("language"),
+              "language_code": data.get("language_code"),
+              "is_generated": data.get("is_generated"),
+              "snippets_count": data.get("snippets_count"),
+              "chunks_count": data.get("chunks_count"),
+          }, ensure_ascii=False, indent=2))
+
+          assert data.get("ok") is True, data
+          assert data.get("snippets_count", 0) > 100, data
+          assert data.get("chunks_count", 0) > 3, data
+          PY
+
+      - name: Upload transcript artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-transcript-test
+          path: .tmp/youtube-transcripts/test.json
