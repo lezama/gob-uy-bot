@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 38,
-  "last_run_at": "2026-05-20T02:33:00Z",
-  "verification_cursor": 38,
+  "cycle": 39,
+  "last_run_at": "2026-05-20T08:57:41Z",
+  "verification_cursor": 39,
   "verification_log": [
     {
       "cycle": 1,
@@ -276,6 +276,13 @@
       "at": "2026-05-20T02:33:00Z",
       "ministry": "Ganadería, Agricultura y Pesca",
       "minister": "Alfredo Fratti",
+      "result": "ok"
+    },
+    {
+      "cycle": 39,
+      "at": "2026-05-20T08:57:41Z",
+      "ministry": "Vivienda y Ordenamiento Territorial",
+      "minister": "Tamara Paseyro",
       "result": "ok"
     }
   ],
@@ -860,6 +867,48 @@
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "not_found_document"
+    },
+    {
+      "at": "2026-05-20T08:57:41Z",
+      "source": "Parlamento / asuntos entrados (Senado)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-17&Fechahasta=2026-05-20&_format=json",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-20T08:57:41Z",
+      "source": "Parlamento / asuntos entrados (Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-17&Fechahasta=2026-05-20&_format=json",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-20T08:57:41Z",
+      "source": "Parlamento / noticias Senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-20T08:57:41Z",
+      "source": "Parlamento / noticias Diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/noticias",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-20T08:57:41Z",
+      "source": "Parlamento / leyes promulgadas",
+      "url": "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-20T08:57:41Z",
+      "source": "Búsqueda / política",
+      "url": "https://www.busqueda.com.uy/politica",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-20T08:57:41Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
     }
   ],
   "bias_log": [],
