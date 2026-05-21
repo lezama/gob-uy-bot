@@ -38,9 +38,52 @@ jobs:
           VIDEO_URL: ${{ inputs.video_url || 'https://www.youtube.com/watch?v=y3hokZ6D6mE' }}
         run: |
           mkdir -p .tmp/youtube-transcripts
+          set +e
           scripts/fetch-youtube-transcript.py \
             --url "$VIDEO_URL" \
             --out .tmp/youtube-transcripts/test.json
+          code=$?
+          echo "$code" > .tmp/youtube-transcripts/exit-code.txt
+          echo "fetch_exit_code=$code"
+          cat .tmp/youtube-transcripts/test.json
+          exit 0
+
+      - name: Upload transcript artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-transcript-test
+          path: .tmp/youtube-transcripts/
+
+      - name: Summarize transcript result
+        if: always()
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path(".tmp/youtube-transcripts/test.json").read_text())
+          print("## YouTube transcript test")
+          print()
+          print("| field | value |")
+          print("| --- | --- |")
+          for key in [
+              "ok",
+              "video_id",
+              "language",
+              "language_code",
+              "is_generated",
+              "snippets_count",
+              "chunks_count",
+              "error_type",
+          ]:
+              print(f"| {key} | {data.get(key)} |")
+          if data.get("error"):
+              print()
+              print("```")
+              print(data["error"])
+              print("```")
+          PY
 
       - name: Assert transcript is usable
         run: |
@@ -63,9 +106,3 @@ jobs:
           assert data.get("snippets_count", 0) > 100, data
           assert data.get("chunks_count", 0) > 3, data
           PY
-
-      - name: Upload transcript artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: youtube-transcript-test
-          path: .tmp/youtube-transcripts/test.json
