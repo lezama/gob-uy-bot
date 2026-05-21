@@ -91,6 +91,11 @@ jobs:
           import json
           from pathlib import Path
 
+          def annotation(message):
+              message = " ".join(str(message).split())[:1000]
+              message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+              print(f"::error title=YouTube transcript test failed::{message}")
+
           data = json.loads(Path(".tmp/youtube-transcripts/test.json").read_text())
           print(json.dumps({
               "ok": data.get("ok"),
@@ -102,7 +107,13 @@ jobs:
               "chunks_count": data.get("chunks_count"),
           }, ensure_ascii=False, indent=2))
 
-          assert data.get("ok") is True, data
-          assert data.get("snippets_count", 0) > 100, data
-          assert data.get("chunks_count", 0) > 3, data
+          if data.get("ok") is not True:
+              annotation(f"{data.get('error_type')}: {data.get('error')}")
+              raise SystemExit(1)
+          if data.get("snippets_count", 0) <= 100:
+              annotation(f"too few snippets: {data.get('snippets_count')}")
+              raise SystemExit(1)
+          if data.get("chunks_count", 0) <= 3:
+              annotation(f"too few chunks: {data.get('chunks_count')}")
+              raise SystemExit(1)
           PY
