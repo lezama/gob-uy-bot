@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 48,
-  "last_run_at": "2026-05-22T14:23:22Z",
-  "verification_cursor": 48,
+  "cycle": 49,
+  "last_run_at": "2026-05-22T19:24:35Z",
+  "verification_cursor": 49,
   "verification_log": [
     {
       "cycle": 1,
@@ -348,6 +348,13 @@
       "at": "2026-05-22T14:23:22Z",
       "ministry": "Transporte y Obras Públicas",
       "minister": "Lucía Etcheverry",
+      "result": "ok"
+    },
+    {
+      "cycle": 49,
+      "at": "2026-05-22T19:24:35Z",
+      "ministry": "Industria, Energía y Minería",
+      "minister": "Fernanda Cardona",
       "result": "ok"
     }
   ],
@@ -1316,6 +1323,18 @@
       "source": "Parlamento / leyes promulgadas",
       "url": "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas/json?page&_format=json",
       "status": "502"
+    },
+    {
+      "at": "2026-05-22T19:24:35Z",
+      "source": "Búsqueda / política",
+      "url": "https://www.busqueda.com.uy/politica",
+      "status": "403"
+    },
+    {
+      "at": "2026-05-22T19:24:35Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
     }
   ],
   "bias_log": [],
