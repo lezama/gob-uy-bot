@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 45,
-  "last_run_at": "2026-05-21T19:46:37Z",
-  "verification_cursor": 45,
+  "cycle": 46,
+  "last_run_at": "2026-05-22T02:36:00Z",
+  "verification_cursor": 46,
   "verification_log": [
     {
       "cycle": 1,
@@ -326,6 +326,13 @@
       "at": "2026-05-21T19:46:37Z",
       "ministry": "Economía y Finanzas",
       "minister": "Gabriel Oddone",
+      "result": "ok"
+    },
+    {
+      "cycle": 46,
+      "at": "2026-05-22T02:36:00Z",
+      "ministry": "Defensa Nacional",
+      "minister": "Sandra Lazo",
       "result": "ok"
     }
   ],
@@ -1213,6 +1220,48 @@
     },
     {
       "at": "2026-05-21T19:46:37Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-22T02:36:00Z",
+      "source": "Parlamento / asuntos entrados (Senado)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-19&Fechahasta=2026-05-22&_format=json",
+      "status": "timeout"
+    },
+    {
+      "at": "2026-05-22T02:36:00Z",
+      "source": "Parlamento / asuntos entrados (Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-19&Fechahasta=2026-05-22&_format=json",
+      "status": "502"
+    },
+    {
+      "at": "2026-05-22T02:36:00Z",
+      "source": "Parlamento / noticias Senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "502"
+    },
+    {
+      "at": "2026-05-22T02:36:00Z",
+      "source": "Parlamento / noticias Diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/noticias",
+      "status": "502"
+    },
+    {
+      "at": "2026-05-22T02:36:00Z",
+      "source": "Parlamento / leyes promulgadas",
+      "url": "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas",
+      "status": "502"
+    },
+    {
+      "at": "2026-05-22T02:36:00Z",
+      "source": "La Diaria / política",
+      "url": "https://ladiaria.com.uy/politica/",
+      "status": "522"
+    },
+    {
+      "at": "2026-05-22T02:36:00Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "documento_no_encontrado"
