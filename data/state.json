@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 49,
-  "last_run_at": "2026-05-22T19:24:35Z",
-  "verification_cursor": 49,
+  "cycle": 50,
+  "last_run_at": "2026-05-23T02:14:33Z",
+  "verification_cursor": 50,
   "verification_log": [
     {
       "cycle": 1,
@@ -355,6 +355,13 @@
       "at": "2026-05-22T19:24:35Z",
       "ministry": "Industria, Energía y Minería",
       "minister": "Fernanda Cardona",
+      "result": "ok"
+    },
+    {
+      "cycle": 50,
+      "at": "2026-05-23T02:14:33Z",
+      "ministry": "Trabajo y Seguridad Social",
+      "minister": "Juan Castillo",
       "result": "ok"
     }
   ],
@@ -1332,6 +1339,12 @@
     },
     {
       "at": "2026-05-22T19:24:35Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-23T02:14:33Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "documento_no_encontrado"
