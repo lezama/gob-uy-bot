@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 54,
-  "last_run_at": "2026-05-24T08:20:58Z",
-  "verification_cursor": 54,
+  "cycle": 55,
+  "last_run_at": "2026-05-24T19:06:24Z",
+  "verification_cursor": 55,
   "verification_log": [
     {
       "cycle": 1,
@@ -392,6 +392,14 @@
       "minister": "Gonzalo Civila",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-desarrollo-social/comunicacion/noticias devuelve sección de filtros vacía — sin noticias accesibles."
+    },
+    {
+      "cycle": 55,
+      "at": "2026-05-24T19:06:24Z",
+      "ministry": "Ambiente",
+      "minister": "Edgardo Ortuño",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-ambiente/comunicacion/noticias devolvió cuerpo vacío — sitio JS-rendered no accesible sin navegador."
     }
   ],
   "drift_log": [],
