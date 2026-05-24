@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 53,
-  "last_run_at": "2026-05-24T02:33:10Z",
-  "verification_cursor": 53,
+  "cycle": 54,
+  "last_run_at": "2026-05-24T08:20:58Z",
+  "verification_cursor": 54,
   "verification_log": [
     {
       "cycle": 1,
@@ -384,6 +384,14 @@
       "ministry": "Vivienda y Ordenamiento Territorial",
       "minister": "Tamara Paseyro",
       "result": "ok"
+    },
+    {
+      "cycle": 54,
+      "at": "2026-05-24T08:20:58Z",
+      "ministry": "Desarrollo Social",
+      "minister": "Gonzalo Civila",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-desarrollo-social/comunicacion/noticias devuelve sección de filtros vacía — sin noticias accesibles."
     }
   ],
   "drift_log": [],
@@ -1384,6 +1392,12 @@
     },
     {
       "at": "2026-05-24T02:33:10Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-24T08:20:58Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "documento_no_encontrado"
