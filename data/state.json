@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 55,
-  "last_run_at": "2026-05-24T19:06:24Z",
-  "verification_cursor": 55,
+  "cycle": 56,
+  "last_run_at": "2026-05-25T02:48:35Z",
+  "verification_cursor": 56,
   "verification_log": [
     {
       "cycle": 1,
@@ -400,6 +400,14 @@
       "minister": "Edgardo Ortuño",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-ambiente/comunicacion/noticias devolvió cuerpo vacío — sitio JS-rendered no accesible sin navegador."
+    },
+    {
+      "cycle": 56,
+      "at": "2026-05-25T02:48:35Z",
+      "ministry": "Turismo",
+      "minister": "Pablo Menoni",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-turismo/comunicacion/noticias devolvió cuerpo vacío con curl y timeout en fetch-browser."
     }
   ],
   "drift_log": [],
@@ -1406,6 +1414,18 @@
     },
     {
       "at": "2026-05-24T08:20:58Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-25T02:48:35Z",
+      "source": "Ministerio de Turismo / noticias",
+      "url": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias",
+      "status": "curl_empty_body+browser_timeout"
+    },
+    {
+      "at": "2026-05-25T02:48:35Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "documento_no_encontrado"
