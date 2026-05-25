@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 56,
-  "last_run_at": "2026-05-25T02:48:35Z",
-  "verification_cursor": 56,
+  "cycle": 57,
+  "last_run_at": "2026-05-25T09:54:00Z",
+  "verification_cursor": 57,
   "verification_log": [
     {
       "cycle": 1,
@@ -408,9 +408,28 @@
       "minister": "Pablo Menoni",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-turismo/comunicacion/noticias devolvió cuerpo vacío con curl y timeout en fetch-browser."
+    },
+    {
+      "cycle": 57,
+      "at": "2026-05-25T09:54:00Z",
+      "ministry": "Interior",
+      "minister": "Carlos Negro",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-interior/comunicacion/noticias devolvió cuerpo vacío — proxy de red intercepta la conexión sin devolver contenido."
     }
   ],
-  "drift_log": [],
+  "drift_log": [
+    {
+      "at": "2026-05-25T09:54:00Z",
+      "cycle": 57,
+      "person": "Mario Bergara",
+      "field": "role",
+      "value_in_sources": "Senador · FA (Asamblea Uruguay)",
+      "value_observed": "Intendente de Montevideo",
+      "evidence_url": "https://www.subrayado.com.uy/bergara-dijo-que-el-estacionamiento-tarifado-pocitos-punta-carretas-y-carrasco-esta-siendo-analizado-pero-definicion-aun-n1008515",
+      "note": "El artículo de Subrayado lo denomina explícitamente 'intendente de Montevideo Mario Bergara'. Fue electo en las elecciones departamentales de 2025."
+    }
+  ],
   "failed_sources_log": [
     {
       "at": "2026-05-11T01:58:47.636Z",
@@ -1419,13 +1438,33 @@
       "status": "documento_no_encontrado"
     },
     {
-      "at": "2026-05-25T02:48:35Z",
+      "at": "2026-05-25T09:54:00Z",
       "source": "Ministerio de Turismo / noticias",
       "url": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias",
       "status": "curl_empty_body+browser_timeout"
     },
     {
       "at": "2026-05-25T02:48:35Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-25T09:54:00Z",
+      "source": "gub.uy / presidencia y ministerios",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "curl_empty_body",
+      "note": "Proxy de red intercepta conexión a gub.uy devolviendo cuerpo vacío. Afecta a presidencia y todos los ministerios."
+    },
+    {
+      "at": "2026-05-25T09:54:00Z",
+      "source": "parlamento.gub.uy / asuntos y sesiones",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json",
+      "status": "curl_empty_body",
+      "note": "Conexión TCP establecida pero respuesta vacía. documentos.diputados.gub.uy/docs/DAdiarioSesiones.json sí responde (651 sesiones, más reciente 2026/04/08)."
+    },
+    {
+      "at": "2026-05-25T09:54:00Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "documento_no_encontrado"
