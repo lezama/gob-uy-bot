@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 60,
-  "last_run_at": "2026-05-26T02:31:32Z",
-  "verification_cursor": 60,
+  "cycle": 61,
+  "last_run_at": "2026-05-26T09:39:54Z",
+  "verification_cursor": 61,
   "verification_log": [
     {
       "cycle": 1,
@@ -440,6 +440,14 @@
       "minister": "Sandra Lazo",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-defensa-nacional/comunicacion/noticias devolvió cuerpo vacío (0 bytes) en este entorno."
+    },
+    {
+      "cycle": 61,
+      "at": "2026-05-26T09:39:54Z",
+      "ministry": "Educación y Cultura",
+      "minister": "José Carlos Mahía",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-educacion-cultura/comunicacion/noticias devolvió cuerpo vacío (0 bytes) — patrón consistente con ciclos anteriores en este entorno."
     }
   ],
   "drift_log": [
