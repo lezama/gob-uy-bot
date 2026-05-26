@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 59,
-  "last_run_at": "2026-05-25T19:20:00Z",
-  "verification_cursor": 59,
+  "cycle": 60,
+  "last_run_at": "2026-05-26T02:31:32Z",
+  "verification_cursor": 60,
   "verification_log": [
     {
       "cycle": 1,
@@ -432,6 +432,14 @@
       "minister": "Gabriel Oddone",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-economia-finanzas/comunicacion/noticias devolvió cuerpo vacío con curl y timeout con navegador en este entorno."
+    },
+    {
+      "cycle": 60,
+      "at": "2026-05-26T02:31:32Z",
+      "ministry": "Defensa Nacional",
+      "minister": "Sandra Lazo",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-defensa-nacional/comunicacion/noticias devolvió cuerpo vacío (0 bytes) en este entorno."
     }
   ],
   "drift_log": [
@@ -1521,6 +1529,28 @@
     {
       "at": "2026-05-25T19:20:00Z",
       "cycle": 59,
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-26T02:31:32Z",
+      "cycle": 60,
+      "source": "gub.uy / presidencia y ministerios",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "curl_empty_body",
+      "note": "Presidencia noticias y calendario devolvieron 0 bytes; ministerios replican el patrón en este entorno."
+    },
+    {
+      "at": "2026-05-26T02:31:32Z",
+      "cycle": 60,
+      "source": "Parlamento / asuntos entrados, noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403_forbidden"
+    },
+    {
+      "at": "2026-05-26T02:31:32Z",
+      "cycle": 60,
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "documento_no_encontrado"
