@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 62,
-  "last_run_at": "2026-05-26T14:49:00Z",
-  "verification_cursor": 62,
+  "cycle": 63,
+  "last_run_at": "2026-05-26T19:58:00Z",
+  "verification_cursor": 63,
   "verification_log": [
     {
       "cycle": 1,
@@ -456,6 +456,14 @@
       "minister": "Lucía Etcheverry",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-transporte-obras-publicas/comunicacion/noticias devolvió cuerpo vacío (0 bytes) — patrón persistente en este entorno."
+    },
+    {
+      "cycle": 63,
+      "at": "2026-05-26T19:58:00Z",
+      "ministry": "Industria, Energía y Minería",
+      "minister": "Fernanda Cardona",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-industria-energia-mineria/comunicacion/noticias devolvió cuerpo vacío (0 bytes)."
     }
   ],
   "drift_log": [
@@ -1591,6 +1599,34 @@
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-26T19:58:00Z",
+      "cycle": 63,
+      "source": "gub.uy / presidencia noticias + ministerios",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "empty_body"
+    },
+    {
+      "at": "2026-05-26T19:58:00Z",
+      "cycle": 63,
+      "source": "Parlamento / asuntos entrados y noticias",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403_forbidden"
+    },
+    {
+      "at": "2026-05-26T19:58:00Z",
+      "cycle": 63,
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "documento_no_encontrado"
+    },
+    {
+      "at": "2026-05-26T19:58:00Z",
+      "cycle": 63,
+      "source": "Búsqueda / política",
+      "url": "https://www.busqueda.com.uy/politica",
+      "status": "blocked_security_policy"
     }
   ],
   "bias_log": [],
