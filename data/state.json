@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 65,
-  "last_run_at": "2026-05-27T09:31:00Z",
-  "verification_cursor": 65,
+  "cycle": 66,
+  "last_run_at": "2026-05-27T15:00:00Z",
+  "verification_cursor": 66,
   "verification_log": [
+    {
+      "cycle": 66,
+      "at": "2026-05-27T15:00:00Z",
+      "ministry": "Ganadería, Agricultura y Pesca",
+      "minister": "Alfredo Fratti",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-ganaderia-agricultura-pesca devolvió error de conexión (fetch failed)."
+    },
     {
       "cycle": 1,
       "at": "2026-05-11T01:58:47.636Z",
