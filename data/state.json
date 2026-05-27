@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 64,
-  "last_run_at": "2026-05-27T02:39:00Z",
-  "verification_cursor": 64,
+  "cycle": 65,
+  "last_run_at": "2026-05-27T09:31:00Z",
+  "verification_cursor": 65,
   "verification_log": [
     {
       "cycle": 1,
@@ -471,6 +471,14 @@
       "ministry": "Trabajo y Seguridad Social",
       "minister": "Juan Castillo",
       "result": "ok"
+    },
+    {
+      "cycle": 65,
+      "at": "2026-05-27T09:31:00Z",
+      "ministry": "Salud Pública",
+      "minister": "Cristina Lustemberg",
+      "result": "error",
+      "note": "Sitio gub.uy/ministerio-salud-publica/comunicacion/noticias devolvió HTTP 200 con cuerpo vacío (0 bytes)."
     }
   ],
   "drift_log": [
@@ -1664,6 +1672,65 @@
       "source": "Parlamento / leyes promulgadas",
       "url": "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas",
       "status": "403"
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Presidencia / noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "empty_response",
+      "level": 1,
+      "note": "HTTP 200 con cuerpo vacío (0 bytes) durante fetch del ciclo 65."
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Parlamento / asuntos entrados (Senado)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-24&Fechahasta=2026-05-27&_format=json",
+      "status": "403",
+      "level": 1
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Parlamento / asuntos entrados (Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-24&Fechahasta=2026-05-27&_format=json",
+      "status": "403",
+      "level": 1
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Parlamento / noticias senadores",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403",
+      "level": 1
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Parlamento / noticias diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/noticias",
+      "status": "403",
+      "level": 1
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Parlamento / leyes promulgadas",
+      "url": "https://parlamento.gub.uy/documentosyleyes/leyes-promulgadas",
+      "status": "403",
+      "level": 1
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "insufficient_content",
+      "level": 1,
+      "note": "HTTP 200 con HTML mínimo (345 bytes) sin titulares utilizables."
+    },
+    {
+      "at": "2026-05-27T09:31:00Z",
+      "source": "Ministerio de Salud Pública",
+      "url": "https://www.gub.uy/ministerio-salud-publica/comunicacion/noticias",
+      "status": "empty_response",
+      "level": 1,
+      "note": "Verificación del ministerio del ciclo: HTTP 200 con cuerpo vacío (0 bytes)."
     }
   ],
   "bias_log": [],
