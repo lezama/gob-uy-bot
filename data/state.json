@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 66,
-  "last_run_at": "2026-05-27T15:00:00Z",
-  "verification_cursor": 66,
+  "cycle": 67,
+  "last_run_at": "2026-05-27T20:03:00Z",
+  "verification_cursor": 67,
   "verification_log": [
+    {
+      "cycle": 67,
+      "at": "2026-05-27T20:03:00Z",
+      "ministry": "Vivienda y Ordenamiento Territorial",
+      "minister": "Tamara Paseyro",
+      "result": "ok"
+    },
     {
       "cycle": 66,
       "at": "2026-05-27T15:00:00Z",
@@ -1739,6 +1746,28 @@
       "status": "empty_response",
       "level": 1,
       "note": "Verificación del ministerio del ciclo: HTTP 200 con cuerpo vacío (0 bytes)."
+    },
+    {
+      "at": "2026-05-27T20:03:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-24&Fechahasta=2026-05-27&_format=json",
+      "status": "403",
+      "level": 1
+    },
+    {
+      "at": "2026-05-27T20:03:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403",
+      "level": 1
+    },
+    {
+      "at": "2026-05-27T20:03:00Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "insufficient_content",
+      "level": 1,
+      "note": "HTTP 200 con HTML mínimo (345 bytes) sin titulares utilizables."
     }
   ],
   "bias_log": [],
