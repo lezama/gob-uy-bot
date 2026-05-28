@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 68,
-  "last_run_at": "2026-05-28T02:26:00Z",
-  "verification_cursor": 68,
+  "cycle": 69,
+  "last_run_at": "2026-05-28T09:48:00Z",
+  "verification_cursor": 69,
   "verification_log": [
+    {
+      "cycle": 69,
+      "at": "2026-05-28T09:48:00Z",
+      "ministry": "Ambiente",
+      "minister": "Edgardo Ortuño",
+      "result": "ok"
+    },
     {
       "cycle": 68,
       "at": "2026-05-28T02:26:00Z",
@@ -1807,6 +1814,30 @@
       "status": "insufficient_content",
       "level": 1,
       "note": "HTTP 200 con HTML mínimo (345 bytes) sin titulares utilizables."
+    },
+    {
+      "at": "2026-05-28T09:48:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-25&Fechahasta=2026-05-28&_format=json",
+      "status": "403",
+      "level": 1,
+      "note": "Endpoint JSON devolvió HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-28T09:48:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403",
+      "level": 1,
+      "note": "Listados HTML de Parlamento devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-28T09:48:00Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "insufficient_content",
+      "level": 1,
+      "note": "La URL redirige (301) y devuelve HTML mínimo (345 bytes por curl; 966 bytes en fallback de navegador) sin titulares utilizables."
     }
   ],
   "bias_log": [],
