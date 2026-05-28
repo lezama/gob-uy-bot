@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 70,
-  "last_run_at": "2026-05-28T15:32:00Z",
-  "verification_cursor": 70,
+  "cycle": 71,
+  "last_run_at": "2026-05-28T20:10:00Z",
+  "verification_cursor": 71,
   "verification_log": [
+    {
+      "cycle": 71,
+      "at": "2026-05-28T20:10:00Z",
+      "ministry": "Interior",
+      "minister": "Carlos Negro",
+      "result": "error",
+      "note": "El sitio gub.uy/ministerio-interior devolvió error de conexión (fetch failed) en este ciclo."
+    },
     {
       "cycle": 70,
       "at": "2026-05-28T15:32:00Z",
