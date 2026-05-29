@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 72,
-  "last_run_at": "2026-05-29T02:31:00Z",
-  "verification_cursor": 72,
+  "cycle": 73,
+  "last_run_at": "2026-05-29T09:38:00Z",
+  "verification_cursor": 73,
   "verification_log": [
+    {
+      "cycle": 73,
+      "at": "2026-05-29T09:38:00Z",
+      "ministry": "Economía y Finanzas",
+      "minister": "Gabriel Oddone",
+      "result": "ok"
+    },
     {
       "cycle": 72,
       "at": "2026-05-29T02:31:00Z",
@@ -1903,6 +1910,30 @@
     },
     {
       "at": "2026-05-29T02:31:00Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "insufficient_content",
+      "level": 1,
+      "note": "La URL devolvió una página de “Documento no encontrado” sin titulares utilizables."
+    },
+    {
+      "at": "2026-05-29T09:38:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-26&Fechahasta=2026-05-29&_format=json",
+      "status": "403",
+      "level": 1,
+      "note": "Endpoints JSON de asuntos entrados devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-29T09:38:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403",
+      "level": 1,
+      "note": "Listados HTML de Parlamento devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-29T09:38:00Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "insufficient_content",
