@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 78,
-  "last_run_at": "2026-05-30T13:10:08Z",
-  "verification_cursor": 78,
+  "cycle": 79,
+  "last_run_at": "2026-05-30T19:02:58Z",
+  "verification_cursor": 79,
   "verification_log": [
+    {
+      "cycle": 79,
+      "at": "2026-05-30T19:02:58Z",
+      "ministry": "Salud Pública",
+      "minister": "Cristina Lustemberg",
+      "result": "ok"
+    },
     {
       "cycle": 78,
       "at": "2026-05-30T13:10:08Z",
@@ -2060,6 +2067,27 @@
       "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-27&Fechahasta=2026-05-30&_format=json",
       "reason": "403 Forbidden",
       "at": "2026-05-30T13:10:08Z"
+    },
+    {
+      "cycle": 79,
+      "source": "parlamento_asuntos_senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-27&Fechahasta=2026-05-30&_format=json",
+      "reason": "403 Forbidden",
+      "at": "2026-05-30T19:02:58Z"
+    },
+    {
+      "cycle": 79,
+      "source": "parlamento_asuntos_diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-27&Fechahasta=2026-05-30&_format=json",
+      "reason": "403 Forbidden",
+      "at": "2026-05-30T19:02:58Z"
+    },
+    {
+      "cycle": 79,
+      "source": "montevideo_portal",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "reason": "Documento no encontrado / insufficient content",
+      "at": "2026-05-30T19:02:58Z"
     }
   ],
   "bias_log": [],
