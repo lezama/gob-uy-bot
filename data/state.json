@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 77,
-  "last_run_at": "2026-05-30T08:18:00Z",
-  "verification_cursor": 77,
+  "cycle": 78,
+  "last_run_at": "2026-05-30T13:10:08Z",
+  "verification_cursor": 78,
   "verification_log": [
+    {
+      "cycle": 78,
+      "at": "2026-05-30T13:10:08Z",
+      "ministry": "Trabajo y Seguridad Social",
+      "minister": "Juan Castillo",
+      "result": "ok"
+    },
     {
       "cycle": 77,
       "at": "2026-05-30T08:18:00Z",
@@ -2039,6 +2046,20 @@
       "status": "insufficient_content",
       "level": 1,
       "note": "La URL devolvió una página de “Documento no encontrado” sin titulares utilizables."
+    },
+    {
+      "cycle": 78,
+      "source": "parlamento_asuntos_senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-27&Fechahasta=2026-05-30&_format=json",
+      "reason": "403 Forbidden",
+      "at": "2026-05-30T13:10:08Z"
+    },
+    {
+      "cycle": 78,
+      "source": "parlamento_asuntos_diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-27&Fechahasta=2026-05-30&_format=json",
+      "reason": "403 Forbidden",
+      "at": "2026-05-30T13:10:08Z"
     }
   ],
   "bias_log": [],
