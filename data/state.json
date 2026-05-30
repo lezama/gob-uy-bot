@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 76,
-  "last_run_at": "2026-05-30T02:15:00Z",
-  "verification_cursor": 76,
+  "cycle": 77,
+  "last_run_at": "2026-05-30T08:18:00Z",
+  "verification_cursor": 77,
   "verification_log": [
+    {
+      "cycle": 77,
+      "at": "2026-05-30T08:18:00Z",
+      "ministry": "Industria, Energía y Minería",
+      "minister": "Fernanda Cardona",
+      "result": "ok"
+    },
     {
       "cycle": 76,
       "at": "2026-05-30T02:15:00Z",
@@ -2003,6 +2010,30 @@
     },
     {
       "at": "2026-05-30T02:15:00Z",
+      "source": "Montevideo Portal / política",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "status": "insufficient_content",
+      "level": 1,
+      "note": "La URL devolvió una página de “Documento no encontrado” sin titulares utilizables."
+    },
+    {
+      "at": "2026-05-30T08:18:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-27&Fechahasta=2026-05-30&_format=json",
+      "status": "403",
+      "level": 1,
+      "note": "Endpoints JSON de asuntos entrados devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-30T08:18:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403",
+      "level": 1,
+      "note": "Listados HTML de Parlamento devolvieron HTTP 403 en este ciclo; el diario de sesiones JSON siguió accesible."
+    },
+    {
+      "at": "2026-05-30T08:18:00Z",
       "source": "Montevideo Portal / política",
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "status": "insufficient_content",
