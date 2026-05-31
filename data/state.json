@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 81,
-  "last_run_at": "2026-05-31T08:37:25Z",
-  "verification_cursor": 81,
+  "cycle": 82,
+  "last_run_at": "2026-05-31T13:24:15Z",
+  "verification_cursor": 7,
   "verification_log": [
     {
       "cycle": 81,
@@ -593,6 +593,13 @@
       "minister": "Cristina Lustemberg",
       "result": "error",
       "note": "Sitio gub.uy/ministerio-salud-publica/comunicacion/noticias devolvió HTTP 200 con cuerpo vacío (0 bytes)."
+    },
+    {
+      "cycle": 82,
+      "ministry": "Industria, Energía y Minería",
+      "checked_at": "2026-05-31T13:24:15Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada de comunicación de MIEM siguió accesible y mostró publicaciones recientes (incluyendo entradas del 29/05/2026)."
     }
   ],
   "drift_log": [
@@ -2158,6 +2165,26 @@
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "reason": "Documento no encontrado / insufficient content",
       "at": "2026-05-31T08:37:25Z"
+    },
+    {
+      "at": "2026-05-31T13:24:15Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "reason": "Los endpoints JSON de Senado y Diputados devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-31T13:24:15Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "reason": "Los listados de noticias y de leyes de parlamento.gub.uy devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-31T13:24:15Z",
+      "source": "Diputados / repartidos (JSON)",
+      "reason": "El endpoint https://documentos.diputados.gub.uy/docs/DArepartidos.json devolvió HTTP 404 en este ciclo."
+    },
+    {
+      "at": "2026-05-31T13:24:15Z",
+      "source": "Montevideo Portal / política",
+      "reason": "La URL de política respondió HTTP 502 (upstream connect error) en este ciclo."
     }
   ],
   "bias_log": [],
