@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 80,
-  "last_run_at": "2026-05-31T02:41:00Z",
-  "verification_cursor": 80,
+  "cycle": 81,
+  "last_run_at": "2026-05-31T08:37:25Z",
+  "verification_cursor": 81,
   "verification_log": [
+    {
+      "cycle": 81,
+      "at": "2026-05-31T08:37:25Z",
+      "ministry": "Vivienda y Ordenamiento Territorial",
+      "minister": "Tamara Paseyro",
+      "result": "ok"
+    },
     {
       "cycle": 80,
       "at": "2026-05-31T02:41:00Z",
@@ -2116,6 +2123,41 @@
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "reason": "Documento no encontrado / insufficient content",
       "at": "2026-05-31T02:41:00Z"
+    },
+    {
+      "cycle": 81,
+      "source": "presidencia_noticias",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "reason": "timeout en fallback de navegador (nivel 2)",
+      "at": "2026-05-31T08:37:25Z"
+    },
+    {
+      "cycle": 81,
+      "source": "parlamento_asuntos_senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-28&Fechahasta=2026-05-31&_format=json",
+      "reason": "403 Forbidden",
+      "at": "2026-05-31T08:37:25Z"
+    },
+    {
+      "cycle": 81,
+      "source": "parlamento_noticias_senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "reason": "403 Forbidden",
+      "at": "2026-05-31T08:37:25Z"
+    },
+    {
+      "cycle": 81,
+      "source": "parlamento_noticias_diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/noticias",
+      "reason": "403 Forbidden",
+      "at": "2026-05-31T08:37:25Z"
+    },
+    {
+      "cycle": 81,
+      "source": "montevideo_portal",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "reason": "Documento no encontrado / insufficient content",
+      "at": "2026-05-31T08:37:25Z"
     }
   ],
   "bias_log": [],
