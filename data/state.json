@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 82,
-  "last_run_at": "2026-05-31T13:24:15Z",
-  "verification_cursor": 7,
+  "cycle": 83,
+  "last_run_at": "2026-05-31T19:04:00Z",
+  "verification_cursor": 8,
   "verification_log": [
+    {
+      "cycle": 83,
+      "at": "2026-05-31T19:04:00Z",
+      "ministry": "Trabajo y Seguridad Social",
+      "minister": "Juan Castillo",
+      "result": "ok",
+      "note": "La portada oficial del MTSS siguió accesible y mostró publicaciones recientes, incluida una mesa tripartita para prevenir el acoso laboral en supermercados."
+    },
     {
       "cycle": 81,
       "at": "2026-05-31T08:37:25Z",
@@ -2185,6 +2193,16 @@
       "at": "2026-05-31T13:24:15Z",
       "source": "Montevideo Portal / política",
       "reason": "La URL de política respondió HTTP 502 (upstream connect error) en este ciclo."
+    },
+    {
+      "at": "2026-05-31T19:04:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "reason": "Los endpoints JSON devolvieron HTTP 403 y el fallback con navegador también recibió 403 en este ciclo."
+    },
+    {
+      "at": "2026-05-31T19:04:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "reason": "Los listados públicos devolvieron HTTP 403 y Wayback no ofreció un snapshot utilizable para Senado noticias ni leyes promulgadas."
     }
   ],
   "bias_log": [],
