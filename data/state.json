@@ -1,9 +1,16 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 79,
-  "last_run_at": "2026-05-30T19:02:58Z",
-  "verification_cursor": 79,
+  "cycle": 80,
+  "last_run_at": "2026-05-31T02:41:00Z",
+  "verification_cursor": 80,
   "verification_log": [
+    {
+      "cycle": 80,
+      "at": "2026-05-31T02:41:00Z",
+      "ministry": "Ganadería, Agricultura y Pesca",
+      "minister": "Alfredo Fratti",
+      "result": "ok"
+    },
     {
       "cycle": 79,
       "at": "2026-05-30T19:02:58Z",
@@ -2088,6 +2095,27 @@
       "url": "https://montevideo.com.uy/Noticias/Politica",
       "reason": "Documento no encontrado / insufficient content",
       "at": "2026-05-30T19:02:58Z"
+    },
+    {
+      "cycle": 80,
+      "source": "parlamento_asuntos_senado",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-28&Fechahasta=2026-05-31&_format=json",
+      "reason": "403 Forbidden",
+      "at": "2026-05-31T02:41:00Z"
+    },
+    {
+      "cycle": 80,
+      "source": "parlamento_asuntos_diputados",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/representantes/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=2026-05-28&Fechahasta=2026-05-31&_format=json",
+      "reason": "403 Forbidden",
+      "at": "2026-05-31T02:41:00Z"
+    },
+    {
+      "cycle": 80,
+      "source": "montevideo_portal",
+      "url": "https://montevideo.com.uy/Noticias/Politica",
+      "reason": "Documento no encontrado / insufficient content",
+      "at": "2026-05-31T02:41:00Z"
     }
   ],
   "bias_log": [],
