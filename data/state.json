@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 85,
-  "last_run_at": "2026-06-01T11:12:00Z",
-  "verification_cursor": 19,
+  "cycle": 86,
+  "last_run_at": "2026-06-01T17:21:00Z",
+  "verification_cursor": 20,
   "verification_log": [
+    {
+      "cycle": 86,
+      "ministry": "Transporte y Obras Públicas",
+      "minister": "Lucía Etcheverry",
+      "status": "error",
+      "checked_at": "2026-06-01T17:21:00Z",
+      "notes": "La portada oficial de noticias del MTOP no respondió en el ciclo y también fallaron los fallbacks de Playwright y Wayback."
+    },
     {
       "cycle": 85,
       "ministry": "Educación y Cultura",
@@ -640,38 +648,65 @@
   ],
   "failed_sources_log": [
     {
-      "cycle": 85,
+      "cycle": 86,
       "source": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
       "reason": "HTTP 403 en los endpoints JSON de asuntos entrados (Senado y Diputados); se mantuvo cobertura con fuentes oficiales y agenda.",
       "first_seen_at": "2026-06-01T02:52:44Z",
-      "last_seen_at": "2026-06-01T11:12:00Z",
+      "last_seen_at": "2026-06-01T17:21:00Z",
+      "consecutive_cycles": 3,
+      "status": "active"
+    },
+    {
+      "cycle": 86,
+      "source": "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias",
+      "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MEF.",
+      "first_seen_at": "2026-06-01T11:12:00Z",
+      "last_seen_at": "2026-06-01T17:21:00Z",
       "consecutive_cycles": 2,
       "status": "active"
     },
     {
-      "cycle": 85,
-      "source": "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias",
-      "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MEF.",
-      "first_seen_at": "2026-06-01T11:12:00Z",
-      "last_seen_at": "2026-06-01T11:12:00Z",
-      "consecutive_cycles": 1,
-      "status": "active"
-    },
-    {
-      "cycle": 85,
+      "cycle": 86,
       "source": "https://www.gub.uy/ministerio-salud-publica/comunicacion/noticias",
       "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MSP.",
       "first_seen_at": "2026-06-01T11:12:00Z",
-      "last_seen_at": "2026-06-01T11:12:00Z",
+      "last_seen_at": "2026-06-01T17:21:00Z",
+      "consecutive_cycles": 2,
+      "status": "active"
+    },
+    {
+      "cycle": 86,
+      "source": "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias",
+      "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MEC.",
+      "first_seen_at": "2026-06-01T11:12:00Z",
+      "last_seen_at": "2026-06-01T17:21:00Z",
+      "consecutive_cycles": 2,
+      "status": "active"
+    },
+    {
+      "cycle": 86,
+      "source": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "reason": "Timeout de conexión en el fetch HTTP y timeout también en fallback Playwright; Wayback devolvió NONE.",
+      "first_seen_at": "2026-06-01T17:21:00Z",
+      "last_seen_at": "2026-06-01T17:21:00Z",
       "consecutive_cycles": 1,
       "status": "active"
     },
     {
-      "cycle": 85,
-      "source": "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias",
-      "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MEC.",
-      "first_seen_at": "2026-06-01T11:12:00Z",
-      "last_seen_at": "2026-06-01T11:12:00Z",
+      "cycle": 86,
+      "source": "https://www.gub.uy/presidencia/comunicacion/calendario-actividades",
+      "reason": "Timeout de conexión en el fetch HTTP y timeout también en fallback Playwright; Wayback devolvió NONE.",
+      "first_seen_at": "2026-06-01T17:21:00Z",
+      "last_seen_at": "2026-06-01T17:21:00Z",
+      "consecutive_cycles": 1,
+      "status": "active"
+    },
+    {
+      "cycle": 86,
+      "source": "https://www.gub.uy/ministerio-transporte-obras-publicas/comunicacion/noticias",
+      "reason": "Timeout de conexión en el fetch HTTP y timeout también en fallback Playwright; Wayback devolvió NONE.",
+      "first_seen_at": "2026-06-01T17:21:00Z",
+      "last_seen_at": "2026-06-01T17:21:00Z",
       "consecutive_cycles": 1,
       "status": "active"
     },
