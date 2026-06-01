@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 84,
-  "last_run_at": "2026-06-01T02:52:44Z",
-  "verification_cursor": 18,
+  "cycle": 85,
+  "last_run_at": "2026-06-01T11:12:00Z",
+  "verification_cursor": 19,
   "verification_log": [
+    {
+      "cycle": 85,
+      "ministry": "Educación y Cultura",
+      "minister": "José Carlos Mahía",
+      "status": "error",
+      "checked_at": "2026-06-01T11:12:00Z",
+      "notes": "La portada oficial de noticias del MEC no respondió dentro del timeout del ciclo (curl --max-time 25)."
+    },
     {
       "cycle": 84,
       "ministry": "Defensa Nacional",
@@ -632,11 +640,38 @@
   ],
   "failed_sources_log": [
     {
-      "cycle": 84,
+      "cycle": 85,
       "source": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
       "reason": "HTTP 403 en los endpoints JSON de asuntos entrados (Senado y Diputados); se mantuvo cobertura con fuentes oficiales y agenda.",
       "first_seen_at": "2026-06-01T02:52:44Z",
-      "last_seen_at": "2026-06-01T02:52:44Z",
+      "last_seen_at": "2026-06-01T11:12:00Z",
+      "consecutive_cycles": 2,
+      "status": "active"
+    },
+    {
+      "cycle": 85,
+      "source": "https://www.gub.uy/ministerio-economia-finanzas/comunicacion/noticias",
+      "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MEF.",
+      "first_seen_at": "2026-06-01T11:12:00Z",
+      "last_seen_at": "2026-06-01T11:12:00Z",
+      "consecutive_cycles": 1,
+      "status": "active"
+    },
+    {
+      "cycle": 85,
+      "source": "https://www.gub.uy/ministerio-salud-publica/comunicacion/noticias",
+      "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MSP.",
+      "first_seen_at": "2026-06-01T11:12:00Z",
+      "last_seen_at": "2026-06-01T11:12:00Z",
+      "consecutive_cycles": 1,
+      "status": "active"
+    },
+    {
+      "cycle": 85,
+      "source": "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias",
+      "reason": "Timeout de conexión (curl --max-time 25) al intentar leer la portada de noticias del MEC.",
+      "first_seen_at": "2026-06-01T11:12:00Z",
+      "last_seen_at": "2026-06-01T11:12:00Z",
       "consecutive_cycles": 1,
       "status": "active"
     },
