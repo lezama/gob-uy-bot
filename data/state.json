@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 83,
-  "last_run_at": "2026-05-31T19:04:00Z",
-  "verification_cursor": 8,
+  "cycle": 84,
+  "last_run_at": "2026-06-01T02:52:44Z",
+  "verification_cursor": 18,
   "verification_log": [
+    {
+      "cycle": 84,
+      "ministry": "Defensa Nacional",
+      "minister": "Sandra Lazo",
+      "status": "ok",
+      "checked_at": "2026-06-01T02:52:44Z",
+      "notes": "Se verificó que el feed oficial del MDN sigue accesible y publica novedades institucionales recientes."
+    },
     {
       "cycle": 83,
       "at": "2026-05-31T19:04:00Z",
@@ -623,6 +631,15 @@
     }
   ],
   "failed_sources_log": [
+    {
+      "cycle": 84,
+      "source": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
+      "reason": "HTTP 403 en los endpoints JSON de asuntos entrados (Senado y Diputados); se mantuvo cobertura con fuentes oficiales y agenda.",
+      "first_seen_at": "2026-06-01T02:52:44Z",
+      "last_seen_at": "2026-06-01T02:52:44Z",
+      "consecutive_cycles": 1,
+      "status": "active"
+    },
     {
       "at": "2026-05-11T01:58:47.636Z",
       "source": "El Observador / política",
