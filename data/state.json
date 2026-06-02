@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 89,
-  "last_run_at": "2026-06-02T10:09:00Z",
-  "verification_cursor": 23,
+  "cycle": 90,
+  "last_run_at": "2026-06-02T16:05:00Z",
+  "verification_cursor": 24,
   "verification_log": [
     {
       "cycle": 87,
@@ -656,6 +656,14 @@
       "checked_at": "2026-06-02T10:09:00Z",
       "result": "ok",
       "notes": "Sin drift: la portada oficial de noticias del MSP estuvo accesible durante el ciclo (con fallback de navegador) y mostró publicaciones recientes."
+    },
+    {
+      "cycle": 90,
+      "ministry": "Ganadería, Agricultura y Pesca",
+      "minister": "Alfredo Fratti",
+      "checked_at": "2026-06-02T16:05:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada oficial de comunicación del MGAP estuvo accesible durante el ciclo y mostró publicaciones recientes."
     }
   ],
   "drift_log": [
@@ -2337,6 +2345,21 @@
     },
     {
       "at": "2026-06-02T10:09:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "reason": "Los listados públicos de noticias y leyes de parlamento.gub.uy devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-06-02T16:05:00Z",
+      "source": "Presidencia / noticias",
+      "reason": "La portada de noticias devolvió cuerpo vacío en fetch HTTP y el fallback de navegador agotó timeout en este ciclo."
+    },
+    {
+      "at": "2026-06-02T16:05:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "reason": "Los endpoints JSON de Senado y Diputados devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-06-02T16:05:00Z",
       "source": "Parlamento / noticias y leyes promulgadas",
       "reason": "Los listados públicos de noticias y leyes de parlamento.gub.uy devolvieron HTTP 403 en este ciclo."
     }
