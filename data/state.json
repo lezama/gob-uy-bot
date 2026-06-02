@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 90,
-  "last_run_at": "2026-06-02T16:05:00Z",
-  "verification_cursor": 24,
+  "cycle": 91,
+  "last_run_at": "2026-06-02T20:40:00Z",
+  "verification_cursor": 25,
   "verification_log": [
     {
       "cycle": 87,
@@ -664,6 +664,14 @@
       "checked_at": "2026-06-02T16:05:00Z",
       "result": "ok",
       "notes": "Sin drift: la portada oficial de comunicación del MGAP estuvo accesible durante el ciclo y mostró publicaciones recientes."
+    },
+    {
+      "cycle": 91,
+      "ministry": "Vivienda y Ordenamiento Territorial",
+      "minister": "Tamara Paseyro",
+      "checked_at": "2026-06-02T20:40:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada oficial de noticias del MVOT estuvo accesible durante el ciclo y mostró publicaciones recientes."
     }
   ],
   "drift_log": [
@@ -2362,6 +2370,16 @@
       "at": "2026-06-02T16:05:00Z",
       "source": "Parlamento / noticias y leyes promulgadas",
       "reason": "Los listados públicos de noticias y leyes de parlamento.gub.uy devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-06-02T20:40:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "reason": "Los endpoints JSON de Senado y Diputados devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-06-02T20:40:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "reason": "Los listados públicos de parlamento.gub.uy devolvieron HTTP 403 en este ciclo."
     }
   ],
   "bias_log": [],
