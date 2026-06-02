@@ -1,8 +1,8 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 87,
-  "last_run_at": "2026-06-01T21:22:00Z",
-  "verification_cursor": 21,
+  "cycle": 88,
+  "last_run_at": "2026-06-02T02:49:00Z",
+  "verification_cursor": 22,
   "verification_log": [
     {
       "cycle": 87,
@@ -640,6 +640,14 @@
       "checked_at": "2026-05-31T13:24:15Z",
       "result": "ok",
       "notes": "Sin drift: la portada de comunicación de MIEM siguió accesible y mostró publicaciones recientes (incluyendo entradas del 29/05/2026)."
+    },
+    {
+      "cycle": 88,
+      "ministry": "Trabajo y Seguridad Social",
+      "minister": "Juan Castillo",
+      "checked_at": "2026-06-02T02:49:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada de comunicación del MTSS estuvo accesible y con publicaciones recientes durante el ciclo."
     }
   ],
   "drift_log": [
@@ -2298,6 +2306,16 @@
       "at": "2026-05-31T19:04:00Z",
       "source": "Parlamento / noticias y leyes promulgadas",
       "reason": "Los listados públicos devolvieron HTTP 403 y Wayback no ofreció un snapshot utilizable para Senado noticias ni leyes promulgadas."
+    },
+    {
+      "at": "2026-06-02T02:49:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "reason": "Los endpoints JSON de Senado y Diputados devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-06-02T02:49:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "reason": "Los listados públicos de noticias y leyes de parlamento.gub.uy devolvieron HTTP 403 en este ciclo."
     }
   ],
   "bias_log": [],
