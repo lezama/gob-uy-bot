@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 94,
-  "last_run_at": "2026-06-03T16:20:00Z",
-  "verification_cursor": 28,
+  "cycle": 95,
+  "last_run_at": "2026-06-03T20:48:00Z",
+  "verification_cursor": 29,
   "verification_log": [
+    {
+      "cycle": 95,
+      "ministry": "Relaciones Exteriores",
+      "minister": "Mario Lubetkin",
+      "checked_at": "2026-06-03T20:48:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada oficial de noticias de Cancillería estuvo accesible durante el ciclo y mostró publicaciones recientes del 1 de junio."
+    },
     {
       "cycle": 94,
       "ministry": "Interior",
@@ -2448,6 +2456,20 @@
     {
       "cycle": 94,
       "at": "2026-06-03T16:20:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403"
+    },
+    {
+      "cycle": 95,
+      "at": "2026-06-03T20:48:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
+      "status": "403"
+    },
+    {
+      "cycle": 95,
+      "at": "2026-06-03T20:48:00Z",
       "source": "Parlamento / noticias y leyes promulgadas",
       "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
       "status": "403"
