@@ -113,6 +113,7 @@ Si no podés escribir un `why_it_matters` factual, omitilo.
 
 - Frases cortas. Sujeto + verbo + complemento.
 - Evitá nominalizaciones ("la realización del acto" → "el acto se realizó").
+- En campos visibles del reporte (`note`, `summary`, `reason`, `why_it_matters`), no aclares tecnicidades de fetch como `curl`, `Playwright`, `fallback Nivel 2`, `HTTP/1.1` o `Wayback`, salvo que la fuente esté off y el detalle sea necesario para explicar una limitación. Para fuentes accesibles alcanza con decir "estuvo accesible" y qué contenido mostró.
 - Si una declaración política es importante: cita literal entre comillas, atribución explícita, link a fuente. NUNCA parafrasees declaraciones.
 
 ## Próximo paso
