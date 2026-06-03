@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 93,
-  "last_run_at": "2026-06-03T10:45:00Z",
-  "verification_cursor": 27,
+  "cycle": 94,
+  "last_run_at": "2026-06-03T16:20:00Z",
+  "verification_cursor": 28,
   "verification_log": [
+    {
+      "cycle": 94,
+      "ministry": "Interior",
+      "minister": "Carlos Negro",
+      "checked_at": "2026-06-03T16:20:00Z",
+      "result": "ok",
+      "notes": "La portada oficial del Ministerio del Interior estuvo accesible mediante Playwright (fallback Nivel 2) y mostró publicaciones recientes: operativos, condenas y seguridad vial."
+    },
     {
       "cycle": 93,
       "ministry": "Economía y Finanzas",
@@ -2417,6 +2425,29 @@
     },
     {
       "at": "2026-06-03T10:45:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403"
+    },
+    {
+      "cycle": 94,
+      "at": "2026-06-03T16:20:00Z",
+      "source": "gub.uy / Presidencia noticias y ministerios (HTTP)",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias",
+      "status": "empty_body",
+      "fallback_level_reached": 3,
+      "notes": "curl devolvió body vacío; Playwright devolvió timeout; Wayback devolvió NONE."
+    },
+    {
+      "cycle": 94,
+      "at": "2026-06-03T16:20:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
+      "status": "403"
+    },
+    {
+      "cycle": 94,
+      "at": "2026-06-03T16:20:00Z",
       "source": "Parlamento / noticias y leyes promulgadas",
       "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
       "status": "403"
