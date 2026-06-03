@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 91,
-  "last_run_at": "2026-06-02T20:40:00Z",
-  "verification_cursor": 25,
+  "cycle": 92,
+  "last_run_at": "2026-06-03T02:56:00Z",
+  "verification_cursor": 26,
   "verification_log": [
+    {
+      "cycle": 92,
+      "ministry": "Educación y Cultura",
+      "minister": "José Carlos Mahía",
+      "checked_at": "2026-06-03T02:56:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada oficial de noticias del MEC estuvo accesible durante el ciclo y mostró publicaciones recientes."
+    },
     {
       "cycle": 87,
       "ministry": "Industria, Energía y Minería",
@@ -2380,6 +2388,18 @@
       "at": "2026-06-02T20:40:00Z",
       "source": "Parlamento / noticias y leyes promulgadas",
       "reason": "Los listados públicos de parlamento.gub.uy devolvieron HTTP 403 en este ciclo."
+    },
+    {
+      "at": "2026-06-03T02:56:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
+      "status": "403"
+    },
+    {
+      "at": "2026-06-03T02:56:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403"
     }
   ],
   "bias_log": [],
