@@ -23,7 +23,7 @@ Cuando un issue te asigne un ciclo, ejecutá los prompts en orden:
 2. Leé [`data/prompts/02-fetch-upcoming.md`](../data/prompts/02-fetch-upcoming.md) → fetcheá agenda próxima.
 3. Leé [`data/prompts/03-curate.md`](../data/prompts/03-curate.md) → decidí qué destacar.
 4. Leé [`data/prompts/04-render-day.md`](../data/prompts/04-render-day.md) → generá `_posts/YYYY-MM-DD-cycle-N.md` (Jekyll lo renderiza como post).
-5. Actualizá [`data/state.json`](../data/state.json) → cycle++, last_run, cursor verificación.
+5. Actualizá [`data/state.json`](../data/state.json) → `cycle`++, `last_run_at`, cursor verificación.
 6. Abrí PR con título `[ciclo N] DD mon — viz del día`. **En el body del PR incluí `Closes #<N>`** donde `<N>` es el número del issue que te asignó este ciclo (lo ves en la URL del issue y arriba de su título). Eso le dice a GitHub que cierre el issue automáticamente cuando se mergee el PR — sin esto el issue queda abierto para siempre.
 
    **Si solo tocaste `_posts/` y `data/state.json`, ejecutá los 2 pasos finales abajo — son CRÍTICOS para que el loop autónomo funcione.**
@@ -62,9 +62,8 @@ Hacé estos 2 pasos **vos mismo, antes de terminar la sesión**. No esperés a q
 Tu PR es auto-merge candidate si **todos** estos son verdaderos:
 1. Solo modifica `_posts/`, `data/state.json`, o `_data/` (Jekyll data files)
 2. ≤ 800 líneas modificadas
-3. URLs externas referenciadas tienen domain en `data/sources.yml`
-4. Frontmatter del reporte parsea como YAML válido
-5. Tiene label `auto-merge-candidate`
+3. Frontmatter del reporte parsea como YAML válido
+4. Tiene label `auto-merge-candidate`
 
 Si no cumple, queda esperando review humano (lo cual es bueno: cambios a watchlist, prompts, workflows merecen ojos humanos).
 

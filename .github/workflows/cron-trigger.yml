@@ -57,7 +57,7 @@ jobs:
           3. Ejecutar \`data/prompts/02-fetch-upcoming.md\` — agenda próxima
           4. Ejecutar \`data/prompts/03-curate.md\` — qué destacar
           5. Ejecutar \`data/prompts/04-render-day.md\` — generar \`_posts/${TODAY}-cycle-${NEXT_CYCLE}.md\`
-          6. Actualizar \`data/state.json\` (cycle=${NEXT_CYCLE}, last_run, cursor++)
+          6. Actualizar \`data/state.json\` (cycle=${NEXT_CYCLE}, last_run_at, cursor++)
           7. Abrir PR con título \`[ciclo ${NEXT_CYCLE}] ${TODAY} — viz del día\`. **En el body del PR incluí \`Closes #<N>\` donde \`<N>\` es el número de ESTE issue (lo ves en la URL del browser y arriba del título)** — así GitHub cierra el issue automáticamente al mergear.
           8. Marcá el PR como ready (no draft) y agregá label \`auto-merge-candidate\` si solo tocaste \`_posts/\` y \`data/state.json\`. Sin estos 2 pasos finales el auto-merge no actúa.
 

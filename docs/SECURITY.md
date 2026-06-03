@@ -84,9 +84,9 @@ Lo que el agent NO puede hacer:
 **Mitigaciones:**
 
 1. PAT es **fine-grained**, scope = solo `lezama/gob-uy-bot`. Si se exfiltra, el blast radius es solo este repo.
-2. Permisos limitados al mínimo necesario: Issues + PRs + Contents (write) + Metadata (read).
+2. Permisos limitados al mínimo necesario para los workflows actuales: Issues + PRs + Contents + Actions (read/write) + Metadata (read).
 3. Secret scanning está ON — GitHub te avisa si commiteás un patrón que parece secret.
-4. El PAT solo se usa en el step `gh issue edit ... --add-assignee` del cron. No se pasa al sandbox del agent.
+4. El PAT solo se usa en workflows mantenidos por el repo (`cron-trigger`, `copilot-pr-finisher`, `copilot-auto-merge`) para asignar issues, finalizar PRs y mergear con eventos secundarios. No se pasa al sandbox del agent.
 
 **Hardening recomendado:** rotar el PAT cada 6 meses. Setear expiration al crearlo.
 

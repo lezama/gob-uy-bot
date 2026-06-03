@@ -127,21 +127,53 @@ jobs:
           PR: ${{ steps.pr.outputs.num }}
         run: |
           BODY=$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body')
+          PR_TITLE=$(gh pr view "$PR" --repo "$REPO" --json title --jq '.title')
           HEAD_BRANCH=$(gh pr view "$PR" --repo "$REPO" --json headRefName --jq '.headRefName')
 
           # ¿Ya tiene Closes/Fixes/Resolves en el body?
-          if echo "$BODY" | grep -iE '^(closes|fixes|resolves) #[0-9]+' > /dev/null; then
+          EXISTING_ISSUE=$(echo "$BODY" | grep -iE -m 1 '^(closes|fixes|resolves) #[0-9]+' | grep -oE '[0-9]+' || true)
+          if [ -n "$EXISTING_ISSUE" ]; then
             echo "already_linked=true" >> "$GITHUB_OUTPUT"
-            echo "  ✓ body ya tiene keyword Closes/Fixes/Resolves"
+            echo "issue_num=$EXISTING_ISSUE" >> "$GITHUB_OUTPUT"
+            echo "  ✓ body ya tiene keyword Closes/Fixes/Resolves para issue #$EXISTING_ISSUE"
             exit 0
           fi
           echo "already_linked=false" >> "$GITHUB_OUTPUT"
 
-          # Buscar el día-cycle issue más reciente abierto que asignó Copilot.
-          # Heuristic: branch del agent es 'copilot/ciclo-N-...' o similar; el
-          # issue origen tiene label 'day-cycle' y assignee Copilot.
-          ISSUE_NUM=$(gh issue list --repo "$REPO" --state open --label day-cycle \
-            --assignee Copilot --json number --jq '.[0].number')
+          # Buscar el issue day-cycle abierto del bot. El cron asigna
+          # copilot-swe-agent[bot], pero algunos eventos reportan Copilot o
+          # app/copilot-swe-agent; aceptar los tres evita perder el vínculo.
+          ISSUES_JSON=$(gh issue list --repo "$REPO" --state open --label day-cycle \
+            --limit 100 --json number,title,assignees)
+          CYCLE_NUM=$(printf '%s\n%s\n' "$PR_TITLE" "$HEAD_BRANCH" \
+            | grep -iE -m 1 -o 'ciclo[-/ _]*[0-9]+|cycle[-/ _]*[0-9]+' \
+            | grep -oE '[0-9]+' || true)
+
+          ISSUE_NUM=""
+          if [ -n "$CYCLE_NUM" ]; then
+            ISSUE_NUM=$(jq -r --arg cycle "$CYCLE_NUM" '
+              def bot_assignee:
+                ([.assignees[].login] | any(. == "Copilot" or . == "copilot-swe-agent[bot]" or . == "app/copilot-swe-agent"));
+              [
+                .[]
+              | select(bot_assignee)
+              | select(.title | test("\\[ciclo " + $cycle + "\\]|cycle " + $cycle; "i"))
+              | .number
+              ][0] // empty
+            ' <<< "$ISSUES_JSON")
+          fi
+
+          if [ -z "$ISSUE_NUM" ]; then
+            ISSUE_NUM=$(jq -r '
+              def bot_assignee:
+                ([.assignees[].login] | any(. == "Copilot" or . == "copilot-swe-agent[bot]" or . == "app/copilot-swe-agent"));
+              [
+                .[]
+              | select(bot_assignee)
+              | .number
+              ][0] // empty
+            ' <<< "$ISSUES_JSON")
+          fi
 
           if [ -n "$ISSUE_NUM" ]; then
             echo "issue_num=$ISSUE_NUM" >> "$GITHUB_OUTPUT"
@@ -202,9 +234,15 @@ jobs:
           PR: ${{ steps.pr.outputs.num }}
           ISSUE: ${{ steps.issue.outputs.issue_num }}
         run: |
-          gh pr comment "$PR" --repo "$REPO" --body "🤖 \`copilot-pr-finisher\` completó los 3 steps que el agent no hizo:
+          if [ -n "$ISSUE" ]; then
+            ISSUE_LINE="- ✅ \`Closes #${ISSUE}\` presente/agregado al body"
+          else
+            ISSUE_LINE="- ⚠️ No se encontró issue origen; no se pudo agregar \`Closes #N\`"
+          fi
+
+          gh pr comment "$PR" --repo "$REPO" --body "🤖 \`copilot-pr-finisher\` revisó la finalización del PR:
           - ✅ PR marcado como ready
           - ✅ Label \`auto-merge-candidate\` agregado
-          - ✅ \`Closes #${ISSUE}\` agregado al body (si faltaba)
+          ${ISSUE_LINE}
 
           El \`copilot-auto-merge\` workflow debería disparar a continuación."
