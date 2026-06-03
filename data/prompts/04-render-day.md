@@ -9,7 +9,7 @@ Democratizar el acceso a la política uruguaya. Tu reporte tiene que ser **escan
 
 ## Estructura del archivo
 
-Generá `_posts/YYYY-MM-DD-cycle-N.md` con esta estructura exacta. Jekyll lo va a renderizar usando `_layouts/post.html` (que define cards, timeline, etc).
+Generá `_posts/YYYY-MM-DD-cycle-N.md` con esta estructura exacta. Jekyll lo va a renderizar usando `_layouts/report.html` (que define cards, timeline, etc).
 
 ```markdown
 ---
@@ -117,4 +117,4 @@ Si no podés escribir un `why_it_matters` factual, omitilo.
 
 ## Próximo paso
 
-Cuando termina, actualizá `data/state.json` (incrementá `cycle`, avanzá cursor de verificación, marcá `last_run`, agregá entry al `verification_log`). Después abrí el PR.
+Cuando termina, actualizá `data/state.json` (incrementá `cycle`, avanzá cursor de verificación, marcá `last_run_at`, agregá entry al `verification_log`). Después abrí el PR.

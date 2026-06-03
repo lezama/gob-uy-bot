@@ -55,7 +55,7 @@ Cuatro lugares concretos donde aportás valor sin tocar código:
 | Agregar una persona al watchlist | `data/sources.yml` (sección `people`) | 🟢 Easy |
 | Reportar un bias en el reporte | abrir [issue](../../issues/new/choose) | 🟢 Easy |
 
-**Los PRs que solo tocan `data/prompts/` o `data/sources.yml` se mergean automáticamente** después de 1 aprobación humana o 24h sin objeciones (TBD vía workflow).
+**Los PRs humanos requieren review.** El auto-merge está reservado para reportes diarios del bot que solo tocan `_posts/`, `data/state.json` o `_data/` y pasan las guardrails.
 
 Ver [`CONTRIBUTING.md`](CONTRIBUTING.md) para detalle.
 

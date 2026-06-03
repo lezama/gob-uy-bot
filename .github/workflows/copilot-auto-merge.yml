@@ -13,6 +13,17 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, labeled]
 
+# Serializa runs para el mismo PR. Sin esto, eventos `synchronize` +
+# `labeled` casi simultáneos (típicos cuando el PR finisher edita el PR
+# después de un merge exitoso) disparan dos auto-merges que pelean en
+# la API de GitHub con "GraphQL: Merge already in progress". El run
+# perdedor queda como falla roja en la pestaña Actions aunque el merge
+# real haya sido OK. cancel-in-progress:false porque queremos completar
+# el primero (incluye comentarios + close-issue), no cancelarlo.
+concurrency:
+  group: auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
   pull-requests: write
@@ -25,12 +36,35 @@ jobs:
       || contains(github.event.pull_request.labels.*.name, 'auto-merge-candidate')
 
     steps:
+      - name: Check PR state (skip rest if already merged/closed)
+        # Defensa adicional al concurrency group: si el run anterior
+        # ya mergeó (o alguien cerró el PR manualmente) lo flagueamos
+        # acá y los pasos siguientes se skipean. `exit 0` solo termina
+        # el step, no el job — por eso necesitamos un output que cada
+        # paso siguiente respete con `if:`.
+        id: precheck
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          STATE=$(gh pr view "$PR" --repo "$REPO" --json state --jq '.state')
+          echo "PR state: $STATE"
+          if [ "$STATE" = "OPEN" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+            echo "PR already $STATE — short-circuiting"
+          fi
+
       - name: Checkout
+        if: steps.precheck.outputs.proceed == 'true'
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Gather PR diff stats
+        if: steps.precheck.outputs.proceed == 'true'
         id: stats
         env:
           GH_TOKEN: ${{ github.token }}
@@ -54,6 +88,7 @@ jobs:
           echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
 
       - name: Evaluate guardrails
+        if: steps.precheck.outputs.proceed == 'true'
         id: gate
         env:
           GH_TOKEN: ${{ github.token }}
@@ -173,6 +208,16 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
         run: |
+          # 0. Belt-and-suspenders: el concurrency group serializa runs
+          # del mismo PR, pero entre que ganamos el slot y llegamos acá
+          # otro evento podría haberlo mergeado. Re-check de estado
+          # antes de tocar la API de merge.
+          STATE=$(gh pr view "$PR" --repo "$REPO" --json state --jq '.state')
+          if [ "$STATE" != "OPEN" ]; then
+            echo "PR no longer OPEN (now $STATE) — another run already merged. Done."
+            exit 0
+          fi
+
           # 1. Extraer issue origen ANTES del merge (con Closes #N en el body).
           PR_BODY=$(gh pr view "$PR" --repo "$REPO" --json body --jq '.body')
           ISSUE_NUM=$(echo "$PR_BODY" | grep -ioE '(closes|fixes|resolves) #[0-9]+' | head -1 | grep -oE '[0-9]+' || true)

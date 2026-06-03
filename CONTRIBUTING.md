@@ -19,7 +19,7 @@
 | Quiero... | Editá |
 |-----------|-------|
 | Mejorar el diseño visual | [`assets/style.css`](assets/style.css) |
-| Cambiar el render de un reporte | [`_layouts/post.html`](_layouts/post.html) |
+| Cambiar el render de un reporte | [`_layouts/report.html`](_layouts/report.html) |
 | Cambiar el header/footer | [`_includes/header.html`](_includes/header.html), [`_includes/footer.html`](_includes/footer.html) |
 | Cambiar la home | [`index.html`](index.html) |
 
