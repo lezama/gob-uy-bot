@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 92,
-  "last_run_at": "2026-06-03T02:56:00Z",
-  "verification_cursor": 26,
+  "cycle": 93,
+  "last_run_at": "2026-06-03T10:45:00Z",
+  "verification_cursor": 27,
   "verification_log": [
+    {
+      "cycle": 93,
+      "ministry": "Economía y Finanzas",
+      "minister": "Gabriel Oddone",
+      "checked_at": "2026-06-03T10:45:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada oficial de noticias del MEF estuvo accesible en este ciclo con fetch HTTP sobre HTTP/1.1 y mostró publicaciones recientes del 2 de junio."
+    },
     {
       "cycle": 92,
       "ministry": "Educación y Cultura",
@@ -2397,6 +2405,18 @@
     },
     {
       "at": "2026-06-03T02:56:00Z",
+      "source": "Parlamento / noticias y leyes promulgadas",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
+      "status": "403"
+    },
+    {
+      "at": "2026-06-03T10:45:00Z",
+      "source": "Parlamento / asuntos entrados (Senado y Diputados)",
+      "url": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
+      "status": "403"
+    },
+    {
+      "at": "2026-06-03T10:45:00Z",
       "source": "Parlamento / noticias y leyes promulgadas",
       "url": "https://parlamento.gub.uy/camarasycomisiones/senadores/noticias",
       "status": "403"
