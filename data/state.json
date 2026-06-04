@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 95,
-  "last_run_at": "2026-06-03T20:48:00Z",
-  "verification_cursor": 29,
+  "cycle": 96,
+  "last_run_at": "2026-06-04T02:51:00Z",
+  "verification_cursor": 30,
   "verification_log": [
+    {
+      "cycle": 96,
+      "ministry": "Economía y Finanzas",
+      "minister": "Gabriel Oddone",
+      "checked_at": "2026-06-04T02:51:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada oficial de noticias del MEF estuvo accesible durante el ciclo y mostró publicaciones recientes del 3 de junio."
+    },
     {
       "cycle": 95,
       "ministry": "Relaciones Exteriores",
