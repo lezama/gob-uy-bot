@@ -1,9 +1,17 @@
 {
   "_comment": "Estado del agente. El bot lo actualiza en cada ciclo. Los humanos no deberían editarlo manualmente excepto para resetear cursors o limpiar drift_log.",
-  "cycle": 97,
-  "last_run_at": "2026-06-04T09:46:00Z",
-  "verification_cursor": 31,
+  "cycle": 98,
+  "last_run_at": "2026-06-04T14:40:00Z",
+  "verification_cursor": 32,
   "verification_log": [
+    {
+      "cycle": 98,
+      "ministry": "Educación y Cultura",
+      "minister": "José Carlos Mahía",
+      "checked_at": "2026-06-04T14:40:00Z",
+      "result": "ok",
+      "notes": "Sin drift: la portada oficial de noticias del MEC estuvo accesible durante el ciclo y mostró publicaciones recientes del 4 y 3 de junio."
+    },
     {
       "cycle": 97,
       "ministry": "Defensa Nacional",
@@ -735,6 +743,15 @@
     }
   ],
   "failed_sources_log": [
+    {
+      "cycle": 98,
+      "source": "https://montevideo.com.uy/Noticias/Politica",
+      "reason": "La URL respondió \"Documento no encontrado\" (HTTP 200 con página de error) durante este ciclo.",
+      "first_seen_at": "2026-06-04T14:40:00Z",
+      "last_seen_at": "2026-06-04T14:40:00Z",
+      "consecutive_cycles": 1,
+      "status": "active"
+    },
     {
       "cycle": 87,
       "source": "https://parlamento.gub.uy/camarasycomisiones/*/transparencia/datos-abiertos/asuntos-entrados/json",
