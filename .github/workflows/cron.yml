@@ -23,5 +23,5 @@ jobs:
             echo "El reporte de $HOY ya existe"; exit 0
           fi
           URL=$(gh issue create -R "$REPO" --label dia --title "[dia] $HOY" \
-            --body "Escribí el reporte de hoy siguiendo .github/copilot-instructions.md. Cuando abras el PR poné \`Closes #<este issue>\` en el body.")
+            --body "Escribí el reporte de hoy siguiendo .github/copilot-instructions.md.")
           gh api -X POST "repos/$REPO/issues/${URL##*/}/assignees" -f 'assignees[]=copilot-swe-agent[bot]'

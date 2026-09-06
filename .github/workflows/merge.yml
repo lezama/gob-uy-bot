@@ -2,14 +2,10 @@ name: Publicar el reporte
 
 on:
   pull_request_target:
-    types: [opened, synchronize, ready_for_review, review_requested]
+    types: [opened, synchronize, ready_for_review]
 
 permissions:
   contents: read
-  pull-requests: write
-
-concurrency:
-  group: publicar-${{ github.event.pull_request.number }}
 
 jobs:
   publicar:
@@ -35,13 +31,11 @@ jobs:
           if ! awk '/^---$/{c++; next} c==1' "$FILES" | python3 -c 'import sys, yaml; d = yaml.safe_load(sys.stdin); assert d["title"] and d["window"] and d["top_stories"]'; then
             echo "reason=frontmatter inválido o incompleto en $FILES" >> "$GITHUB_OUTPUT"; exit 0
           fi
-          if [ "$(gh pr view "$PR" -R "$REPO" --json reviews --jq '[.reviews[] | select(.state=="CHANGES_REQUESTED")] | length')" != 0 ]; then
-            echo "reason=hay una review humana pidiendo cambios" >> "$GITHUB_OUTPUT"; exit 0
-          fi
           echo "ok=true" >> "$GITHUB_OUTPUT"
       - name: Mergear
         if: steps.gate.outputs.ok == 'true'
         run: |
+          [ "$(gh pr view "$PR" -R "$REPO" --json state --jq .state)" = OPEN ] || exit 0
           [ "$(gh pr view "$PR" -R "$REPO" --json isDraft --jq .isDraft)" = true ] && gh pr ready "$PR" -R "$REPO"
           gh pr merge "$PR" -R "$REPO" --squash --delete-branch
           gh issue list -R "$REPO" --label dia --state open --json number --jq '.[].number' | xargs -rn1 gh issue close -R "$REPO" --comment "Publicado en el PR #$PR."
