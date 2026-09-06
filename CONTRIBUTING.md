@@ -26,8 +26,7 @@
 ### 🔴 Cambios que requieren review más cuidadoso
 
 - Workflows en [`.github/workflows/`](.github/workflows/) — afectan ejecución automática
-- [`.github/copilot-instructions.md`](.github/copilot-instructions.md) — afecta TODOS los ciclos futuros
-- [`data/state.json`](data/state.json) — el bot lo modifica solo, raramente requiere edit humano
+- [`.github/copilot-instructions.md`](.github/copilot-instructions.md) — afecta TODOS los reportes futuros
 
 ## Flujo de PR
 
@@ -40,10 +39,10 @@
 
 Algunos PRs se mergean **automáticamente** después de checks:
 
-- ✅ PRs del bot Copilot que solo tocan `_posts/` o `data/state.json` y pasan guardrails
+- ✅ PRs del bot Copilot que tocan solo el archivo del día en `_posts/` con frontmatter válido
 - ❌ PRs humanos siempre requieren al menos 1 review
 
-Detalles en [`.github/workflows/copilot-auto-merge.yml`](.github/workflows/copilot-auto-merge.yml).
+Detalles en [`.github/workflows/merge.yml`](.github/workflows/merge.yml).
 
 ## Reportar errores y sesgos
 
@@ -52,7 +51,7 @@ Si viste un reporte que omitió algo importante, destacó algo trivial, o muestr
 - Abrí un [issue de feedback](../../issues/new?template=report-feedback.yml)
 - Mencioná **el reporte específico** (link) y **qué exactamente** te resultó mal
 
-El feedback es la principal entrada para que la rutina semanal de auto-mejora ([`05-self-improve.md`](data/prompts/05-self-improve.md)) ajuste prompts.
+El feedback es la principal entrada para ajustar los prompts por PR.
 
 ## Código de conducta
 

@@ -10,18 +10,17 @@ permalink: /metodologia/
 
 > Una explicación honesta de cómo se generan los reportes diarios, qué fuentes usamos, cómo decidimos qué destacar, y qué dejamos afuera. Si encontrás un error o un sesgo, [reportalo](https://github.com/lezama/gob-uy-bot/issues/new/choose).
 
-## Cadencia: cada 6 horas
+## Cadencia: una vez por día
 
-Una GitHub Action programada corre el bot cuatro veces al día (00:00, 06:00, 12:00 y 18:00 UTC, aprox. cada 6 horas). Cada corrida es un **ciclo** numerado (`ciclo #N`). En cada ciclo el bot:
+Una GitHub Action programada corre el bot todas las noches (22:00 hora de Uruguay), con el día cerrado. En cada corrida el bot:
 
-1. Fetchea **actividad reciente** (Presidencia, ministerios, Parlamento, prensa).
+1. Fetchea **actividad del día** (Presidencia, ministerios, Parlamento, prensa).
 2. Fetchea **agenda próxima** (24h, 7 días, 14 días).
 3. **Cura** los items según relevancia política.
-4. **Verifica cruzadamente** una declaración pública contra su fuente primaria.
-5. Renderiza una **visualización HTML** y abre un PR.
-6. Si pasa los guardrails automáticos, el PR se mergea y GitHub Pages publica.
+4. Renderiza una **visualización HTML** y abre un PR.
+5. Si el PR toca solo el archivo del día y el frontmatter es válido, se mergea y GitHub Pages publica.
 
-Varios ciclos por día actualizan el reporte de ese día. La URL `/AAAA/MM/DD/` siempre sirve el ciclo más reciente.
+La URL `/AAAA/MM/DD/` sirve el reporte de ese día.
 
 ## Fuentes
 
@@ -48,22 +47,6 @@ Y excluimos explícitamente:
 - Reposteos sin información nueva.
 - Encuestas de empresas sin metodología publicada.
 - Reacciones de figuras menores a noticias mayores (cubrimos la noticia, no las reacciones).
-
-## Verificación cruzada {#verificacion}
-
-En cada ciclo el bot elige a **un funcionario** (rotando entre ministros y figuras del Ejecutivo) y verifica una declaración suya contra la fuente primaria oficial (transcripción parlamentaria, comunicado de Presidencia, video de conferencia de prensa, etc.).
-
-El resultado aparece en el bloque **"Verificación cruzada"** del reporte:
-
-- **✅ Las citas coinciden con la fuente oficial.** Lo que se reportó coincide con la transcripción/comunicado.
-- **⚠️ Hay diferencias con la fuente oficial.** Hay paráfrasis libre, recorte de contexto, o atribuciones que no figuran en la fuente.
-- **❌ No pudo verificarse.** La fuente primaria no estaba accesible (404, paywall, no se publicó aún).
-
-Esto no garantiza que el resto del reporte sea perfecto — es una muestra. Si encontrás otra cita mal atribuida o un dato sin respaldo, [reportá un issue](https://github.com/lezama/gob-uy-bot/issues/new/choose).
-
-## Auto-mejora
-
-Cada ~7 días el bot abre un PR de meta-reflexión: revisa sus reportes pasados, mide qué fuentes fallaron, qué stories pasó por alto, y propone cambios a sus propios prompts. Esos PRs **requieren review humano** (los reportes diarios no).
 
 ## Limitaciones que reconocemos
 
