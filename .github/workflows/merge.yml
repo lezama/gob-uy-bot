@@ -2,10 +2,9 @@ name: Publicar el reporte
 
 on:
   pull_request_target:
-    types: [opened, synchronize, ready_for_review]
+    types: [synchronize, ready_for_review]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   publicar:
@@ -13,35 +12,32 @@ jobs:
     if: contains(fromJson('["Copilot","app/copilot-swe-agent","copilot-swe-agent[bot]"]'), github.event.pull_request.user.login)
     env:
       GH_TOKEN: ${{ secrets.COPILOT_PAT }}
-      REPO: ${{ github.repository }}
+      GH_REPO: ${{ github.repository }}
       PR: ${{ github.event.pull_request.number }}
+      SHA: ${{ github.event.pull_request.head.sha }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Guardrails
         id: gate
         run: |
-          FILES=$(gh pr view "$PR" -R "$REPO" --json files --jq '.files[].path')
+          FILES=$(gh pr diff "$PR" --name-only)
           echo "Archivos: $FILES"
-          if [ -z "$FILES" ]; then echo "PR vacío todavía"; exit 0; fi
-          if [ "$(wc -l <<< "$FILES")" != 1 ] || ! [[ "$FILES" =~ ^_posts/[0-9]{4}-[0-9]{2}-[0-9]{2}-hoy\.md$ ]]; then
+          if ! [[ "$FILES" =~ ^_posts/[0-9]{4}-[0-9]{2}-[0-9]{2}-hoy\.md$ ]]; then
             echo "reason=el PR tiene que tocar exactamente un archivo _posts/AAAA-MM-DD-hoy.md" >> "$GITHUB_OUTPUT"; exit 0
           fi
-          if ! awk '/^---$/{c++; next} c==1' "$FILES" | python3 -c 'import sys, yaml; d = yaml.safe_load(sys.stdin); assert d["title"] and d["window"] and d["top_stories"]'; then
-            echo "reason=frontmatter inválido o incompleto en $FILES" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          echo "ok=true" >> "$GITHUB_OUTPUT"
+          gh api "repos/$GH_REPO/contents/$FILES?ref=$SHA" --jq .content | base64 -d | awk '/^---$/{c++; next} c==1' \
+            | python3 -c 'import sys, yaml; d = yaml.safe_load(sys.stdin); assert d["title"] and d["window"] and d["top_stories"]' \
+            || echo "reason=frontmatter inválido o incompleto en $FILES" >> "$GITHUB_OUTPUT"
       - name: Mergear
-        if: steps.gate.outputs.ok == 'true'
+        if: steps.gate.outputs.reason == ''
         run: |
-          [ "$(gh pr view "$PR" -R "$REPO" --json state --jq .state)" = OPEN ] || exit 0
-          [ "$(gh pr view "$PR" -R "$REPO" --json isDraft --jq .isDraft)" = true ] && gh pr ready "$PR" -R "$REPO"
-          gh pr merge "$PR" -R "$REPO" --squash --delete-branch
-          gh issue list -R "$REPO" --label dia --state open --json number --jq '.[].number' | xargs -rn1 gh issue close -R "$REPO" --comment "Publicado en el PR #$PR."
+          read -r STATE DRAFT < <(gh pr view "$PR" --json state,isDraft --jq '[.state, .isDraft] | @tsv')
+          [ "$STATE" = OPEN ] || exit 0
+          [ "$DRAFT" = true ] && gh pr ready "$PR"
+          gh pr merge "$PR" --squash --delete-branch
+          gh issue list --label dia --state open --json number --jq '.[].number' | xargs -rn1 gh issue close --comment "Publicado en el PR #$PR."
       - name: Avisar
         if: steps.gate.outputs.reason != ''
         env:
           REASON: ${{ steps.gate.outputs.reason }}
         run: |
-          gh pr comment "$PR" -R "$REPO" --body "No se publica solo: $REASON. Queda para que lo mire una persona."
+          gh pr comment "$PR" --body "No se publica solo: $REASON. Queda para que lo mire una persona."

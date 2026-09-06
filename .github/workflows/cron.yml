@@ -12,16 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.COPILOT_PAT }}
-      REPO: ${{ github.repository }}
+      GH_REPO: ${{ github.repository }}
     steps:
       - run: |
           HOY=$(TZ=America/Montevideo date +%F)
-          if [ -n "$(gh issue list -R "$REPO" --label dia --state open --json number --jq '.[0].number')" ]; then
+          if [ -n "$(gh issue list --label dia --state open --json number --jq '.[0].number')" ]; then
             echo "Hay un issue abierto, el agente sigue trabajando"; exit 0
           fi
-          if gh api "repos/$REPO/contents/_posts/$HOY-hoy.md" >/dev/null 2>&1; then
+          if gh api "repos/$GH_REPO/contents/_posts/$HOY-hoy.md" >/dev/null 2>&1; then
             echo "El reporte de $HOY ya existe"; exit 0
           fi
-          URL=$(gh issue create -R "$REPO" --label dia --title "[dia] $HOY" \
-            --body "Escribí el reporte de hoy siguiendo .github/copilot-instructions.md.")
-          gh api -X POST "repos/$REPO/issues/${URL##*/}/assignees" -f 'assignees[]=copilot-swe-agent[bot]'
+          gh issue create --label dia --assignee "@copilot" --title "[dia] $HOY" \
+            --body "Escribí el reporte de hoy siguiendo .github/copilot-instructions.md."
