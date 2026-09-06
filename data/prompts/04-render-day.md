@@ -9,21 +9,16 @@ Democratizar el acceso a la política uruguaya. Tu reporte tiene que ser **escan
 
 ## Estructura del archivo
 
-Generá `_posts/YYYY-MM-DD-cycle-N.md` con esta estructura exacta. Jekyll lo va a renderizar usando `_layouts/report.html` (que define cards, timeline, etc).
+Generá `_posts/YYYY-MM-DD-hoy.md` con esta estructura exacta. Jekyll lo va a renderizar usando `_layouts/report.html` (que define cards, timeline, etc).
 
 ```markdown
 ---
 title: "Hoy en el gobierno uruguayo — DD de mes de YYYY"
 date: YYYY-MM-DD HH:MM:SS -0300
 layout: report
-cycle: <número del state.json>
 window:
   from: "YYYY-MM-DD"
   to: "YYYY-MM-DD"
-verification_subject:
-  ministry: "Educación y Cultura"
-  minister: "José Carlos Mahía"
-  result: "ok | drift | error"
 top_stories:
   - title: "..."
     summary: "1 línea explicativa, sin jerga"
@@ -62,7 +57,7 @@ quiet:
   # Array de nombres de ministerios SIN NOVEDADES en la ventana.
   # Cada item = un ministerio. NO escribir prosa, NO agrupar varios
   # ministerios en una sola cadena, NO agregar paréntesis explicativos
-  # ("(cubierto en ciclo 13)"). El layout los renderiza como chips
+  # ("(cubierto ayer)"). El layout los renderiza como chips
   # individuales. Si querés explicar contexto, hacelo a nivel de cada
   # item: { name: "Interior", note: "sitio sin contenido accesible" }.
   - "Turismo"
@@ -118,4 +113,4 @@ Si no podés escribir un `why_it_matters` factual, omitilo.
 
 ## Próximo paso
 
-Cuando termina, actualizá `data/state.json` (incrementá `cycle`, avanzá cursor de verificación, marcá `last_run_at`, agregá entry al `verification_log`). Después abrí el PR.
+Cuando termina, abrí el PR.

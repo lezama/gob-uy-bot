@@ -8,7 +8,7 @@ title: Hoy en el gobierno uruguayo
   <div>
     <p class="eyebrow">Esperando el primer ciclo</p>
     <h1 class="bh-hero__title">¿Qué hizo <em>hoy</em> el gobierno?</h1>
-    <p class="bh-hero__sub">El bot empieza a publicar reportes cuando arranca la GitHub Action programada (cada 6 h). Si llegaste muy temprano, volvé en un rato.</p>
+    <p class="bh-hero__sub">El bot empieza a publicar reportes cuando arranca la GitHub Action programada (una vez por noche). Si llegaste muy temprano, volvé en un rato.</p>
   </div>
 </section>
 {% else %}
@@ -25,10 +25,10 @@ title: Hoy en el gobierno uruguayo
 <!-- HERO BAND -->
 <section class="bh-hero">
   <div>
-    <p class="eyebrow">{% include date-es.html date=latest.date %} · ciclo #{{ latest.cycle | default: "?" }}</p>
+    <p class="eyebrow">{% include date-es.html date=latest.date %}</p>
     <h1 class="bh-hero__title">¿Qué hizo <em>hoy</em> el gobierno?</h1>
     <p class="bh-hero__sub">
-      Una visualización diaria de la actividad del gobierno, parlamento y políticos uruguayos. Generada cada 6 horas por un bot autónomo, con lenguaje claro y fuentes linkeadas.
+      Una visualización diaria de la actividad del gobierno, parlamento y políticos uruguayos. Generada todas las noches por un bot autónomo, con lenguaje claro y fuentes linkeadas.
     </p>
   </div>
   <aside class="bh-hero__stat">
@@ -202,7 +202,7 @@ title: Hoy en el gobierno uruguayo
   <header class="bh-mins__hd">
     <h2 class="bh-mins__title">Pulso de los 14 ministerios</h2>
     <p class="bh-mins__sub">
-      Hoy <b>{{ active_count }} con novedades</b> · {{ covered_count }} sin actividad reciente · verificado: <b>{{ latest.verification_subject.ministry | default: "—" }}</b>
+      Hoy <b>{{ active_count }} con novedades</b> · {{ covered_count }} sin actividad reciente
     </p>
   </header>
   <div class="bh-mins__grid">

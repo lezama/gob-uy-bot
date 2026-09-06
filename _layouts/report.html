@@ -67,7 +67,7 @@ layout: default
       <span class="br-lede__month">{{ month_short }} {{ year_short }}</span>
     </div>
     <div>
-      <p class="eyebrow">Reporte diario · ciclo #{{ page.cycle }} · ventana {{ page.window.from }} → {{ page.window.to }}</p>
+      <p class="eyebrow">Reporte diario · ventana {{ page.window.from }} → {{ page.window.to }}</p>
       <h1 class="br-lede__title">Hoy en el gobierno uruguayo</h1>
       {% if page.lede %}
       <p class="br-lede__sub">{{ page.lede }}</p>
@@ -497,7 +497,7 @@ layout: default
   <footer class="br-footer">
     <p>
       Reporte generado por <a class="linklike" href="https://github.com/lezama/gob-uy-bot/blob/main/.github/copilot-instructions.md">gob-uy-bot</a>
-      · ciclo #{{ page.cycle }} · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time>
+      · <time>{{ page.date | date: "%Y-%m-%d %H:%M" }}</time>
       · ventana {{ page.window.from }} → {{ page.window.to }}
     </p>
     <p>

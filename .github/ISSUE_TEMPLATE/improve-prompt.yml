@@ -16,7 +16,6 @@ body:
         - "02-fetch-upcoming.md — qué fetchea de la agenda"
         - "03-curate.md — criterios para destacar"
         - "04-render-day.md — cómo arma la viz"
-        - "05-self-improve.md — rutina de auto-mejora"
         - "copilot-instructions.md — entry point del agente"
         - "Otro / no estoy seguro"
     validations:

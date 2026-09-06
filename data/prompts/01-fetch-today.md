@@ -1,11 +1,11 @@
 # Prompt 01 — Fetch today's activity
 
-> Esta rutina la ejecuta el agente al inicio de cada day cycle. Es el primer paso.
+> Esta rutina la ejecuta el agente al inicio de cada día. Es el primer paso.
 > Editable vía PR — si una fuente cambió de URL o se agrega una nueva, modificá esto.
 
 ## Objetivo
 
-Recolectar **toda la actividad gubernamental que pasó en las últimas 24-72 horas** desde fuentes oficiales y prensa. NO interpretes ni cures todavía — eso lo hace [`03-curate.md`](03-curate.md). Acá solo bajás los datos crudos.
+Recolectar **toda la actividad gubernamental que pasó desde ayer** desde fuentes oficiales y prensa. NO interpretes ni cures todavía — eso lo hace [`03-curate.md`](03-curate.md). Acá solo bajás los datos crudos.
 
 ## Pasos
 
@@ -13,7 +13,7 @@ Recolectar **toda la actividad gubernamental que pasó en las últimas 24-72 hor
 
 ```
 HOY    = $(date -u +%Y-%m-%d)
-DESDE  = HOY - 3 días
+DESDE  = HOY - 1 día
 HASTA  = HOY
 ```
 
@@ -44,14 +44,14 @@ Para cada `ministerio` en `data/sources.yml#ministries` con `enabled: true` y UR
 curl -sL "${ministry.news_url}"
 ```
 
-Mismo formato de output. Si una URL falla 3+ ciclos consecutivos, agregala a `_quarantine` en `state.json` (NO la elimines de `sources.yml`).
+Mismo formato de output.
 
 ### 4. Fetcheá Parlamento (JSON-first)
 
 **Asuntos entrados** (Senado + Diputados, JSON):
 
 ```bash
-FROM=$(date -u -d '-3 days' +%Y-%m-%d)
+FROM=$(date -u -d '-1 day' +%Y-%m-%d)
 TO=$(date -u +%Y-%m-%d)
 
 curl -sL "https://parlamento.gub.uy/camarasycomisiones/senadores/transparencia/datos-abiertos/asuntos-entrados/json?Cpo_Codigo=All&Fechadesde=${FROM}&Fechahasta=${TO}&_format=json" \
@@ -78,7 +78,7 @@ Extraé titulares + URLs + cruzá menciones a `people` del watchlist.
 
 ### 6. Output
 
-Guardá todo en una estructura intermedia (puede ser un archivo `.tmp/today-raw.yml` durante el ciclo, no comiteado). Estructura:
+Guardá todo en una estructura intermedia (puede ser un archivo `.tmp/today-raw.yml`, no comiteado). Estructura:
 
 ```yaml
 window:
@@ -140,44 +140,23 @@ scripts/fetch-browser.sh "$url" --screenshot
 El screenshot queda en `.tmp/screenshots/<sha>.png` — evidencia visual
 de lo que el bot vio. NO comitear (está en `.gitignore`).
 
-### Nivel 3 — Wayback Machine
+### Nivel 3 — Declarar off
 
-Si Nivel 2 **falla por cualquier razón** — 404, dominio movido, TLS
-broken en el sandbox, DNS bloqueado, timeout, body vacío — pedile a
-Internet Archive un snapshot antes de declarar la fuente off:
-
-```bash
-scripts/wayback-fallback.sh "$url"
-# SNAPSHOT <archive-url>   → usá esa URL
-# TRIGGERED <save-url>     → archivó ahora, volvé en el próximo ciclo
-# NONE                     → de verdad no hay nada; declarar off
-```
-
-Si conseguís un snapshot, usalo como `url` en el reporte pero **marcalo
-explícitamente** en el `source_label` (ej: `LA DIARIA / archive.org`)
-para que el lector sepa que está viendo una versión preservada.
-
-### Nivel 4 — Declarar off
-
-Si los 3 fallaron, agregá la fuente a `sources_off` con razón específica:
+Si los dos fallaron, agregá la fuente a `sources_off` con razón específica:
 
 ```yaml
 - source: "El Observador / política"
-  reason: "URL 404 persistente · sin snapshot en Wayback · ciclos fallidos: 4"
+  reason: "URL 404 persistente desde 2026-05-20"
 ```
 
-Y registralo en `state.json#failed_sources_log` con timestamp + nivel
-que falló. Si una fuente acumula 5+ ciclos en Nivel 4, abrí un issue
-separado titulado `[fuentes] revisar URL de X` para que un humano la
-mueva a `_quarantine` o le encuentre el endpoint nuevo.
+Si una fuente lleva varios días off, decilo en un comentario del issue para que una persona la revise.
 
 ## Reglas
 
 - ❌ **No inventes** items. Si una fuente devuelve vacío, marcá `items_count: 0` y seguí.
-- ❌ **No persistas** este raw output al repo. Es scratch del ciclo.
+- ❌ **No persistas** este raw output al repo. Es scratch del día.
 - ❌ **No uses Playwright para saltear paywalls** — solo para leer lo que el medio sí muestra antes de la wall (típicamente headline + primer párrafo).
-- ✅ Si encontrás un nuevo endpoint JSON oficial que no está en `data/sources.yml`, mencionalo en el PR del día (commit separado: "discovered new source X").
-- ✅ Si una fuente está caída, **registralo** en `state.json#failed_sources_log` con timestamp + nivel de fallback que falló.
+- ✅ Si encontrás un nuevo endpoint JSON oficial que no está en `data/sources.yml`, mencionalo en un comentario del issue.
 
 ## Próximo paso
 

@@ -57,7 +57,7 @@ Al curar, marcá explícitamente qué **personas del `data/sources.yml#people`**
 - ❌ **No inferir intención** — "X dijo que Y porque busca Z". Citá lo que dijo, no por qué.
 - ❌ **No agregar opiniones** — "esto es importante porque..." no, dejalo al lector.
 - ✅ **Sí podés** indicar contexto factual ("primera vez desde 2019 que se trata X")
-- ✅ **Diversidad** — si todos los top son del mismo color político en un día, considerá si es un sesgo de las fuentes o un sesgo tuyo. Apuntalo en `state.json#bias_log` para revisión semanal.
+- ✅ **Diversidad** — si todos los top son del mismo color político en un día, considerá si es un sesgo de las fuentes o un sesgo tuyo. Si es tuyo, corregilo antes de renderizar.
 
 ## Output
 

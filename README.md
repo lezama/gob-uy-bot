@@ -17,13 +17,13 @@ Cada item del reporte:
 
 ## Qué hace
 
-Cada 6 horas, el bot:
+Todas las noches, el bot:
 
 1. 📥 Fetchea **lo que pasó hoy** (Presidencia, ministerios, Parlamento, prensa)
 2. 📅 Fetchea **lo que viene en los próximos días** (agenda presidencial, citaciones parlamentarias, eventos anunciados)
 3. 🧠 Cura los items según relevancia política
 4. 🎨 Renderiza una **visualización HTML scannable** — cards por persona/ministerio, timeline de los próximos días, top stories destacadas
-5. ✅ Abre un PR; si pasa los guardrails, se merge solo y Pages se actualiza
+5. ✅ Abre un PR; si toca solo el archivo del día, se merge solo y Pages se actualiza
 
 **Sin servidores. Sin API keys propias.** Solo Copilot + Actions + Pages.
 
@@ -36,8 +36,7 @@ data/prompts/
 ├── 01-fetch-today.md      ¿qué fetchear de la actividad de hoy?
 ├── 02-fetch-upcoming.md   ¿qué fetchear de la agenda próxima?
 ├── 03-curate.md           ¿qué destacar y qué dejar fuera?
-├── 04-render-day.md       ¿cómo armar la página HTML del día?
-└── 05-self-improve.md     ¿cómo reflexionar y mejorar estos prompts?
+└── 04-render-day.md       ¿cómo armar la página HTML del día?
 ```
 
 **Si querés cambiar cómo el bot decide qué destacar:** editás `03-curate.md` y abrís un PR. Sin tocar workflows, sin tocar código. El próximo ciclo aplica tu cambio.
@@ -55,13 +54,9 @@ Cuatro lugares concretos donde aportás valor sin tocar código:
 | Agregar una persona al watchlist | `data/sources.yml` (sección `people`) | 🟢 Easy |
 | Reportar un bias en el reporte | abrir [issue](../../issues/new/choose) | 🟢 Easy |
 
-**Los PRs humanos requieren review.** El auto-merge está reservado para reportes diarios del bot que solo tocan `_posts/`, `data/state.json` o `_data/` y pasan las guardrails.
+**Los PRs humanos requieren review.** El auto-merge está reservado para el reporte diario del bot: un solo archivo en `_posts/` con frontmatter válido.
 
 Ver [`CONTRIBUTING.md`](CONTRIBUTING.md) para detalle.
-
-## Auto-mejora
-
-Cada ~7 días el bot abre un PR de meta-reflexión: revisa sus reportes pasados, mide qué fuentes fallaron, qué stories pasó por alto, y propone cambios a sus propios prompts. Esos PRs requieren review humano (los reportes diarios no).
 
 ## Licencia
 
