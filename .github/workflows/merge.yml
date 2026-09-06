@@ -1,7 +1,7 @@
 name: Publicar el reporte
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, ready_for_review, review_requested]
 
 permissions:
@@ -47,4 +47,7 @@ jobs:
           gh issue list -R "$REPO" --label dia --state open --json number --jq '.[].number' | xargs -rn1 gh issue close -R "$REPO" --comment "Publicado en el PR #$PR."
       - name: Avisar
         if: steps.gate.outputs.reason != ''
-        run: gh pr comment "$PR" -R "$REPO" --body "No se publica solo: ${{ steps.gate.outputs.reason }}. Queda para que lo mire una persona."
+        env:
+          REASON: ${{ steps.gate.outputs.reason }}
+        run: |
+          gh pr comment "$PR" -R "$REPO" --body "No se publica solo: $REASON. Queda para que lo mire una persona."
