@@ -2,7 +2,7 @@ name: Pedir el reporte del día
 
 on:
   schedule:
-    - cron: '0 1 * * *'   # 22:00 en Uruguay, con el día cerrado
+    - cron: '23 1 * * *'   # 22:23 en Uruguay, con el día cerrado; en punto GitHub lo retrasa horas
   workflow_dispatch:
 
 permissions: {}
